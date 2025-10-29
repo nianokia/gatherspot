@@ -1,0 +1,12 @@
+/node_modules
+.DS_Store
+
+# Env Files
+.env
+.env.test
+.env.local
+.env.development
+.env.production
+
+# Scratch Files
+*.log
