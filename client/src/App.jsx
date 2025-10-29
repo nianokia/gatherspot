@@ -1,34 +1,37 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import gsLogo from '/gatherspot-logo.png'
+import gsIcon from '/gatherspot-icon.png'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const login = () => {
+    console.log('Login button clicked');
+    alert('Congratulations! You have logged in successfully.');
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className='App'>
+      <nav className='navBar'>
+        <img src={gsLogo} className="logo" alt="GatherSpot logo" />
+        <a href="/">Sign Up</a>
+      </nav>
+      <div className="AppContainer">
+        <h1>Welcome to GatherSpot!</h1>
+        <h2>Your one-stop spot for planning, organizing, and finding events.</h2>
+        <h3>Get started by creating an account or logging in.</h3>
+        <div className="authCard">
+          <form onSubmit={login} className="authForm">
+            <input type="email" placeholder="Email" required />
+            <input type="password" placeholder="Password" required />
+            <button type="submit" className="authBtn">Log In</button>
+          </form>
+          <div className="createAccount">
+            <p>Don't have an account?</p>
+            <button className="authBtn" onClick={() => alert('Navigate to Sign Up page')}>Sign Up</button>
+          </div>
+        </div>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    </div>
   )
 }
 
