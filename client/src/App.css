@@ -1,42 +1,101 @@
-#root {
-  max-width: 1280px;
+:root {
+  --heading-font: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  --accent-font: "Courier New", Courier, monospace;
+  --default-font: Arial, Helvetica, sans-serif;
+
+  --primary-color: #113B6F;
+  --secondary-color: #23B9D9;
+  --background-color: #f6f6f6;
+  --accent-color: #646cff;
+  --warning-color: #ff6464;
+  --text-color: #333333;
+
+  width: 100vw;
   margin: 0 auto;
-  padding: 2rem;
+  background-color: var(--background-color);
+  justify-self: start;
+}
+
+.App {
+  margin: 0 auto;
+  width: 100vw;
+  height: 100vh;
   text-align: center;
 }
 
+.AppContainer {
+  height: 100vh;
+  padding: 0.5rem 2rem 0 2rem;
+  background-color: var(--primary-color);
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+  padding: 1rem 2rem;
+}
+
 .logo {
-  height: 6em;
-  padding: 1.5em;
+  width: 8rem;
+}
+
+.gsIcon {
+  width: 1.5rem;
+  border-radius: 8px;
+}
+
+.authCard {
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 auto;
+  padding: 2rem;
+  gap: 1.5rem;
+  border: 1px solid #eee;
+  border-radius: 12px;
+}
+
+.authForm {
+  display: flex;
+  flex-direction: column;
+  margin-top: 1rem;
+  gap: 1rem;
+  align-items: center;
+}
+
+.authBtn {
+  margin: 0.5rem;
+  padding: 0.25rem 1.5rem;
+  width: 7rem;
+  height: 2rem;
+  border-radius: 8px;
+  background-color: #646cff;
   will-change: filter;
   transition: filter 300ms;
+  cursor: pointer;
 }
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.authBtn:hover {
+  filter: drop-shadow(0 0 0.5rem #646cffaa);
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.createAccount {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+/* ---------- RESPONSIVE DESIGN ----------*/
+@media (max-width: 960px) {
+
 }
 
-.card {
-  padding: 2em;
+@media (max-width: 767px) {
+
 }
 
-.read-the-docs {
-  color: #888;
+@media (max-width: 575px) {
+
 }
