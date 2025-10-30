@@ -1,0 +1,86 @@
+export default (sequelize, DataTypes) => {
+    const Event = sequelize.define('Event', {
+        id: {
+            type: DataTypes.UUID,
+            defaultValue: DataTypes.UUIDV4,
+            primaryKey: true,
+        },
+        organizer_id: {
+            type: DataTypes.UUID,
+            allowNull: false,
+            references: { model: 'users', key: 'id' },
+            onDelete: 'RESTRICT',
+        },
+        venue_id: {
+            type: DataTypes.UUID,
+            allowNull: false,
+            references: { model: 'venues', key: 'id' },
+            onDelete: 'SET NULL',
+        },
+        title: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            validate: { 
+                notNull: { msg: 'Event Title is required' },
+                notEmpty: { msg: 'Event Title cannot be empty' },
+            },
+        },
+        event_type: {
+            type: DataTypes.STRING(50),
+            allowNull: false,
+        },
+        description: {
+            type: DataTypes.TEXT,
+        },
+        start_date: {
+            type: DataTypes.DATE,
+            allowNull: false,
+            validate: {
+                notNull: { msg: 'Start Date is required' },
+                isDate: true
+            },
+        },
+        end_date: {
+            type: DataTypes.DATE,
+            allowNull: false,
+            validate: {
+                notNull: { msg: 'End Date is required' },
+                isDate: true,
+            },
+        },
+        capacity: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            // --- only allows capacity to be set if > zero ---
+            validate: { min: 1 },
+        },
+        waitlist_enabled: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: false,
+        },
+        status: {
+            type: DataTypes.STRING(50),
+            defaultValue: 'scheduled',
+        },
+    }, {
+        tableName: 'events',
+        timestamps: true,
+        createdAt: 'created_at',
+        updatedAt: 'updated_at',
+        validate: {
+            // --- validates that end_date is after start_date ---
+            endDateAfterStartDate() {
+                if (this.start_date.isAfter(this.end_date)) {
+                    throw new Error('End Date must be after Start Date');
+                }
+            }
+        }
+    });
+
+    // --- Association definition (called by src/models/index.js) ---
+    Event.associate = (models) => {
+        // --- Event associations can be defined here ---
+    };
+    
+    return Event;
+}
