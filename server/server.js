@@ -3,6 +3,7 @@ import cors from 'cors';
 import 'dotenv/config';
 import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
+import { testDBConnection, syncDB } from './db/index.js';
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -26,8 +27,15 @@ app.get('/', (req, res) => {
 });
 
 // --- Start server ---
-app.listen(PORT, () => {
-  console.log(`GatherSpot server is running on http://localhost:${PORT}`);
-});
+const startServer = async () => {
+  console.log('Starting GatherSpot server...');
+  await testDBConnection();
+  await syncDB();
+  app.listen(PORT, () => {
+    console.log(`GatherSpot server is running on http://localhost:${PORT}`);
+  });
+};
+
+startServer();
 
 export default app;
