@@ -1,6 +1,6 @@
 import db from '../models/index.js';
 
-const { Event, Venue } = db;
+const { User, Event, Venue } = db;
 
 // ------------ POST OPERATIONS ------------
 // ---------- CREATE EVENT ----------
@@ -68,7 +68,10 @@ export const createEvent = async (req, res) => {
 export const getAllEvents = async (req, res) => {
     try {
         const events = await Event.findAll({
-            include: [{ model: Venue, as: 'venue', attributes: ['name', 'address', 'city', 'state', 'country', 'zip_code', 'capacity'] }]
+            include: [
+                { model: Venue, as: 'venue', attributes: ['name', 'address', 'city', 'state', 'country', 'zip_code', 'capacity'] },
+                { model: User, as: 'organizer', attributes: ['f_name', 'l_name', 'email'] },
+            ]
         });
         if (!events) return res.status(404).json({ message: "No events found" });
         res.status(200).json({ events });
