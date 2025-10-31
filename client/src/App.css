@@ -50,6 +50,12 @@ nav {
   padding: 1rem 2rem;
 }
 
+.navGroup {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
 .logo {
   width: 8rem;
 }
@@ -59,13 +65,20 @@ nav {
   border-radius: 8px;
 }
 
+.menuIcon {
+  color: var(--primary-color);
+  width: 1.5rem;
+  height: 1.5rem;
+  cursor: pointer;
+}
+
 nav .logoutBtn {
   margin: 0 0.5rem;
   padding: 0;
 }
 
 .logoutBtn {
-  margin: 1rem 0.5rem 0 0.5rem;
+  margin: 1rem 0.5rem;
   padding: 0;
   width: 5.5rem;
   height: 2.25rem;
