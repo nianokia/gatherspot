@@ -5,9 +5,13 @@
 
   --primary-color: #113B6F;
   --secondary-color: #23B9D9;
+  --secondary-dark-color: #1A8AAE;
   --background-color: #f6f6f6;
   --accent-color: #646cff;
+  --accent-dark-color: #4646ff;
+  /* --accent-dark-color: #646cffaa; */
   --warning-color: #ff6464;
+  --warning-dark-color: #ff4646;
   --text-color: #333333;
 
   width: 100vw;
@@ -65,7 +69,7 @@ nav .logoutBtn {
   padding: 0;
   width: 5.5rem;
   height: 2.25rem;
-  border: 1px solid #ff6464aa;
+  border: 1px solid var(--warning-color);
   border-radius: 8px;
   background-color: var(--warning-color);
   will-change: filter;
@@ -74,8 +78,8 @@ nav .logoutBtn {
 }
 
 .logoutBtn:hover {
-  filter: drop-shadow(0 0 0.45rem #ff6464aa);
-  border: 1px solid #ff6464aa;
+  filter: drop-shadow(0 0 0.45rem var(--warning-dark-color));
+  border: 1px solid var(--warning-color);
 }
 
 .authHub {
@@ -86,7 +90,7 @@ nav .logoutBtn {
   margin: 0 auto;
   padding: 2rem;
   gap: 1.5rem;
-  border: 1px solid #eee;
+  border: 1px solid var(--background-color);
   border-radius: 12px;
 }
 
@@ -104,14 +108,14 @@ nav .logoutBtn {
   width: 7rem;
   height: 2rem;
   border-radius: 8px;
-  background-color: #646cff;
+  background-color: var(--accent-color);
   will-change: filter;
   transition: filter 300ms;
   cursor: pointer;
 }
 
 .authBtn:hover {
-  filter: drop-shadow(0 0 0.5rem #646cffaa);
+  filter: drop-shadow(0 0 0.5rem var(--accent-dark-color));
 }
 
 .authBtn a {
@@ -150,6 +154,7 @@ nav .logoutBtn {
 .formGroup {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   margin-bottom: 0.25rem;
 }
 
@@ -185,6 +190,26 @@ nav .logoutBtn {
   border: 1px solid var(--background-color);
   padding: 1rem;
   border-radius: 8px;
+}
+
+.createBtn {
+  background-color: var(--secondary-color);
+  color: black;
+  border: none;
+  border-radius: 8px;
+  margin: 1rem 0 2rem;
+  padding: 0.5rem 1rem;
+  will-change: filter;
+  transition: filter 300ms;
+  cursor: pointer;
+}
+
+.createBtn:hover {
+  filter: drop-shadow(0 0 0.5rem var(--secondary-dark-color));
+}
+
+.createBtn a {
+  color: black;
 }
 
 /* ---------- RESPONSIVE DESIGN ----------*/
