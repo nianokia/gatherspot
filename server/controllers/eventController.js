@@ -62,3 +62,18 @@ export const createEvent = async (req, res) => {
         res.status(500).json({ message: 'Internal server error: Error creating Event with Venue', error: err });
     }
 };
+
+// ------------ READ OPERATIONS ------------
+// // ---------- GET ALL EVENTS ----------
+export const getAllEvents = async (req, res) => {
+    try {
+        const events = await Event.findAll({
+            include: [{ model: Venue, as: 'venue', attributes: ['name', 'address', 'city', 'state', 'country', 'zip_code', 'capacity'] }]
+        });
+        if (!events) return res.status(404).json({ message: "No events found" });
+        res.status(200).json({ events });
+    } catch (err) {
+        console.error('Error fetching Events:', err);
+        res.status(500).json({ message: 'Internal server error: Error fetching Events', error: err });
+    }
+};
