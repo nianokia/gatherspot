@@ -122,6 +122,13 @@ nav .logoutBtn {
   gap: 0.5rem;
 }
 
+/* ---------- DASHBOARD STYLES ---------- */
+.userEventList {
+  margin: 1rem auto;
+  max-width: 700px;
+  text-align: start;
+}
+
 /* ---------- RESPONSIVE DESIGN ----------*/
 @media (max-width: 960px) {
 
