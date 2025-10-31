@@ -1,9 +1,11 @@
 import { useState, useContext } from 'react';
+import { useNavigate } from 'react-router';
 import AuthContext from '../context/authContext.jsx';
 import { createEvent } from '../api/event.jsx';
 import { BackButton } from '../constants/constant.jsx';
 
 const AddEvent = () => {
+  const navigate = useNavigate();
   const { user, token } = useContext(AuthContext);
   // ---------- FORM DATA STATE ----------
   // --- set 2 nested objects (eventDetails & venueDetails) coming from transaction ---
@@ -78,6 +80,8 @@ const AddEvent = () => {
       console.log("createEvent response:", response);
       alert("Event has been added!")
 
+      // --- navigate back to previous page ---
+      navigate(-1);
     } catch (err) {
       console.error("Error creating event: ", err?.response ?? err);
       alert("Error creating event: " + (err?.response?.data?.message || err.message));
