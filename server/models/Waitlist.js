@@ -18,7 +18,7 @@ export default (sequelize, DataTypes) => {
             onDelete: 'CASCADE',
         },
         status: {
-            type: DataTypes.ENUM('waiting', 'notified', 'converted', 'expired'),
+            type: DataTypes.STRING(50),
             allowNull: false,
             defaultValue: 'waiting',
         },
@@ -32,6 +32,15 @@ export default (sequelize, DataTypes) => {
         indexes: [
             { unique: true, fields: ['event_id', 'user_id'] },
         ],
+        validate: {
+            // --- validate status is one of the allowed values ---
+            validateStatus() {
+                const validStatuses = ['waiting', 'notified', 'converted', 'expired'];
+                if (!validStatuses.includes(this.status)) {
+                    throw new Error('Invalid status');
+                }
+            },
+        }
     });
 
     // --- Association definition (called by src/models/index.js) ---

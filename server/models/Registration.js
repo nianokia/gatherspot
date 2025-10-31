@@ -23,7 +23,7 @@ export default (sequelize, DataTypes) => {
             unique: true,
         },
         status: {
-            type: DataTypes.ENUM('active', 'used', 'cancelled', 'refunded'),
+            type: DataTypes.STRING(50),
             allowNull: false,
             defaultValue: 'active',
         },
@@ -39,6 +39,15 @@ export default (sequelize, DataTypes) => {
         timestamps: true,
         createdAt: 'purchase_date',
         updatedAt: 'updated_at',
+        validate: {
+            // --- validate status is one of the allowed values ---
+            validateStatus() {
+                const validStatuses = ['active', 'used', 'cancelled', 'refunded'];
+                if (!validStatuses.includes(this.status)) {
+                    throw new Error('Invalid status');
+                }
+            },
+        },
     });
 
     // --- Association definition (called by src/models/index.js) ---
