@@ -10,9 +10,15 @@ const AdminDash = () => {
       <h1>Admin Dashboard</h1>
       <h2>All Events</h2>
       <p>Search, sort, and filter events</p>
-      <button>
-        Create New Event
-      </button>
+      <div className="createBtns">
+        <button>
+          Create Venue
+        </button>
+        <button>
+          Create Event
+        </button>
+      </div>
+      
       {/* --- List of events would go here --- */}
       <ul className='userEventList'>
         <li>Clickable Events

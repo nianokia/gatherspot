@@ -129,6 +129,12 @@ nav .logoutBtn {
   text-align: start;
 }
 
+.createBtns {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
 /* ---------- RESPONSIVE DESIGN ----------*/
 @media (max-width: 960px) {
 

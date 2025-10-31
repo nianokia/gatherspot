@@ -8,9 +8,15 @@ const OrganizerDash = () => {
     <div className="OrganizerDash">
       <BackButton />
       <h1>Organizer Dashboard</h1>
-      <button>
-        Create New Event
-      </button>
+      <div className="createBtns">
+        <button>
+          Create Venue
+        </button>
+        <button>
+          Create Event
+        </button>
+      </div>
+      
       <h2>My Events</h2>
       {/* --- List of events would go here --- */}
       <ul className='userEventList'>
