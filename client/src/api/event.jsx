@@ -11,3 +11,12 @@ export const createEvent = async (eventData, token) => {
   });
   return res.data;
 };
+
+// ---------- GET OPERATIONS ----------
+// -------- FETCH ALL EVENTS --------
+export const fetchEvents = async (token) => {
+  const res = await axios.get(API_URL, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return res.data;
+};
