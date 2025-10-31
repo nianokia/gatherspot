@@ -29,6 +29,13 @@
   background-color: var(--primary-color);
 }
 
+.backBtn {
+  margin: 0 auto;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
 nav {
   display: flex;
   justify-content: space-between;
@@ -77,8 +84,13 @@ nav {
   transition: filter 300ms;
   cursor: pointer;
 }
+
 .authBtn:hover {
   filter: drop-shadow(0 0 0.5rem #646cffaa);
+}
+
+.authBtn a {
+  color: white;
 }
 
 .createAccount {
