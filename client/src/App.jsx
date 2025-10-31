@@ -1,7 +1,7 @@
-import gsLogo from '/gatherspot-logo.png'
-import { Routes, Route, Link } from 'react-router'
+import { Routes, Route } from 'react-router'
 import './App.css'
 
+import NavBar from './components/NavBar.jsx'
 import StartPage from './pages/StartPage.jsx'
 import SignUp from './pages/SignUp.jsx'
 import OrganizerDash from './pages/OrganizerDash.jsx'
@@ -12,10 +12,7 @@ import AdminDash from './pages/AdminDash.jsx'
 function App() {
   return (
     <div className='App'>
-      <nav className='navBar'>
-        <img src={gsLogo} className="logo" alt="GatherSpot logo" />
-        <Link to="/signup">Sign Up</Link>
-      </nav>
+      <NavBar />
       <div className="AppContainer">
         <Routes>
           <Route path="/" element={<StartPage />} />

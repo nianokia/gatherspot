@@ -53,6 +53,24 @@ nav {
   border-radius: 8px;
 }
 
+.logoutBtn {
+  margin: 0 0.5rem;
+  padding: 0;
+  width: 5.5rem;
+  height: 2.25rem;
+  border: 1px solid #ff6464aa;
+  border-radius: 8px;
+  background-color: var(--warning-color);
+  will-change: filter;
+  transition: filter 300ms;
+  cursor: pointer;
+}
+
+.logoutBtn:hover {
+  filter: drop-shadow(0 0 0.45rem #ff6464aa);
+  border: 1px solid #ff6464aa;
+}
+
 .authHub {
   max-width: 400px;
   display: flex;
