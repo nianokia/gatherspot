@@ -8,6 +8,8 @@ import OrganizerDash from './pages/OrganizerDash.jsx'
 import AttendeeDash from './pages/AttendeeDash.jsx'
 import VendorDash from './pages/VendorDash.jsx'
 import AdminDash from './pages/AdminDash.jsx'
+import AddEvent from './pages/AddEvent.jsx'
+import AddVenue from './pages/AddVenue.jsx'
 
 function App() {
   return (
@@ -21,6 +23,8 @@ function App() {
           <Route path="/attendee" element={<AttendeeDash />} />
           <Route path="/vendor" element={<VendorDash />} />
           <Route path="/admin" element={<AdminDash />} />
+          <Route path="/add-event" element={<AddEvent />} />
+          <Route path="/add-venue" element={<AddVenue />} />
         </Routes>
       </div>
     </div>

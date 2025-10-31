@@ -1,4 +1,5 @@
 import { useContext } from 'react';
+import { Link } from 'react-router';
 import { BackButton } from '../constants/constant.jsx';
 import AuthContext from '../context/authContext.jsx';
 
@@ -8,12 +9,14 @@ const OrganizerDash = () => {
     <div className="OrganizerDash">
       <BackButton />
       <h1>Organizer Dashboard</h1>
+      <h2>All Events</h2>
+      <p>Search, sort, and filter events</p>
       <div className="createBtns">
         <button>
-          Create Venue
+          <Link to="/add-venue">Create Venue</Link>
         </button>
         <button>
-          Create Event
+          <Link to="/add-event">Create Event</Link>
         </button>
       </div>
       
