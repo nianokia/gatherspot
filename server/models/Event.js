@@ -70,7 +70,7 @@ export default (sequelize, DataTypes) => {
         validate: {
             // --- validates that end_date is after start_date ---
             endDateAfterStartDate() {
-                if (this.start_date.isAfter(this.end_date)) {
+                if (this.start_date > this.end_date) {
                     throw new Error('End Date must be after Start Date');
                 }
             }
