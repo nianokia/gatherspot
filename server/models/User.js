@@ -61,7 +61,11 @@ export default (sequelize, DataTypes) => {
 
     // --- Association definition (called by src/models/index.js) ---
     User.associate = (models) => {
-        // --- User associations can be defined here ---
+        // --- A user belongs to one role ---
+        User.belongsTo(models.Role, { 
+            foreignKey: 'role_id',
+            as: 'role'
+        });
     };
     
     return User;

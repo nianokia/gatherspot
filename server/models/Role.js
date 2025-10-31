@@ -17,7 +17,10 @@ export default (sequelize, DataTypes) => {
 
     // --- Association definition (called by src/models/index.js) ---
     Role.associate = (models) => {
-        // --- Role associations can be defined here ---
+        Role.hasMany(models.User, {
+            foreignKey: 'role_id',
+            as: 'users',
+        });
     };
 
     return Role;
