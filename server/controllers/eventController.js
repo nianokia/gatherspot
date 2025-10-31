@@ -10,6 +10,8 @@ export const createEvent = async (req, res) => {
     // --- if eventDetails has a venue_id, use it ---
     let chosenVenueId = eventDetails?.venue_id;
     let chosenVenue = null;
+    let existingVenue = null;
+    let committed = false;
 
     // --- initialize transaction ---
     const transaction = await db.sequelize.transaction();
@@ -18,7 +20,7 @@ export const createEvent = async (req, res) => {
         // --- if no venue_id provided, create or find venue ---
         if (!chosenVenueId && venueDetails) {
             // --- check if venue already exists ---
-            const existingVenue = await Venue.findOne({
+            existingVenue = await Venue.findOne({
                 where: {
                     name: venueDetails.name,
                     address: venueDetails.address,
@@ -45,6 +47,7 @@ export const createEvent = async (req, res) => {
 
         // --- save both records by committing the transaction ---
         await transaction.commit();
+        committed = true;
 
         res.status(201).json({
             message: 'Event with venue created successfully',
@@ -52,8 +55,8 @@ export const createEvent = async (req, res) => {
             venue: chosenVenue || existingVenue
         });
     } catch (err) {
-        // --- if error, rollback transaction ---
-        await transaction.rollback();
+        // --- if transaction not committed, rollback transaction ---
+        if (!committed) await transaction.rollback();
 
         console.error('Error creating Event with Venue:', err);
         res.status(500).json({ message: 'Internal server error: Error creating Event with Venue', error: err });
