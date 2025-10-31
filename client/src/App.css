@@ -19,12 +19,14 @@
 .App {
   margin: 0 auto;
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
+  height: 100%;
   text-align: center;
 }
 
 .AppContainer {
-  height: 100vh;
+  min-height: 100vh;
+  height: 100%;
   padding: 0.5rem 2rem 0 2rem;
   background-color: var(--primary-color);
 }
