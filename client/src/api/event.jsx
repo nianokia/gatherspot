@@ -1,0 +1,13 @@
+import axios from 'axios';
+
+const API_URL = `${import.meta.env.VITE_DOMAIN}/api/events`;
+console.log('Event API URL:', API_URL);
+
+// ---------- POST OPERATIONS ----------
+// -------- CREATE EVENT --------
+export const createEvent = async (eventData, token) => {
+  const res = await axios.post(`${API_URL}/create-event`, eventData, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return res.data;
+};
