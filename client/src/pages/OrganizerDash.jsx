@@ -8,7 +8,7 @@ const OrganizerDash = () => {
     <div className="OrganizerDash">
       <BackButton />
       <h1>Organizer Dashboard</h1>
-      <button onClick={logout}>Logout</button>
+      <button className='logoutBtn' onClick={logout}>Logout</button>
     </div>
   );
 };

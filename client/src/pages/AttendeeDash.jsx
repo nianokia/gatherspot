@@ -8,7 +8,7 @@ const AttendeeDash = () => {
     <div className="AttendeeDash">
       <BackButton />
       <h1>Attendee Dashboard</h1>
-      <button onClick={logout}>Logout</button>
+      <button className='logoutBtn' onClick={logout}>Logout</button>
     </div>
   );
 };

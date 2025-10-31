@@ -8,7 +8,7 @@ const AdminDash = () => {
     <div className="AdminDash">
       <BackButton />
       <h1>Admin Dashboard</h1>
-      <button onClick={logout}>Logout</button>
+      <button className='logoutBtn' onClick={logout}>Logout</button>
     </div>
   );
 };
