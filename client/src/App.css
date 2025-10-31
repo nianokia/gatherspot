@@ -212,6 +212,32 @@ nav .logoutBtn {
   color: black;
 }
 
+/* ---------- ALL EVENTS STYLES ---------- */
+.AllEvents {
+  padding: 1rem;
+}
+.allEventsList {
+  margin: 0 auto;
+  padding: 0;
+  /* max-width: 800px; */
+  width: 90%;
+  text-align: start;
+  list-style: none;
+  color: var(--background-color);
+}
+
+.singleEvent {
+  margin: 0.85rem auto;
+  padding: 0.85rem 3rem;
+  border-radius: 20px;
+  box-shadow: 0px 2.5px 10px rgba(0,0,0,0.3);
+  transition: all ease-in-out 200ms;
+}
+
+.singleEvent:hover {
+  background: rgba(0,0,0,0.2);
+}
+
 /* ---------- RESPONSIVE DESIGN ----------*/
 @media (max-width: 960px) {
 
