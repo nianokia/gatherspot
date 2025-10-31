@@ -38,13 +38,13 @@ const AuthHub = () => {
   return (
     <div className="authHub">
       <form onSubmit={handleSubmit} className="authForm">
-        <input type="email" placeholder="Email" required onChange={handleChange} />
-        <input type="password" placeholder="Password" required onChange={handleChange} />
+        <input type="email" name="email" placeholder="Email" required onChange={handleChange} />
+        <input type="password" name="password" placeholder="Password" required onChange={handleChange} />
         <button type="submit" className="authBtn">Log In</button>
       </form>
       <div className="createAccount">
         <p>Don't have an account?</p>
-        <button className="authBtn">
+        <button type="button" className="authBtn">
           <Link to="/signup">Sign Up</Link>
         </button>
       </div>

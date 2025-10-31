@@ -74,12 +74,14 @@ export const login = async (req, res) => {
             include: [{ model: Role, as: 'role', attributes: ['name'] }]
         });
         if (!user) {
+            console.log('Login FAILED: User not found');
             return res.status(401).json({ message: 'Authentication failed: User not found' });
         }
 
         // ---------- COMPARE PASSWORDS ----------
         const doesPasswordMatch = await bcrypt.compare(password, user.password);
         if (!doesPasswordMatch) {
+            console.log('Login FAILED: Invalid password');
             return res.status(401).json({ message: 'Authentication failed: Invalid password' });
         }
 
