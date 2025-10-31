@@ -34,18 +34,24 @@ const EventDetails = () => {
       <BackButton />
       <h1>{event.title}</h1>
       <p>{event.description}</p>
-      <div className="venueDetails">
-        <h3>Venue: {event.venue.name}</h3>
-        <div className="venueLocation">
-          <p>Address:</p>
-          <div className="addressBlock">
-            <p>{event.venue.address}</p>
-            <p>{event.venue.city}, {event.venue.state}</p>
-            <p>{event.venue.country}, {event.venue.zip_code}</p>
-          </div>
+      {event.venue.name === "Virtual" ? (
+        <div className="venueDetails">
+          <h3>Venue: Virtual Event</h3>
         </div>
-        <p>Venue Capacity: {event.venue.capacity ? `${event.venue.capacity} people` : 'N/A'}</p>
-      </div>
+        ): (
+          <div className="venueDetails">
+            <h3>Venue: {event.venue.name}</h3>
+            <div className="venueLocation">
+              <span>Address:</span>
+              <div className="addressBlock">
+                <p>{event.venue.address}</p>
+                <p>{event.venue.city}, {event.venue.state}</p>
+                <p>{event.venue.country}, {event.venue.zip_code}</p>
+              </div>
+            </div>
+            <p>Venue Capacity: {event.venue.capacity ? `${event.venue.capacity} people` : 'N/A'}</p>
+          </div>
+        )}
       <p>From: {formatDate(event.start_date)} - {formatDate(event.end_date)}</p>
       <p>Organizer: {event.organizer ? `${event.organizer.f_name} ${event.organizer.l_name}` : 'N/A'}</p>
       <p>Capacity: {event.capacity}</p>
