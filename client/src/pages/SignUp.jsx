@@ -1,10 +1,9 @@
 import { useState, useEffect, useContext } from 'react';
-import { useNavigate } from 'react-router';
 import { registerUser } from '../api/auth.jsx';
 import AuthContext from "../context/authContext.jsx";
+import { BackButton } from '../constants/constant.jsx';
 
 const SignUp = () => {
-  const navigate = useNavigate();
   const { login } = useContext(AuthContext);
   const [formData, setFormData] = useState({
     role_id: null,
@@ -56,19 +55,13 @@ const SignUp = () => {
     }
   };
 
-  const handleBack = () => {
-    navigate(-1);
-  };
-
   useEffect(() => {
     console.log('Form Data Updated:', formData);
   }, [formData]);
 
   return (
     <div className='SignUp'>
-      <button onClick={handleBack} className="backBtn">
-        ← Back
-      </button>
+      <BackButton />
       <h2>Sign Up Page</h2>
       <form onSubmit={handleSubmit} className="authForm">
         <div>
