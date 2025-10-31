@@ -1,9 +1,11 @@
 import { useState, useEffect, useContext } from 'react';
+import { useNavigate } from 'react-router';
 import { registerUser } from '../api/auth.jsx';
 import AuthContext from "../context/authContext.jsx";
 import { BackButton } from '../constants/constant.jsx';
 
 const SignUp = () => {
+  const navigate = useNavigate();
   const { login } = useContext(AuthContext);
   const [formData, setFormData] = useState({
     role_id: null,
@@ -49,6 +51,11 @@ const SignUp = () => {
       login(user, token);
 
       alert('Registration successful!');
+      navigate(user.role_id === 1 ? '/organizer' 
+        : user.role_id === 2 ? '/attendee' 
+        : user.role_id === 3 ? '/vendor' 
+        : '/admin'
+      );
     } catch (err) {
       console.error('Registration failed:', err);
       alert('Registration failed. Please try again.');

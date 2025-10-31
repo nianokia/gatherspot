@@ -1,9 +1,10 @@
 import { useState, useContext } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { loginUser } from "../api/auth.jsx";
 import AuthContext from "../context/authContext.jsx";
 
 const AuthHub = () => {
+  const navigate = useNavigate();
   const { login } = useContext(AuthContext);
   const [formData, setFormData] = useState({
     email: '',
@@ -29,6 +30,11 @@ const AuthHub = () => {
       login(user, token);
       
       alert('Login successful!');
+      navigate(user.role_id === 1 ? '/organizer' 
+        : user.role_id === 2 ? '/attendee' 
+        : user.role_id === 3 ? '/vendor' 
+        : '/admin'
+      );
     } catch (err) {
       console.error('Login failed:', err);
       alert('Login failed. Please try again.');
