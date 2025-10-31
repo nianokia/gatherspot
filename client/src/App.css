@@ -53,8 +53,13 @@ nav {
   border-radius: 8px;
 }
 
-.logoutBtn {
+nav .logoutBtn {
   margin: 0 0.5rem;
+  padding: 0;
+}
+
+.logoutBtn {
+  margin: 1rem 0.5rem 0 0.5rem;
   padding: 0;
   width: 5.5rem;
   height: 2.25rem;
