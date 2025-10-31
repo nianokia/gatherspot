@@ -67,6 +67,11 @@ export default (sequelize, DataTypes) => {
         timestamps: true,
         createdAt: 'created_at',
         updatedAt: 'updated_at',
+        // --- unique index on title, start_date, and venue_id ---
+        // --- prevents duplicate events with same title at same venue on same start_date ---
+        indexes: [
+            { unique: true, fields: ['title', 'start_date', 'venue_id'] },
+        ],
         validate: {
             // --- validates that end_date is after start_date ---
             endDateAfterStartDate() {
