@@ -20,3 +20,11 @@ export const fetchEvents = async (token) => {
   });
   return res.data;
 };
+
+// -------- FETCH EVENT BY ID --------
+export const fetchEventById = async (eventId, token) => {
+  const res = await axios.get(`${API_URL}/${eventId}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return res.data;
+};

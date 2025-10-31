@@ -1,5 +1,5 @@
 import express from 'express';
-import { createEvent, getAllEvents } from '../controllers/eventController.js';
+import { createEvent, getAllEvents, getEventById } from '../controllers/eventController.js';
 
 const router = express.Router();
 
@@ -8,5 +8,8 @@ router.post('/create-event', createEvent);
 
 // --- Get All Events route ---
 router.get('/', getAllEvents);
+
+// --- Get Event by ID route ---
+router.get('/:eventId', getEventById);
 
 export default router;

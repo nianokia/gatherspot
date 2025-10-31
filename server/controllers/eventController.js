@@ -80,3 +80,21 @@ export const getAllEvents = async (req, res) => {
         res.status(500).json({ message: 'Internal server error: Error fetching Events', error: err });
     }
 };
+
+// ---------- GET EVENT BY ID ----------
+export const getEventById = async (req, res) => {
+    const { eventId } = req.params;
+    try {
+        const event = await Event.findByPk(eventId, {
+            include: [
+                { model: Venue, as: 'venue', attributes: ['name', 'address', 'city', 'state', 'country', 'zip_code', 'capacity'] },
+                { model: User, as: 'organizer', attributes: ['f_name', 'l_name', 'email'] },
+            ]
+        });
+        if (!event) return res.status(404).json({ message: "Event not found" });
+        res.status(200).json({ event });
+    } catch (err) {
+        console.error('Error fetching Event by ID:', err);
+        res.status(500).json({ message: 'Internal server error: Error fetching Event by ID', error: err });
+    }
+};
