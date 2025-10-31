@@ -4,6 +4,7 @@ import 'dotenv/config';
 import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { testDBConnection, syncDB } from './db/index.js';
+import authRoutes from './routes/authRoutes.js';
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -15,6 +16,9 @@ const __dirname = dirname(__filename);
 // ---------- APP USES ----------
 app.use(cors());
 app.use(express.json());
+
+// ---------- DEFINE API ROUTES ----------
+app.use('/api/auth', authRoutes);
 
 // --- direct server to use the compiled build files from React ---
 app.use(express.static(path.join(__dirname, '../client/dist')));
