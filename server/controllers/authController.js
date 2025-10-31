@@ -1,4 +1,4 @@
-import bcypt from 'bcrypt';
+import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import db from '../models/index.js';
 import 'dotenv/config';
@@ -11,7 +11,7 @@ export const register = async (req, res) => {
     const { role_id, f_name, l_name, phone, email, password, is_active } = req.body;
 
     try {
-        const hashedPassword = await bcypt.hash(password, 10);
+        const hashedPassword = await bcrypt.hash(password, 10);
 
         // ---------- CREATE NEW USER ----------
         const newUser = await User.create({
@@ -78,7 +78,7 @@ export const login = async (req, res) => {
         }
 
         // ---------- COMPARE PASSWORDS ----------
-        const doesPasswordMatch = await bcypt.compare(password, user.password);
+        const doesPasswordMatch = await bcrypt.compare(password, user.password);
         if (!doesPasswordMatch) {
             return res.status(401).json({ message: 'Authentication failed: Invalid password' });
         }
