@@ -1,10 +1,12 @@
 import { useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router";
 import AuthContext from "../context/authContext";
 import { fetchEvents } from "../api/event";
 import { formatDate } from "../constants/constant";
 
 const AllEvents = () => {
   const { token } = useContext(AuthContext);
+  const navigate = useNavigate();
   const [events, setEvents] = useState([]);
 
   // ---------- LOAD ALL EVENTS ----------
@@ -30,7 +32,7 @@ const AllEvents = () => {
       <h1>All Events Page</h1>
       <ul className="allEventsList">
         {events.map((event) => (
-          <li key={event.id} value={event.id} className="singleEvent">
+          <li key={event.id} value={event.id} className="singleEvent" onClick={() => navigate(`/${event.id}`)}>
             <h3>{event.title}</h3>
             <ul>
               <li>Event Type: {event.event_type}</li>
