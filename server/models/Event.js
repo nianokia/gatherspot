@@ -84,7 +84,9 @@ export default (sequelize, DataTypes) => {
 
     // --- Association definition (called by src/models/index.js) ---
     Event.associate = (models) => {
-        // --- Event associations can be defined here ---
+        // --- event belongs to an organizer (User) & a venue ---
+        Event.belongsTo(models.User, { foreignKey: 'organizer_id' });
+        Event.belongsTo(models.Venue, { foreignKey: 'venue_id', as: 'venue' });
     };
     
     return Event;
