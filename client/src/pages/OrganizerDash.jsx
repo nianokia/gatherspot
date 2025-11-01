@@ -2,6 +2,7 @@ import { useContext } from 'react';
 import { Link } from 'react-router';
 import { BackButton } from '../constants/constant.jsx';
 import AuthContext from '../context/authContext.jsx';
+import OrganizerEvents from '../components/OrganizerEvents.jsx';
 
 const OrganizerDash = () => {
   const { logout } = useContext(AuthContext);
@@ -20,17 +21,16 @@ const OrganizerDash = () => {
         </button>
       </div>
       
-      <h2>My Events</h2>
-      {/* --- List of events would go here --- */}
+      <OrganizerEvents />
       <ul className='userEventList'>
-        <li>Clickable Events
+        <li>✅ Clickable Events
           <ul>
-            <li className='userEvent'>GET event</li>
+            <li className='userEvent'>✅ GET event</li>
             <li className="userEvent">UPDATE event (venue, ticket_types, waitlist)</li>
             <li className="userEvent">GET sessions</li>
             <li className="userEvent">CREATE session (speakers, vendors)</li>
             <li className="userEvent">CREATE notifications (schedule changes, venue updates, important announcements)</li>
-            <li className="userEvent">DELETE event</li>
+            <li className="userEvent">✅ DELETE event</li>
           </ul>
         </li>
       </ul>
