@@ -91,7 +91,7 @@ const AddEvent = () => {
       alert("Event has been added!")
 
       // --- navigate back to previous page ---
-      navigate(-1);
+      navigate(`/add-ticket-type/${response.event.id}`);
     } catch (err) {
       console.error("Error creating event: ", err?.response ?? err);
       alert("Error creating event: " + (err?.response?.data?.message || err.message));
