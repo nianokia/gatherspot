@@ -4,15 +4,17 @@
   --default-font: Arial, Helvetica, sans-serif;
 
   --primary-color: #113B6F;
+  --primary-dark-color: #051223;
   --secondary-color: #23B9D9;
   --secondary-dark-color: #1A8AAE;
   --background-color: #f6f6f6;
+  --background-dark-color: #333333;
   --accent-color: #646cff;
   --accent-dark-color: #4646ff;
   /* --accent-dark-color: #646cffaa; */
   --warning-color: #ff6464;
   --warning-dark-color: #ff4646;
-  --text-color: #333333;
+  --text-color: #151515;
 
   width: 100vw;
   margin: 0 auto;
@@ -195,7 +197,7 @@ nav .logoutBtn {
 }
 
 /* ---------- FORM STYLES ---------- */
-.AddVenue, .AddEvent form {
+.AddVenue, .AddEvent, .AddTicketType form {
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -355,6 +357,29 @@ nav .logoutBtn {
 #virtualEvent {
   align-self: center;
   justify-self: center;
+}
+
+/* ---------- FORM BUTTONS STYLES ---------- */
+.formButtons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.dashboardBtn {
+  background-color: var(--warning-dark-color);
+  color: var(--text-color);
+  border: none;
+  border-radius: 8px;
+  margin: 1rem 0 2rem;
+  padding: 0.5rem 1rem;
+  will-change: filter;
+  transition: filter 300ms;
+  cursor: pointer;
+} 
+
+.dashboardBtn:hover {
+  filter: drop-shadow(0 0 0.5rem var(--warning-dark-color));
 }
 
 /* ---------- RESPONSIVE DESIGN ----------*/
