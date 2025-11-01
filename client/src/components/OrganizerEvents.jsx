@@ -56,48 +56,48 @@ const OrganizerEvents = () => {
         <p>No events found.</p>
       ) : (
         <ul className="allEventsList">
-        {/* --- ensure all keys are unique (event-UUID) --- */}
-        {events.map((event) => (
-          <li key={`event-${event.id}`} value={event.id} className="singleEvent" onClick={() => navigate(`/${event.id}`)}>
-            <div className="listHeader">
-              <h3>{event.title}</h3>
-              <FontAwesomeIcon icon={faTrash} 
-                className="deleteEventItem" 
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleDelete(event.id);
-                }} 
-              />
-            </div>
-            <ul>
-              <div className="singleEventListGroup">
-                <li>Event Type: {event.event_type}</li><li>Capacity: {event.capacity}</li>
+          {/* --- ensure all keys are unique (event-UUID) --- */}
+          {events.map((event) => (
+            <li key={`event-${event.id}`} value={event.id} className="singleEvent" onClick={() => navigate(`/${event.id}`)}>
+              <div className="listHeader">
+                <h3>{event.title}</h3>
+                <FontAwesomeIcon icon={faTrash} 
+                  className="deleteEventItem" 
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleDelete(event.id);
+                  }} 
+                />
               </div>
-              <li>{event.description}</li>
-              <div className="singleEventListGroup venueDateBlock">
-                <div className="venueBlock">
-                  <li>
-                    <ul>
-                      <li>{event.venue ? event.venue.name : 'N/A'}</li>
-                      <li>{event.venue ? event.venue.address : 'N/A'}</li>
-                      <li>{event.venue ? event.venue.city : 'N/A'}, {" "}
-                        {event.venue ? event.venue.state : 'N/A'}, {" "}
-                        {event.venue ? event.venue.country : 'N/A'}, {" "}
-                        {event.venue ? event.venue.zip_code : 'N/A'}
-                      </li>
-                    </ul>
-                  </li>
-                  <li>Venue Capacity: {event.venue ? event.venue.capacity : 'N/A'}</li>
+              <ul>
+                <div className="singleEventListGroup">
+                  <li>Event Type: {event.event_type}</li><li>Capacity: {event.capacity}</li>
                 </div>
-                <div className="dateBlock">
-                  <li>Start Date: {formatDate(event.start_date)}</li>
-                  <li>End Date: {formatDate(event.end_date)}</li>
+                <li>{event.description}</li>
+                <div className="singleEventListGroup venueDateBlock">
+                  <div className="venueBlock">
+                    <li>
+                      <ul>
+                        <li>{event.venue ? event.venue.name : 'N/A'}</li>
+                        <li>{event.venue ? event.venue.address : 'N/A'}</li>
+                        <li>{event.venue ? event.venue.city : 'N/A'}, {" "}
+                          {event.venue ? event.venue.state : 'N/A'}, {" "}
+                          {event.venue ? event.venue.country : 'N/A'}, {" "}
+                          {event.venue ? event.venue.zip_code : 'N/A'}
+                        </li>
+                      </ul>
+                    </li>
+                    <li>Venue Capacity: {event.venue ? event.venue.capacity : 'N/A'}</li>
+                  </div>
+                  <div className="dateBlock">
+                    <li>Start Date: {formatDate(event.start_date)}</li>
+                    <li>End Date: {formatDate(event.end_date)}</li>
+                  </div>
                 </div>
-              </div>
-            </ul>
-          </li>
-        ))}
-      </ul>
+              </ul>
+            </li>
+          ))}
+        </ul>
       )}
     </div>
   );
