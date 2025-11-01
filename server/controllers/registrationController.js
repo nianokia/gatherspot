@@ -36,3 +36,20 @@ export const createRegistration = async (req, res) => {
         res.status(500).json({ message: 'Internal server error: Error creating registration', error: err });
     }
 };
+
+// ------------ READ OPERATIONS ------------
+// ---------- GET REGISTRATIONS BY USER ----------
+export const getRegistrationsByUser = async (req, res) => {
+    const { userId } = req.params;
+    try {
+        const registrations = await Registration.findAll({ 
+            where: { user_id: userId },
+            // --- include all associated models for detailed info ---
+            include: [{ all: true, nested: true }]
+        });
+        res.status(200).json({ registrations });
+    } catch (err) {
+        console.error('Error fetching registrations:', err);
+        res.status(500).json({ message: 'Internal server error: Error fetching registrations', error: err });
+    }
+};

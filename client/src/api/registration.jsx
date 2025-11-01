@@ -11,3 +11,12 @@ export const createRegistration = async (registrationData, token) => {
   });
   return res.data;
 };
+
+// ---------- GET OPERATIONS ----------
+// -------- FETCH REGISTRATIONS BY USER ID --------
+export const fetchRegistrationsByUser = async (userId, token) => {
+  const res = await axios.get(`${API_URL}/user/${userId}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return res.data;
+};
