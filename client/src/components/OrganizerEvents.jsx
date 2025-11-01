@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router";
-import { fetchEventById, fetchEventsByOrganizer, deleteEvent } from "../api/event.jsx";
+import { fetchEventsByOrganizer, deleteEvent } from "../api/event.jsx";
 import AuthContext from "../context/authContext.jsx";
 import { formatDate } from "../constants/constant.jsx";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -11,7 +11,6 @@ const OrganizerEvents = () => {
   const navigate = useNavigate();
   const organizerId = user?.id;
   const [events, setEvents] = useState([]);
-  const [selectedEvent, setSelectedEvent] = useState(null);
 
   const fetchEvents = async () => {
     try {
@@ -44,7 +43,7 @@ const OrganizerEvents = () => {
     }
   }
 
-  console.log("Rendering OrganizerEvents with events:", events);
+  console.log("Rendering Organizer's Events with events state:", events);
 
   if (!user) {
     return <div>Loading user information...</div>;
