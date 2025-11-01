@@ -2,6 +2,7 @@ import { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router";
 import AuthContext from "../context/authContext";
 import { fetchEventById } from "../api/event";
+import { createRegistration } from "../api/registration";
 import { BackButton, formatDate } from "../constants/constant";
 
 const EventDetails = () => {
@@ -11,20 +12,43 @@ const EventDetails = () => {
 
   // ---------- FETCH EVENT BY ID ----------
   const fetchEvent = async () => {
-      try {
-        const eventData = await fetchEventById(eventId, token);
-        setEvent(eventData.event);
-        console.log("Fetched event:", eventData.event);
-      } catch (err) {
-        console.error("Error fetching event:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
+    try {
+      const eventData = await fetchEventById(eventId, token);
+      setEvent(eventData.event);
+      console.log("Fetched event:", eventData.event);
+    } catch (err) {
+      console.error("Error fetching event:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     fetchEvent();
   }, [eventId, token]);
+
+  // ---------- BUY TICKET ----------
+  const buyTicket = async (ticketTypeId) => {
+    // --- Double check user is logged in ---
+    if (!user) alert("Please log in to buy tickets.");
+    const registrationData = {
+      user_id: user.id,
+      event_id: event.id,
+      ticket_type_id: ticketTypeId,
+      qr_code: null
+    };
+
+    try {
+      const response = await createRegistration(registrationData, token);
+      if (!response) throw new Error("Failed to create registration");
+      console.log("createRegistration response:", response);
+      alert(`Registration has been created! \n Your registration code: ${response.registration.registration_code}`);
+
+    } catch (err) {
+      console.error("Error creating registration:", err);
+      alert("Error creating registration: " + (err?.response?.data?.message || err.message));
+    }
+  };
 
   if (loading) return <div>Loading...</div>;
   if (!event) return <div>Event not found</div>;
@@ -66,7 +90,9 @@ const EventDetails = () => {
                   <span>{" - "} Price: ${ticket.price}</span>
                   <span>{", "} Quantity: {ticket.quantity}</span>
                 </div>
-                <button className="buyBtn">Buy</button>
+                <button className="buyBtn" onClick={() => buyTicket(ticket.id)}>
+                  Buy
+                </button>
               </li>
             ))}
           </ul>
