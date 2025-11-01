@@ -1,5 +1,6 @@
 import db from '../models/index.js';
 import QRCode from 'qrcode';
+import { v4 as uuidv4 } from 'uuid';
 
 const { Registration } = db;
 
@@ -9,31 +10,23 @@ export const createRegistration = async (req, res) => {
     // ---------- EXTRACT REGISTRATION DETAILS FROM REQ.BODY ----------
     const { user_id, event_id, ticket_type_id } = req.body;
 
-    // --------- CREATE QR CODE DATA ----------
-    // const qrCodeData = `Registration-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-    // const qrCodeImage = await QRCode.toDataURL(qrCodeData);
-
-    const generateQR = async text => {
-        try {
-            const qrCode = QRCode.toDataURL(text);
-            res.status(200).json({ qrCode });
-        } catch (err) {
-            console.error('Error generating QR code:', err);
-            res.status(500).json({ message: 'Internal server error: Error generating QR code', error: err.message });
-            throw err;
-        }
-    }
-
     try {
+        // ---------- CREATE QR CODE DATA ----------
+        // --- generate a UUID registration code ---
+        const registration_code = uuidv4();
+        // --- generate QR code image ---
+        const qrCodeImage = await QRCode.toDataURL(registration_code);
+
         // ---------- CREATE NEW REGISTRATION ----------
         const newRegistration = await Registration.create({
             user_id,
             event_id,
             ticket_type_id,
-            qr_code: await generateQR(`text`),
+            qr_code: qrCodeImage,
             status: 'active',
             checked_in: false,
-            check_in_time: null
+            check_in_time: null,
+            registration_code
         });
 
         // ---------- RESPOND WITH NEW REGISTRATION INFO ----------
