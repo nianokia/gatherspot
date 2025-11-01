@@ -1,5 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router";
+import { QRCode } from 'react-qrcode-logo';
 import AuthContext from "../context/authContext";
 import { fetchEventById } from "../api/event";
 import { createRegistration } from "../api/registration";
@@ -9,6 +10,7 @@ const EventDetails = () => {
   const { user, token, loading, setLoading } = useContext(AuthContext);
   const { eventId } = useParams();
   const [event, setEvent] = useState(null);
+  const [registrationCode, setRegistrationCode] = useState(null);
 
   // ---------- FETCH EVENT BY ID ----------
   const fetchEvent = async () => {
@@ -52,7 +54,9 @@ const EventDetails = () => {
       alert(`Registration has been created! \n Your registration code: ${response.registration.registration_code}`);
 
       // --- Display QR code ---
-      displayQRCode(response.registration.qr_code);
+      // displayQRCode(response.registration.qr_code);
+      // --- Set registration_code ---
+      setRegistrationCode(response.registration.registration_code);
 
     } catch (err) {
       console.error("Error creating registration:", err);
@@ -68,6 +72,8 @@ const EventDetails = () => {
       <BackButton />
       <h1>{event.title}</h1>
       <p>{event.description}</p>
+      
+      {/* ---------- DISPLAY VENUE DETAILS ---------- */}
       {event.venue.name === "Virtual" ? (
         <div className="venueDetails">
           <h3>Venue: Virtual Event</h3>
@@ -89,6 +95,8 @@ const EventDetails = () => {
       <p>From: {formatDate(event.start_date)} - {formatDate(event.end_date)}</p>
       <p>Organizer: {event.organizer ? `${event.organizer.f_name} ${event.organizer.l_name}` : 'N/A'}</p>
       <p>Capacity: {event.capacity}</p>
+
+      {/* ---------- DISPLAY TICKET TYPES ---------- */}
       {event.ticketTypes && event.ticketTypes.length > 0 ? (
         <div className="ticketTypes">
           <h3>Ticket Types:</h3>
@@ -109,6 +117,14 @@ const EventDetails = () => {
         </div>
       ) : (
         <p>No ticket types available.</p>
+      )}
+
+      {/* ---------- DISPLAY QR CODE ---------- */}
+      {registrationCode && (
+        <div>
+          <h3>Your QR Code:</h3>
+          <QRCode value={registrationCode} size={200} />
+        </div>
       )}
     </div>
   );
