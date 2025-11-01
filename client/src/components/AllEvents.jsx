@@ -60,13 +60,15 @@ const AllEvents = () => {
             <li key={`event-${event.id}`} value={event.id} className="singleEvent" onClick={() => navigate(`/${event.id}`)}>
               <div className="listHeader">
                 <h3>{event.title}</h3>
-                <FontAwesomeIcon icon={faTrash} 
-                  className="deleteEventItem" 
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleDelete(event.id);
-                  }} 
-                />
+                {user && (user.role_id === 1 || user.role_id === 4) ? (
+                  <FontAwesomeIcon icon={faTrash} 
+                    className="deleteEventItem" 
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleDelete(event.id);
+                    }} 
+                  />
+                ) : ( null )}
               </div>
               <ul>
                 <div className="singleEventListGroup">
