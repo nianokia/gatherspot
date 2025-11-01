@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 import { BackButton } from '../constants/constant.jsx';
 import AuthContext from '../context/authContext.jsx';
+import AttendeeEvents from '../components/AttendeeEvents.jsx';
 
 const AttendeeDash = () => {
   const { logout } = useContext(AuthContext);
@@ -15,8 +16,8 @@ const AttendeeDash = () => {
         <li className="userEvent">✅ CREATE QR code ticket</li>
         <li className="userEvent">CREATE Payment</li>
       </ul>
-      <h2>My Events</h2>
-      {/* --- List of events would go here --- */}
+      
+      <AttendeeEvents />
       <ul className='userEventList'>
         <li>Clickable Events
           <ul>
