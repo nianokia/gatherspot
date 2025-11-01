@@ -4,8 +4,11 @@
   --default-font: Arial, Helvetica, sans-serif;
 
   --primary-color: #113B6F;
-  --primary-dark-color: #051223;
+  --primary-dark-color: #0A2647;
+  --primary-darkest-color: #051223;
   --secondary-color: #23B9D9;
+  --secondary-lightest-color: #A6F0FF;
+  --secondary-light-color: #5EE3FF;
   --secondary-dark-color: #1A8AAE;
   --background-color: #f6f6f6;
   --background-dark-color: #333333;
@@ -419,6 +422,33 @@ nav .logoutBtn {
 
 .ticketListItem:hover {
   filter: drop-shadow(0 0 0.5rem var(--background-color));
+}
+
+.qrCodeContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.downloadBtn {
+  margin-top: 1rem;
+  color: var(--text-color);
+  background-color: var(--secondary-light-color);
+  border: none;
+  border-radius: 8px;
+  margin: 1rem 0 2rem;
+  padding: 0.5rem 1rem;
+  will-change: filter;
+  transition: filter 300ms;
+  cursor: pointer;
+} 
+
+.downloadBtn a {
+  color: var(--text-color);
+}
+
+.downloadBtn:hover {
+  filter: drop-shadow(0 0 0.5rem var(--secondary-color));
 }
 
 /* ---------- RESPONSIVE DESIGN ----------*/

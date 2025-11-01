@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useRef } from "react";
 import { useParams } from "react-router";
 import { QRCode } from 'react-qrcode-logo';
 import AuthContext from "../context/authContext";
@@ -11,6 +11,8 @@ const EventDetails = () => {
   const { eventId } = useParams();
   const [event, setEvent] = useState(null);
   const [registrationCode, setRegistrationCode] = useState(null);
+  // --- reference to QR code for downloading ---
+  const qrCodeRef = useRef();
 
   // ---------- FETCH EVENT BY ID ----------
   const fetchEvent = async () => {
@@ -29,13 +31,6 @@ const EventDetails = () => {
     fetchEvent();
   }, [eventId, token]);
 
-  // ---------- DISPLAY QR CODE ----------
-  const displayQRCode = (qrCodeData) => {
-    // --- Open QR code in new window ---
-    const qrWindow = window.open("");
-    qrWindow.document.write(`<img src="${qrCodeData}" alt="QR Code" />`);
-  };
-
   // ---------- BUY TICKET ----------
   const buyTicket = async (ticketTypeId) => {
     // --- Double check user is logged in ---
@@ -48,22 +43,25 @@ const EventDetails = () => {
     };
 
     try {
+      // --------- CREATE REGISTRATION ----------
       const response = await createRegistration(registrationData, token);
       if (!response) throw new Error("Failed to create registration");
       console.log("createRegistration response:", response);
       alert(`Registration has been created! \n Your registration code: ${response.registration.registration_code}`);
 
-      // --- Display QR code ---
-      // displayQRCode(response.registration.qr_code);
-      // --- Set registration_code ---
       setRegistrationCode(response.registration.registration_code);
-
     } catch (err) {
       console.error("Error creating registration:", err);
       alert("Error creating registration: " + (err?.response?.data?.message || err.message));
     }
   };
 
+  // ---------- DOWNLOAD QR CODE ----------
+  const handleDownload = () => {
+    if (qrCodeRef.current) qrCodeRef.current.download();
+  };
+
+  // ---------- CONDITIONAL RENDERING ----------
   if (loading) return <div>Loading...</div>;
   if (!event) return <div>Event not found</div>;
 
@@ -121,10 +119,12 @@ const EventDetails = () => {
 
       {/* ---------- DISPLAY QR CODE ---------- */}
       {registrationCode && (
-        <div>
+        <div className="qrCodeContainer">
           <h3>Your QR Code:</h3>
-          <QRCode value={registrationCode} size={200}
+          <QRCode ref={qrCodeRef}
+            value={registrationCode}
             logoImage="/gatherspot-logo.png" 
+            size={200}
             quietZone={15}
             logoWidth={90}
             logoHeight={25}
@@ -137,6 +137,9 @@ const EventDetails = () => {
             eyeColor="#23B9D9"
             eyeRadius={[20, 20, 20, 20]} // topLeft, topRight, bottomLeft, bottomRight
           />
+          <button type="button" className="downloadBtn" onClick={handleDownload}>
+            Download QR Code
+          </button>
         </div>
       )}
     </div>
