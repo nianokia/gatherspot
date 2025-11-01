@@ -61,9 +61,12 @@ const EventDetails = () => {
           <ul className="ticketTypesList">
             {event.ticketTypes.map((ticket) => (
               <li key={ticket.id} className="ticketListItem">
-                <span><strong>{ticket.name}</strong></span>
-                <span>{" - "} Price: ${ticket.price}</span>
-                <span>{", "} Quantity: {ticket.quantity}</span>
+                <div className="ticketInfo">
+                  <span><strong>{ticket.name}</strong></span>
+                  <span>{" - "} Price: ${ticket.price}</span>
+                  <span>{", "} Quantity: {ticket.quantity}</span>
+                </div>
+                <button className="buyBtn">Buy</button>
               </li>
             ))}
           </ul>

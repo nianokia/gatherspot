@@ -404,12 +404,15 @@ nav .logoutBtn {
 }
 
 .ticketListItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin: 0.5rem 0;
   padding: 0.5rem 1rem;
-  border: 1px solid var(--background-color);
-  border-radius: 8px;
   background-color: var(--background-color);
   color: var(--text-color);
+  border: 1px solid var(--background-color);
+  border-radius: 8px;
   will-change: filter;
   transition: filter ease-in-out 300ms;
 }
