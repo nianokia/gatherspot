@@ -42,9 +42,10 @@ export default (sequelize, DataTypes) => {
         updatedAt: 'updated_at',
     });
 
-    // --- Association definition (called by src/models/index.js) ---
+    // ---------- VENUE ASSOCIATIONS ----------
     Venue.associate = (models) => {
-        // --- Venue associations can be defined here ---
+        // --- A venue can have many events ---
+        Venue.hasMany(models.Event, { foreignKey: 'venue_id', as: 'events' })
     };
     
     return Venue;

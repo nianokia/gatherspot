@@ -59,13 +59,11 @@ export default (sequelize, DataTypes) => {
         updatedAt: 'updated_at',
     });
 
-    // --- Association definition (called by src/models/index.js) ---
+    // ---------- USER ASSOCIATIONS ----------
     User.associate = (models) => {
         // --- A user belongs to one role ---
-        User.belongsTo(models.Role, { 
-            foreignKey: 'role_id',
-            as: 'role'
-        });
+        User.belongsTo(models.Role, { foreignKey: 'role_id', as: 'role' });
+        User.hasMany(models.Event, { foreignKey: 'organizer_id' });
     };
     
     return User;

@@ -19,9 +19,11 @@ export default (sequelize, DataTypes) => {
         timestamps: false,
     });
 
-    // --- Association definition (called by src/models/index.js) ---
+    // ---------- SESSION SPEAKER ASSOCIATIONS ----------
     SessionSpeaker.associate = (models) => {
-        // --- SessionSpeaker associations can be defined here ---
+        // --- A session speaker belongs to one session and one speaker ---
+        SessionSpeaker.belongsTo(models.Session, { foreignKey: 'session_id' });
+        SessionSpeaker.belongsTo(models.Speaker, { foreignKey: 'speaker_id' });
     };
 
     return SessionSpeaker;

@@ -35,9 +35,11 @@ export default (sequelize, DataTypes) => {
         updatedAt: false,
     });
 
-    // --- Association definition (called by src/models/index.js) ---
+    // ---------- FEEDBACK ASSOCIATIONS ----------
     Feedback.associate = (models) => {
-        // --- Feedback associations can be defined here ---
+        // --- A feedback belongs to one event and can belong to one user ---
+        Feedback.belongsTo(models.Event, { foreignKey: 'event_id', as: 'event' });
+        Feedback.belongsTo(models.User, { foreignKey: 'user_id', as: 'user' });
     };
 
     return Feedback;

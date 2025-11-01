@@ -34,9 +34,10 @@ export default (sequelize, DataTypes) => {
         updatedAt: 'last_updated',
     });
 
-    // --- Association definition (called by src/models/index.js) ---
+    // ---------- EVENT METRIC ASSOCIATIONS ----------
     EventMetric.associate = (models) => {
-        // --- EventMetric associations can be defined here ---
+        // --- An event metric belongs to one event ---
+        EventMetric.belongsTo(models.Event, { foreignKey: 'event_id', as: 'event' });
     };
 
     return EventMetric;

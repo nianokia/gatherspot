@@ -47,9 +47,13 @@ export default (sequelize, DataTypes) => {
         ],
     });
 
-    // --- Association definition (called by src/models/index.js) ---
+    // ---------- TICKET TYPE ASSOCIATIONS ----------
     TicketType.associate = (models) => {
-        // --- TicketType associations can be defined here ---
+        // --- A ticket type belongs to one event ---
+        TicketType.belongsTo(models.Event, { foreignKey: 'event_id', as: 'event' });
+
+        // --- A ticket type can have many registrations ---
+        TicketType.hasMany(models.Registration, { foreignKey: 'ticket_type_id', as: 'registrations' });
     };
 
     return TicketType;

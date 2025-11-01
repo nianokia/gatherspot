@@ -15,12 +15,10 @@ export default (sequelize, DataTypes) => {
         timestamps: false,
     });
 
-    // --- Association definition (called by src/models/index.js) ---
+    // ---------- ROLE ASSOCIATIONS ----------
     Role.associate = (models) => {
-        Role.hasMany(models.User, {
-            foreignKey: 'role_id',
-            as: 'users',
-        });
+        // --- A role can have many users ---
+        Role.hasMany(models.User, { foreignKey: 'role_id', as: 'users' });
     };
 
     return Role;

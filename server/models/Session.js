@@ -52,9 +52,17 @@ export default (sequelize, DataTypes) => {
         }
     });
 
-    // --- Association definition (called by src/models/index.js) ---
+    // ---------- SESSION ASSOCIATIONS ----------
     Session.associate = (models) => {
-        // --- Session associations can be defined here ---
+        // --- A session belongs to one event ---
+        Session.belongsTo(models.Event, { foreignKey: 'event_id', as: 'event' });
+
+        // --- A session can have many speakers through SessionSpeaker ---
+        Session.belongsToMany(models.Speaker, { 
+            through: models.SessionSpeaker, 
+            foreignKey: 'session_id', 
+            as: 'speakers' 
+        });
     };
 
     return Session;

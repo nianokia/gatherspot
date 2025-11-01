@@ -50,9 +50,12 @@ export default (sequelize, DataTypes) => {
         },
     });
 
-    // --- Association definition (called by src/models/index.js) ---
+    // ---------- REGISTRATION ASSOCIATIONS ----------
     Registration.associate = (models) => {
-        // --- Registration associations can be defined here ---
+        // --- A registration belongs to one attendee, one event, and one ticket type ---
+        Registration.belongsTo(models.User, { foreignKey: 'user_id', as: 'attendee' });
+        Registration.belongsTo(models.Event, { foreignKey: 'event_id', as: 'event' });
+        Registration.belongsTo(models.TicketType, { foreignKey: 'ticket_type_id', as: 'ticketType' });
     };
 
     return Registration;

@@ -40,9 +40,12 @@ export default (sequelize, DataTypes) => {
         updatedAt: false,
     });
 
-    // --- Association definition (called by src/models/index.js) ---
+    // ---------- NOTIFICATION ASSOCIATIONS ----------
     Notification.associate = (models) => {
-        // --- Notification associations can be defined here ---
+        // --- A notification belongs to one event, one role, and one user (recipient) ---
+        Notification.belongsTo(models.Event, { foreignKey: 'event_id', as: 'event' });
+        Notification.belongsTo(models.Role, { foreignKey: 'target_role', as: 'targetRole' });
+        Notification.belongsTo(models.User, { foreignKey: 'user_id', as: 'user' });
     };
 
     return Notification;

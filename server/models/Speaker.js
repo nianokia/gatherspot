@@ -32,9 +32,17 @@ export default (sequelize, DataTypes) => {
         updatedAt: 'updated_at',
     });
 
-    // --- Association definition (called by src/models/index.js) ---
+    // ---------- SPEAKER ASSOCIATIONS ----------
     Speaker.associate = (models) => {
-        // --- Speaker associations can be defined here ---
+        // --- A speaker can be belong to one user ---
+        Speaker.belongsTo(models.User, { foreignKey: 'user_id', as: 'user' });
+
+        // --- A speaker can speak at many sessions ---
+        Speaker.belongsToMany(models.Session, { 
+            through: models.SessionSpeaker, 
+            foreignKey: 'speaker_id', 
+            as: 'sessions' 
+        });
     };
 
     return Speaker;

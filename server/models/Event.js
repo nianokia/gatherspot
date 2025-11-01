@@ -82,11 +82,30 @@ export default (sequelize, DataTypes) => {
         }
     });
 
-    // --- Association definition (called by src/models/index.js) ---
+    // ---------- EVENT ASSOCIATIONS ----------
     Event.associate = (models) => {
-        // --- event belongs to an organizer (User) & a venue ---
+        // --- event belongs to one organizer (User) & one venue ---
         Event.belongsTo(models.User, { foreignKey: 'organizer_id', as: 'organizer' });
         Event.belongsTo(models.Venue, { foreignKey: 'venue_id', as: 'venue' });
+
+        // --- event can have many ticket types, sessions, registrations, and waitlist entries ---
+        Event.hasMany(models.TicketType, { foreignKey: 'event_id' });
+        Event.hasMany(models.Session, { foreignKey: 'event_id' });
+        Event.hasMany(models.Registration, { foreignKey: 'event_id' });
+        Event.hasMany(models.Waitlist, { foreignKey: 'event_id' });
+
+        // --- event can have many attendees through registrations ---
+        Event.belongsToMany(models.User, { 
+            through: models.Registration,
+            foreignKey: 'event_id',
+            otherKey: 'user_id',
+            as: 'attendees'
+        });
+
+        // --- an event can have many notifications, feedback submissions, and metrics ---
+        Event.hasMany(models.Notification, { foreignKey: 'event_id' });
+        Event.hasMany(models.Feedback, { foreignKey: 'event_id' });
+        Event.hasMany(models.EventMetric, { foreignKey: 'event_id' });
     };
     
     return Event;

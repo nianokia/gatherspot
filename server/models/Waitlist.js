@@ -43,9 +43,11 @@ export default (sequelize, DataTypes) => {
         }
     });
 
-    // --- Association definition (called by src/models/index.js) ---
+    // ---------- WAITLIST ASSOCIATIONS ----------
     Waitlist.associate = (models) => {
-        // --- Waitlist associations can be defined here ---
+        // --- A waitlist entry belongs to one event and one user ---
+        Waitlist.belongsTo(models.Event, { foreignKey: 'event_id', as: 'event' });
+        Waitlist.belongsTo(models.User, { foreignKey: 'user_id', as: 'user' });
     };
 
     return Waitlist;

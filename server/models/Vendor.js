@@ -27,9 +27,10 @@ export default (sequelize, DataTypes) => {
         updatedAt: 'updated_at',
     });
 
-    // --- Association definition (called by src/models/index.js) ---
+    // ---------- VENDOR ASSOCIATIONS ----------
     Vendor.associate = (models) => {
-        // --- Vendor associations can be defined here ---
+        // --- A vendor belongs to one user ---
+        Vendor.belongsTo(models.User, { foreignKey: 'user_id', as: 'user' });
     };
 
     return Vendor;
