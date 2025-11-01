@@ -60,7 +60,8 @@ const AllEvents = () => {
             <li key={`event-${event.id}`} value={event.id} className="singleEvent" onClick={() => navigate(`/${event.id}`)}>
               <div className="listHeader">
                 <h3>{event.title}</h3>
-                {user && (user.role_id === 1 || user.role_id === 4) ? (
+                {/* --- Render delete button for admin --- */}
+                {user && (user.role_id === 4) ? (
                   <FontAwesomeIcon icon={faTrash} 
                     className="deleteEventItem" 
                     onClick={(e) => {
