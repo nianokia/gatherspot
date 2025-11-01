@@ -10,9 +10,9 @@ const AttendeeDash = () => {
       <h1>Attendee Dashboard</h1>
       <h2>All Events</h2>
       <p>Search, sort, and filter events</p>
-      <button>Buy Ticket</button>
       <ul className="userEventList">
-        <li className="userEvent">CREATE QR code ticket</li>
+        <li className="userEvent">✅ CREATE Registration/ Buy Ticket</li>
+        <li className="userEvent">✅ CREATE QR code ticket</li>
         <li className="userEvent">CREATE Payment</li>
       </ul>
       <h2>My Events</h2>

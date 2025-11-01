@@ -106,9 +106,11 @@ const EventDetails = () => {
                   <span>{" - "} Price: ${ticket.price}</span>
                   <span>{", "} Quantity: {ticket.quantity}</span>
                 </div>
-                <button className="buyBtn" onClick={() => buyTicket(ticket.id)}>
-                  Buy
-                </button>
+                {user && user.role_id === 2 && (
+                  <button className="buyBtn" onClick={() => buyTicket(ticket.id)}>
+                    Buy
+                  </button>
+                )}
               </li>
             ))}
           </ul>
