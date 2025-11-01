@@ -11,11 +11,22 @@ export default (sequelize, DataTypes) => {
             references: { model: 'users', key: 'id' },
             onDelete: 'CASCADE',
         },
+        event_id: {
+            type: DataTypes.UUID,
+            allowNull: false,
+            references: { model: 'events', key: 'id' },
+            onDelete: 'CASCADE',
+        },
         ticket_type_id: {
             type: DataTypes.UUID,
             allowNull: false,
             references: { model: 'ticket_types', key: 'id' },
             onDelete: 'RESTRICT',
+        },
+        registration_code: {
+            type: DataTypes.TEXT,
+            allowNull: false,
+            unique: true,
         },
         qr_code: {
             type: DataTypes.TEXT,
