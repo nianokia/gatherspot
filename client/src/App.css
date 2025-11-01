@@ -285,13 +285,17 @@ nav .logoutBtn {
 .singleEvent {
   margin: 0.85rem auto;
   padding: 0.85rem 3rem;
+  background-color: var(--secondary-color);
+  color: var(--text-color);
   border-radius: 20px;
-  box-shadow: 0px 2.5px 10px rgba(0,0,0,0.3);
-  transition: all ease-in-out 200ms;
+  box-shadow: 0px 2.5px 10px rgba(35, 185, 217, 0.3);
+  /* will-change: filter; */
+  transition: all ease-in-out 300ms;
 }
 
 .singleEvent:hover {
-  background: rgba(0,0,0,0.2);
+  background: rgba(35, 185, 217, 0.7);
+  /* filter: drop-shadow(0 0 0.5rem rgb(35, 185, 217)); */
 }
 
 .listHeader {
@@ -380,6 +384,38 @@ nav .logoutBtn {
 
 .dashboardBtn:hover {
   filter: drop-shadow(0 0 0.5rem var(--warning-dark-color));
+}
+
+/* ---------- EVENT DETAILS STYLES ---------- */
+.EventDetails {
+  padding: 1rem;
+}
+
+.ticketTypes {
+  margin: 1rem auto;
+  max-width: 700px;
+  text-align: start;
+}
+
+.ticketTypesList {
+  list-style: none;
+  padding: 0;
+  /* text-align: start; */
+}
+
+.ticketListItem {
+  margin: 0.5rem 0;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--background-color);
+  border-radius: 8px;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  will-change: filter;
+  transition: filter ease-in-out 300ms;
+}
+
+.ticketListItem:hover {
+  filter: drop-shadow(0 0 0.5rem var(--background-color));
 }
 
 /* ---------- RESPONSIVE DESIGN ----------*/
