@@ -8,6 +8,7 @@ import verifyToken from './middleware/auth.js';
 import authRoutes from './routes/authRoutes.js';
 import eventRoutes from './routes/eventRoutes.js';
 import venueRoutes from './routes/venueRoutes.js';
+import ticketTypeRoutes from './routes/ticketTypeRoutes.js';
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -24,6 +25,7 @@ app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/events', verifyToken, eventRoutes);
 app.use('/api/venues', verifyToken, venueRoutes);
+app.use('/api/ticket-types', verifyToken, ticketTypeRoutes);
 
 // --- direct server to use the compiled build files from React ---
 app.use(express.static(path.join(__dirname, '../client/dist')));
