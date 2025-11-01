@@ -30,9 +30,10 @@ export const createRegistration = async (req, res) => {
             user_id,
             event_id,
             ticket_type_id,
-            // simple QR code generation
             qr_code: await generateQR(`text`),
-            status: 'active'
+            status: 'active',
+            checked_in: false,
+            check_in_time: null
         });
 
         // ---------- RESPOND WITH NEW REGISTRATION INFO ----------
