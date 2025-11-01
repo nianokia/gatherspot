@@ -28,7 +28,7 @@ const AddEvent = () => {
       state: '',
       country: '',
       zip_code: '',
-      venue_capacity: ''
+      capacity: ''
     }
   });
 
@@ -73,6 +73,16 @@ const AddEvent = () => {
 
     console.log("Submitting AddEvent form: \n token:", token);
     console.log("Submitting AddEvent form: \n formData:", formData);
+
+    // --- convert capacity fields to numbers ---
+    const eventDetailsWithCapacity = {
+      ...formData.eventDetails,
+      capacity: Number(formData.eventDetails.capacity)
+    };
+    const venueDetailsWithCapacity = {
+      ...formData.venueDetails,
+      capacity: Number(formData.venueDetails.capacity)
+    };
 
     try {
       const response = await createEvent(formData, token);
@@ -145,9 +155,9 @@ const AddEvent = () => {
               value={formData.venueDetails.zip_code} onChange={handleChange} />
           </div>
           <div className="formGroup">
-            <label htmlFor="venueDetails.venue_capacity">Venue Capacity:</label>
-            <input type="number" id="venueDetails.venue_capacity" name="venueDetails.venue_capacity" placeholder="Venue Capacity"
-              value={formData.venueDetails.venue_capacity} onChange={handleChange} min="1" />
+            <label htmlFor="venueDetails.capacity">Venue Capacity:</label>
+            <input type="number" id="venueDetails.capacity" name="venueDetails.capacity" placeholder="Venue Capacity"
+              value={formData.venueDetails.capacity} onChange={handleChange} min="1" />
           </div>
         </div>
 
