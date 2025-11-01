@@ -48,6 +48,8 @@ nav {
   align-items: center;
   gap: 2rem;
   padding: 1rem 2rem;
+  /* overflow: hidden; */
+  /* position: relative; */
 }
 
 .navGroup {
@@ -55,6 +57,41 @@ nav {
   align-items: center;
   gap: 1rem;
 }
+
+/* ---------- NAV MENU STYLES ---------- */
+
+/* --- Hide the links inside the navigation menu (except for logo/home) --- */
+.navBar .navLinks {
+  display: none;
+}
+
+/* --- Show the links inside the navigation menu (except for logo/home) --- */
+.navBar .navLinks.open {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 4rem;
+  right: 2rem;
+  background-color: var(--secondary-color);
+  color: var(--text-color);
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.navBar .navLinks.open a {
+  padding: 0.5rem 1.25rem;
+  border-radius: 8px;
+  color: var(--text-color);
+  transition: all ease-in-out 200ms;
+  background-color: var(--secondary-color);
+}
+
+.navBar .navLinks.open a:hover {
+  filter: drop-shadow(0 0 0.3rem var(--secondary-color));
+  background-color: var(--background-color);
+}
+
+/* ----- NAV ICONS ---- */
 
 .logo {
   width: 8rem;
@@ -69,8 +106,11 @@ nav {
   color: var(--primary-color);
   width: 1.5rem;
   height: 1.5rem;
+  display: block;
   cursor: pointer;
 }
+
+/* ---------- BUTTON STYLES ---------- */
 
 nav .logoutBtn {
   margin: 0 0.5rem;
