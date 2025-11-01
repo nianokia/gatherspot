@@ -27,6 +27,13 @@ const EventDetails = () => {
     fetchEvent();
   }, [eventId, token]);
 
+  // ---------- DISPLAY QR CODE ----------
+  const displayQRCode = (qrCodeData) => {
+    // --- Open QR code in new window ---
+    const qrWindow = window.open("");
+    qrWindow.document.write(`<img src="${qrCodeData}" alt="QR Code" />`);
+  };
+
   // ---------- BUY TICKET ----------
   const buyTicket = async (ticketTypeId) => {
     // --- Double check user is logged in ---
@@ -43,6 +50,9 @@ const EventDetails = () => {
       if (!response) throw new Error("Failed to create registration");
       console.log("createRegistration response:", response);
       alert(`Registration has been created! \n Your registration code: ${response.registration.registration_code}`);
+
+      // --- Display QR code ---
+      displayQRCode(response.registration.qr_code);
 
     } catch (err) {
       console.error("Error creating registration:", err);
