@@ -1,11 +1,12 @@
 import express from 'express';
-import { createEvent, getAllEvents, getEventById, getEventsByOrganizer, getEventsByVenue } from '../controllers/eventController.js';
+import { createEvent, getAllEvents, getEventById, getEventsByOrganizer, getEventsByVenue, deleteEvent } from '../controllers/eventController.js';
 
 const router = express.Router();
 
 // ------------ CREATE ROUTES ------------
 // --- Create Event route ---
 router.post('/create-event', createEvent);
+
 
 // ------------ READ ROUTES ------------
 // --- Get All Events route ---
@@ -19,5 +20,10 @@ router.get('/organizer/:organizerId', getEventsByOrganizer);
 
 // --- Get Events by Venue route ---
 router.get('/venue/:venueId', getEventsByVenue);
+
+
+// ------------ DELETE ROUTES ------------
+// --- Delete Event route ---
+router.delete('/:eventId', deleteEvent);
 
 export default router;

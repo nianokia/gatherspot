@@ -142,3 +142,18 @@ export const getEventsByVenue = async (req, res) => {
         res.status(500).json({ message: 'Internal server error: Error fetching Events by Venue', error: err });
     }
 };
+
+// ----------- DELETE OPERATIONS ------------
+export const deleteEvent = async (req, res) => {
+    const { eventId } = req.params;
+    try {
+        const event = await Event.findByPk(eventId);
+        if (!event) return res.status(404).json({ message: "Event not found" });
+
+        await event.destroy();
+        res.status(200).json({ message: "Event deleted successfully" });
+    } catch (err) {
+        console.error('Error deleting Event:', err);
+        res.status(500).json({ message: 'Internal server error: Error deleting Event', error: err });
+    }
+};

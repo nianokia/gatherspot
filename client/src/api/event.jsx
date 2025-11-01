@@ -44,3 +44,12 @@ export const fetchEventsByVenue = async (venueId, token) => {
   });
   return res.data;
 };
+
+// ---------- DELETE OPERATIONS ----------
+// -------- DELETE EVENT --------
+export const deleteEvent = async (eventId, token) => {
+  const res = await axios.delete(`${API_URL}/${eventId}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return res.data;
+};
