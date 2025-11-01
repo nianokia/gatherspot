@@ -1,6 +1,6 @@
 import db from '../models/index.js';
 
-const { User, Event, Venue } = db;
+const { User, Event, Venue, TicketType } = db;
 
 // ------------ POST OPERATIONS ------------
 // ---------- CREATE EVENT ----------
@@ -91,6 +91,7 @@ export const getEventById = async (req, res) => {
             include: [
                 { model: Venue, as: 'venue', attributes: ['name', 'address', 'city', 'state', 'country', 'zip_code', 'capacity'] },
                 { model: User, as: 'organizer', attributes: ['f_name', 'l_name', 'email'] },
+                { model: TicketType, as: 'ticketTypes' }
             ]
         });
         if (!event) return res.status(404).json({ message: "Event not found" });
@@ -112,6 +113,7 @@ export const getEventsByOrganizer = async (req, res) => {
             include: [
                 { model: Venue, as: 'venue', attributes: ['name', 'address', 'city', 'state', 'country', 'zip_code', 'capacity'] },
                 { model: User, as: 'organizer', attributes: ['f_name', 'l_name', 'email'] },
+                { model: TicketType, as: 'ticketTypes' }
             ]
         });
         if (!events || events.length === 0) return res.status(404).json({ message: "No events found for this organizer" });
@@ -133,6 +135,7 @@ export const getEventsByVenue = async (req, res) => {
             include: [
                 { model: Venue, as: 'venue', attributes: ['name', 'address', 'city', 'state', 'country', 'zip_code', 'capacity'] },
                 { model: User, as: 'organizer', attributes: ['f_name', 'l_name', 'email'] },
+                { model: TicketType, as: 'ticketTypes' }
             ]
         });
         if (!events || events.length === 0) return res.status(404).json({ message: "No events found for this venue" });

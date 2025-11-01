@@ -89,10 +89,10 @@ export default (sequelize, DataTypes) => {
         Event.belongsTo(models.Venue, { foreignKey: 'venue_id', as: 'venue' });
 
         // --- event can have many ticket types, sessions, registrations, and waitlist entries ---
-        Event.hasMany(models.TicketType, { foreignKey: 'event_id' });
-        Event.hasMany(models.Session, { foreignKey: 'event_id' });
-        Event.hasMany(models.Registration, { foreignKey: 'event_id' });
-        Event.hasMany(models.Waitlist, { foreignKey: 'event_id' });
+        Event.hasMany(models.TicketType, { foreignKey: 'event_id', as: 'ticketTypes' });
+        Event.hasMany(models.Session, { foreignKey: 'event_id', as: 'sessions' });
+        Event.hasMany(models.Registration, { foreignKey: 'event_id', as: 'registrations' });
+        Event.hasMany(models.Waitlist, { foreignKey: 'event_id', as: 'waitlistEntries' });
 
         // --- event can have many attendees through registrations ---
         Event.belongsToMany(models.User, { 
@@ -103,9 +103,9 @@ export default (sequelize, DataTypes) => {
         });
 
         // --- an event can have many notifications, feedback submissions, and metrics ---
-        Event.hasMany(models.Notification, { foreignKey: 'event_id' });
-        Event.hasMany(models.Feedback, { foreignKey: 'event_id' });
-        Event.hasMany(models.EventMetric, { foreignKey: 'event_id' });
+        Event.hasMany(models.Notification, { foreignKey: 'event_id', as: 'notifications' });
+        Event.hasMany(models.Feedback, { foreignKey: 'event_id', as: 'feedbacks' });
+        Event.hasMany(models.EventMetric, { foreignKey: 'event_id', as: 'metrics' });
     };
     
     return Event;
