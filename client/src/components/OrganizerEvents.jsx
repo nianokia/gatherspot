@@ -52,7 +52,10 @@ const OrganizerEvents = () => {
   return (
     <div className="OrganizerEvents">
       <h2>{user?.f_name}'s Events</h2>
-      <ul className="allEventsList">
+      {events.length === 0 ? (
+        <p>No events found.</p>
+      ) : (
+        <ul className="allEventsList">
         {/* --- ensure all keys are unique (event-UUID) --- */}
         {events.map((event) => (
           <li key={`event-${event.id}`} value={event.id} className="singleEvent" onClick={() => navigate(`/${event.id}`)}>
@@ -95,6 +98,7 @@ const OrganizerEvents = () => {
           </li>
         ))}
       </ul>
+      )}
     </div>
   );
 };
