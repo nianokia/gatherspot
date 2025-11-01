@@ -72,7 +72,7 @@ const EventDetails = () => {
       <BackButton />
       <h1>{event.title}</h1>
       <p>{event.description}</p>
-      
+
       {/* ---------- DISPLAY VENUE DETAILS ---------- */}
       {event.venue.name === "Virtual" ? (
         <div className="venueDetails">
@@ -123,7 +123,20 @@ const EventDetails = () => {
       {registrationCode && (
         <div>
           <h3>Your QR Code:</h3>
-          <QRCode value={registrationCode} size={200} />
+          <QRCode value={registrationCode} size={200}
+            logoImage="/gatherspot-logo.png" 
+            quietZone={15}
+            logoWidth={90}
+            logoHeight={25}
+            logoPadding={10}
+            fgColor="#113B6F"
+            bgColor="#f6f6f6"
+            logoPaddingStyle="square" // "square" or "circle"
+            logoPaddingRadius={30}
+            qrStyle="squares" // "squares", "dots", "fluid"
+            eyeColor="#23B9D9"
+            eyeRadius={[20, 20, 20, 20]} // topLeft, topRight, bottomLeft, bottomRight
+          />
         </div>
       )}
     </div>
