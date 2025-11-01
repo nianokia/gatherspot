@@ -55,6 +55,22 @@ const EventDetails = () => {
       <p>From: {formatDate(event.start_date)} - {formatDate(event.end_date)}</p>
       <p>Organizer: {event.organizer ? `${event.organizer.f_name} ${event.organizer.l_name}` : 'N/A'}</p>
       <p>Capacity: {event.capacity}</p>
+      {event.ticketTypes && event.ticketTypes.length > 0 ? (
+        <div className="ticketTypes">
+          <h3>Ticket Types:</h3>
+          <ul className="ticketTypesList">
+            {event.ticketTypes.map((ticket) => (
+              <li key={ticket.id} className="ticketListItem">
+                <span><strong>{ticket.name}</strong></span>
+                <span>{" - "} Price: ${ticket.price}</span>
+                <span>{", "} Quantity: {ticket.quantity}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : (
+        <p>No ticket types available.</p>
+      )}
     </div>
   );
 };
