@@ -67,6 +67,7 @@ export const createEvent = async (req, res) => {
 // // ---------- GET ALL EVENTS ----------
 export const getAllEvents = async (req, res) => {
     try {
+        // --- find all events and include venue & organizer details ---
         const events = await Event.findAll({
             include: [
                 { model: Venue, as: 'venue', attributes: ['name', 'address', 'city', 'state', 'country', 'zip_code', 'capacity'] },
@@ -85,6 +86,7 @@ export const getAllEvents = async (req, res) => {
 export const getEventById = async (req, res) => {
     const { eventId } = req.params;
     try {
+        // --- find event and include venue & organizer details ---
         const event = await Event.findByPk(eventId, {
             include: [
                 { model: Venue, as: 'venue', attributes: ['name', 'address', 'city', 'state', 'country', 'zip_code', 'capacity'] },
@@ -96,5 +98,47 @@ export const getEventById = async (req, res) => {
     } catch (err) {
         console.error('Error fetching Event by ID:', err);
         res.status(500).json({ message: 'Internal server error: Error fetching Event by ID', error: err });
+    }
+};
+
+// ---------- GET EVENTS BY ORGANIZER ----------
+export const getEventsByOrganizer = async (req, res) => {
+    const { organizerId } = req.params;
+    try {
+        // --- find all events where organizer_id matches ---
+        // --- include venue and organizer details ---
+        const events = await Event.findAll({
+            where: { organizer_id: organizerId },
+            include: [
+                { model: Venue, as: 'venue', attributes: ['name', 'address', 'city', 'state', 'country', 'zip_code', 'capacity'] },
+                { model: User, as: 'organizer', attributes: ['f_name', 'l_name', 'email'] },
+            ]
+        });
+        if (!events || events.length === 0) return res.status(404).json({ message: "No events found for this organizer" });
+        res.status(200).json({ events });
+    } catch (err) {
+        console.error('Error fetching Events by Organizer:', err);
+        res.status(500).json({ message: 'Internal server error: Error fetching Events by Organizer', error: err });
+    }
+};
+
+// ---------- GET EVENTS BY VENUE ----------
+export const getEventsByVenue = async (req, res) => {
+    const { venueId } = req.params;
+    try {
+        // --- find all events where venue_id matches ---
+        // --- include venue and organizer details ---
+        const events = await Event.findAll({
+            where: { venue_id: venueId },
+            include: [
+                { model: Venue, as: 'venue', attributes: ['name', 'address', 'city', 'state', 'country', 'zip_code', 'capacity'] },
+                { model: User, as: 'organizer', attributes: ['f_name', 'l_name', 'email'] },
+            ]
+        });
+        if (!events || events.length === 0) return res.status(404).json({ message: "No events found for this venue" });
+        res.status(200).json({ events });
+    } catch (err) {
+        console.error('Error fetching Events by Venue:', err);
+        res.status(500).json({ message: 'Internal server error: Error fetching Events by Venue', error: err });
     }
 };
