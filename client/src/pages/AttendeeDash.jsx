@@ -16,15 +16,15 @@ const AttendeeDash = () => {
         <li className="userEvent">✅ CREATE QR code ticket</li>
         <li className="userEvent">CREATE Payment</li>
       </ul>
-      
+
       <AttendeeEvents />
       <ul className='userEventList'>
         <li>Clickable Events
           <ul>
-            <li className='userEvent'>GET event</li>
+            <li className='userEvent'>✅ GET event</li>
             <li className="userEvent">UPDATE registration</li>
             <li className="userEvent">GET sessions</li>
-            <li className="userEvent">GET QR code tickets</li>
+            <li className="userEvent">✅ GET QR code tickets</li>
             <li className="userEvent">GET notifications (schedule changes, venue updates, important announcements)</li>
           </ul>
         </li>
