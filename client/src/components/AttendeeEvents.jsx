@@ -1,5 +1,4 @@
 import { useState, useEffect, useContext } from 'react';
-import QRCode from 'react-qrcode-logo';
 import { useNavigate } from "react-router";
 import { fetchRegistrationsByUser } from '../api/registration.jsx';
 import AuthContext from "../context/authContext.jsx";
@@ -11,6 +10,7 @@ const AttendeeEvents = () => {
   const attendeeId = user?.id;
   const [registrations, setRegistrations] = useState([]);
 
+  // ---------- FETCH REGISTRATIONS FOR ATTENDEE ----------
   const fetchUserRegistrations = async () => {
     try {
       const data = await fetchRegistrationsByUser(attendeeId, token);
@@ -38,33 +38,6 @@ const AttendeeEvents = () => {
       {registrations.length === 0 ? (
         <p>No events registered.</p>
       ) : (
-        // <ul className="userEventList">
-        //   {registrations.map((registration) => (
-        //     <li key={registration.id} className="userEvent">
-        //       {registration.event?.title}
-        //       {registration.qr_code && (
-        //         <div>
-        //           <QRCode 
-        //             value={registration.registration_code}
-        //             logoImage="/gatherspot-logo.png" 
-        //             size={200}
-        //             quietZone={15}
-        //             logoWidth={90}
-        //             logoHeight={25}
-        //             logoPadding={10}
-        //             fgColor="#113B6F"
-        //             bgColor="#f6f6f6"
-        //             logoPaddingStyle="square" // "square" or "circle"
-        //             logoPaddingRadius={30}
-        //             qrStyle="squares" // "squares", "dots", "fluid"
-        //             eyeColor="#23B9D9"
-        //             eyeRadius={[20, 20, 20, 20]} // topLeft, topRight, bottomLeft, bottomRight
-        //           />
-        //         </div>
-        //       )}
-        //     </li>
-        //   ))}
-        // </ul>
         <ul className="allEventsList">
           {/* --- ensure all keys are unique (event-UUID) --- */}
           {registrations.map((registration) => (
