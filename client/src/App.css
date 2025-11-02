@@ -292,6 +292,13 @@ nav .logoutBtn {
   width: 90%;
 }
 
+/* --- Add red asterisk after required labels --- */
+label.required::after {
+  content: " *";
+  color: red;
+  font-weight: bold;
+}
+
 .formGroup {
   display: flex;
   justify-content: space-between;
