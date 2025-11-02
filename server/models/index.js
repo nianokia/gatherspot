@@ -13,6 +13,7 @@ import defineSessionSpeaker from './SessionSpeaker.js';
 import defineNotification from './Notification.js';
 import defineFeedback from './Feedback.js';
 import defineEventMetric from './EventMetric.js';
+import defineEventVendor from './EventVendor.js';
 
 // ---------- INITIALIZE SEQUELIZE ----------
 const sequelize = new Sequelize(process.env.DATABASE_URI, {
@@ -37,6 +38,7 @@ db.SessionSpeaker = defineSessionSpeaker(sequelize, DataTypes);
 db.Notification = defineNotification(sequelize, DataTypes);
 db.Feedback = defineFeedback(sequelize, DataTypes);
 db.EventMetric = defineEventMetric(sequelize, DataTypes);
+db.EventVendor = defineEventVendor(sequelize, DataTypes);
 
 // --- If there are associations, define them here ---
 Object.keys(db).forEach(modelName => {

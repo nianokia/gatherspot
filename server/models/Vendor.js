@@ -37,5 +37,5 @@ export default (sequelize, DataTypes) => {
         Vendor.belongsToMany(models.Event, { through: models.EventVendor, foreignKey: 'vendor_id', otherKey: 'event_id', as: 'events' });
     };
 
-            
+    return Vendor;   
 }
