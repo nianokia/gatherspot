@@ -1,16 +1,24 @@
 import { useState, useEffect, useContext, useRef } from "react";
-import { useParams } from "react-router";
+import { useParams, useNavigate } from "react-router";
 import { QRCode } from 'react-qrcode-logo';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons';
 import AuthContext from "../context/authContext";
-import { fetchEventById } from "../api/event";
+import { fetchEventById, deleteEvent } from "../api/event";
 import { createRegistration, fetchRegistrationsByUser } from "../api/registration";
 import { addToWaitlist } from "../api/waitlist";
-import { BackButton, formatDate } from "../constants/constant";
+import EditEvent from "../pages/EditEvent.jsx";
+import { BackButton, Modal, ConfirmModal, formatDate } from "../constants/constant";
 
 const EventDetails = () => {
+  const navigate = useNavigate();
   const { user, token, loading, setLoading } = useContext(AuthContext);
   const { eventId } = useParams();
   const [event, setEvent] = useState(null);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+
   const [existingRegistrations, setExistingRegistrations] = useState(null);
   const [registration, setRegistration] = useState(null);
   const [registrationCode, setRegistrationCode] = useState(null);
@@ -90,6 +98,29 @@ const EventDetails = () => {
     if (qrCodeRef.current) qrCodeRef.current.download();
   };
 
+  // --- dynamically display updated Course ---
+  const handleUpdatedCourse = (updatedCourse) => {
+    setCourse(updatedCourse);
+  };
+
+  console.log("EventId:", eventId);
+
+  const handleDelete = async (eventId) => {
+    try {
+      await deleteEvent(eventId, token);
+      alert(`${event?.title ?? "Title"} has been deleted successfully!`);
+      navigate(-1); 
+    } catch (err) {
+      alert('Failed to delete event. Please try again.');
+      console.error('Error deleting event: ', err)
+    }
+  };
+
+  // --- Close modal & reset role ---
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
   // ---------- USE EFFECTS ----------
   // --- fetch event details on component mount ---
   useEffect(() => {
@@ -134,8 +165,23 @@ const EventDetails = () => {
   return (
     <div className="EventDetails">
       <BackButton />
-      <h1>{event.title}</h1>
-      <p>{event.description}</p>
+      <header>
+        {user && (user.role_id === 1 || user.role_id === 4) && (
+          <div className="eventIconGroup">
+            <FontAwesomeIcon
+              icon={faPenToSquare}
+              className="editIcon"
+              onClick={() => setIsModalOpen(true)}
+            />
+            <FontAwesomeIcon icon={faTrash} 
+              className="deleteEventItem"
+              onClick={() => setIsDeleteModalOpen(true)}
+            />
+          </div>
+        )}
+        <h1>{event.title}</h1>
+        <p>{event.description}</p>
+      </header>
 
       {/* ---------- DISPLAY VENUE DETAILS ---------- */}
       {event.venue.name === "Virtual" ? (
@@ -218,6 +264,30 @@ const EventDetails = () => {
           <p>No ticket types available.</p>
         )
       )}
+
+      {/* -------- EDIT EVENT MODAL -------- */}
+      <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
+        <EditEvent 
+          eventId={eventId}
+          setIsModalOpen={setIsModalOpen}
+          onEventUpdated={handleUpdatedCourse}
+          event={event}
+          token={token}
+          onUpdate={fetchEvent} // refresh event after update
+          onClose={handleCloseModal} // close modal after update
+        />
+      </Modal>
+
+      {/* -------- DELETE EVENT MODAL -------- */}
+      <ConfirmModal 
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        onConfirm={() => handleDelete(event.id)}
+        title={`Are you sure you want to delete "${event.title}"?`}
+        message={`This action will permanently delete (${event.title}) from the database.`}
+        confirmText="Yes, Delete"
+        cancelText="No, Cancel"
+      />
     </div>
   );
 };
