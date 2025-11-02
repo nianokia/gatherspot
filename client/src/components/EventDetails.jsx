@@ -11,7 +11,9 @@ const EventDetails = () => {
   const { eventId } = useParams();
   const [event, setEvent] = useState(null);
   const [existingRegistrations, setExistingRegistrations] = useState(null);
+  const [registration, setRegistration] = useState(null);
   const [registrationCode, setRegistrationCode] = useState(null);
+  
   // --- reference to QR code for downloading ---
   const qrCodeRef = useRef();
 
@@ -55,9 +57,15 @@ const EventDetails = () => {
   useEffect(() => {
     // --- Check if user already has a registration for this event ---
     if (existingRegistrations && event) {
-      const registration = existingRegistrations.find(reg => reg.event_id === event.id);
+      // --- Find the registration for this event ---
+      const registration = existingRegistrations.find(r => r.event_id === event.id);
+
+      // --- if found, set registration & registration code ---
       if (registration) {
         setRegistrationCode(registration.registration_code);
+        setRegistration(registration);
+      } else {
+        setRegistration(null);
       }
     }
   }, [existingRegistrations, event]);
@@ -127,10 +135,11 @@ const EventDetails = () => {
 
       <hr />
       {/* --- Only show registration block & QR code if registrationCode exists --- */}
-      {registrationCode ? (
-        // ---------- DISPLAY QR CODE ----------
+      {registrationCode && registration ? (
+        // ---------- DISPLAY QR CODE & TICKET TYPE ----------
         <div className="qrCodeContainer">
           <h3>Your Registration</h3>
+          <h4>Ticket Type: {registration.ticketType?.name || registration.ticket_type?.name || 'N/A'}</h4>
           <h4>Registration Code: {registrationCode}</h4>
           <QRCode ref={qrCodeRef}
             value={registrationCode}
