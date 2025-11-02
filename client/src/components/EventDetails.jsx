@@ -391,6 +391,7 @@ const EventDetails = () => {
       <Modal isOpen={isAddSpeakerOpen} onClose={() => setIsAddSpeakerOpen(false)}>
         {selectedSession && (
           <AddSpeaker
+            userId={user?.id}
             sessionId={selectedSession.id}
             speakers={selectedSession.speakers}
             token={token}
