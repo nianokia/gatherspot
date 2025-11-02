@@ -13,6 +13,7 @@ import EditEvent from "../pages/EditEvent.jsx";
 import AddTicketType from "../pages/AddTicketType.jsx";
 import EditTicketType from "../pages/EditTicketType.jsx";
 import SelectTicketTypeModal from "./SelectTicketTypeModal.jsx";
+import EditVenue from "../pages/EditVenue.jsx";
 import { BackButton, Modal, ConfirmModal, OptionsModal, formatDate } from "../constants/constant";
 
 const EventDetails = () => {
@@ -314,10 +315,15 @@ const EventDetails = () => {
       </Modal>
 
       {/* ---------- EDIT VENUE MODAL ---------- */}
-      {/* TODO: Add EditVenue component/modal here */}
-      {/* <Modal isOpen={isEditVenueOpen} onClose={() => setIsEditVenueOpen(false)}>
-        <EditVenue ... />
-      </Modal> */}
+      <Modal isOpen={isEditVenueOpen} onClose={() => setIsEditVenueOpen(false)}>
+        <EditVenue
+          venueId={event.venue_id}
+          venue={event.venue}
+          token={token}
+          onUpdate={fetchEvent}
+          onClose={() => setIsEditVenueOpen(false)}
+        />
+      </Modal>
 
 
       {/* ---------- TICKET TYPE SELECT MODAL ---------- */}
