@@ -63,6 +63,21 @@ export const ConfirmModal = ({
   )
 }
 
+export const OptionsModal = ({ isOpen, onClose, title, action1, action2, action3, option1, option2, option3 }) => {
+  if (!isOpen) return null;
+
+  return (
+    <Modal isOpen={isOpen} onClose={onClose}>
+      <h2>{title}</h2>
+      <div className="optionsGroup">
+        <button className="optionBtn" onClick={action1}>{option1}</button>
+        <button className="optionBtn" onClick={action2}>{option2}</button>
+        <button className="optionBtn" onClick={action3}>{option3}</button>
+      </div>
+    </Modal>
+  );
+};
+
 export const formatDate = (date) => {
   // --- define options for formatting ---
   const options = {
