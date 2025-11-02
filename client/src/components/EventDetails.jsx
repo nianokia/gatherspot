@@ -6,7 +6,7 @@ import { faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 import AuthContext from "../context/authContext";
 import { fetchEventById, deleteEvent } from "../api/event";
-import { createRegistration, fetchRegistrationsByUser } from "../api/registration";
+import { createRegistration, fetchRegistrationsByUser, deleteRegistration } from "../api/registration";
 import { addToWaitlist } from "../api/waitlist";
 import { getSessionsForEvent } from "../api/session.jsx";
 
@@ -235,6 +235,20 @@ const EventDetails = () => {
     setIsAddSessionOpen(true);
   };
 
+  // ---------- DELETE REGISTRATION ----------
+  const handleDeleteRegistration = async (registrationId) => {
+    try {
+      await deleteRegistration(registrationId, token);
+      alert("Registration has been deleted successfully!");
+
+      // --- remove registration code to invalidate QR code ---
+      setRegistrationCode(null);
+    } catch (err) {
+      alert('Failed to delete registration. Please try again.');
+      console.error('Error deleting registration: ', err)
+    }
+  };
+
   // ---------- DELETE EVENT ----------
   const handleDelete = async (eventId) => {
     try {
@@ -325,6 +339,9 @@ const EventDetails = () => {
           />
           <button type="button" className="downloadBtn" onClick={handleDownload}>
             Download QR Code
+          </button>
+          <button type="button" className="deleteBtn" onClick={() => handleDeleteRegistration(registration.id)}>
+            Delete Registration
           </button>
         </div>
       ) : (

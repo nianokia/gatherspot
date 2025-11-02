@@ -592,13 +592,12 @@ textarea {
 }
 
 .downloadBtn {
-  margin-top: 1rem;
-  color: var(--text-color);
+  margin: 1rem 0 0.5rem;
+  padding: 0.5rem 1rem;
   background-color: var(--secondary-light-color);
+  color: var(--text-color);
   border: none;
   border-radius: 8px;
-  margin: 1rem 0 2rem;
-  padding: 0.5rem 1rem;
   will-change: filter;
   transition: filter 300ms;
   cursor: pointer;
@@ -610,6 +609,23 @@ textarea {
 
 .downloadBtn:hover {
   filter: drop-shadow(0 0 0.5rem var(--secondary-color));
+}
+
+.qrCodeContainer .deleteBtn {
+  margin: 0.5rem 0 1.5rem;
+  padding: 0.5rem 1rem;
+  background-color: var(--warning-color);
+  color: var(--text-color);
+  border: none;
+  border-radius: 8px;
+  will-change: filter;
+  transition: filter 300ms;
+  cursor: pointer;
+}
+
+.qrCodeContainer .deleteBtn:hover {
+  filter: drop-shadow(0 0 0.5rem var(--warning-dark-color));
+  border: none;
 }
 
 /* ---------- SESSION BUTTONS ---------- */
