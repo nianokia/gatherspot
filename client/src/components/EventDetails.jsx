@@ -3,11 +3,16 @@ import { useParams, useNavigate } from "react-router";
 import { QRCode } from 'react-qrcode-logo';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons';
+
 import AuthContext from "../context/authContext";
 import { fetchEventById, deleteEvent } from "../api/event";
 import { createRegistration, fetchRegistrationsByUser } from "../api/registration";
 import { addToWaitlist } from "../api/waitlist";
+
 import EditEvent from "../pages/EditEvent.jsx";
+import AddTicketType from "../pages/AddTicketType.jsx";
+import EditTicketType from "../pages/EditTicketType.jsx";
+import SelectTicketTypeModal from "./SelectTicketTypeModal.jsx";
 import { BackButton, Modal, ConfirmModal, OptionsModal, formatDate } from "../constants/constant";
 
 const EventDetails = () => {
@@ -22,6 +27,9 @@ const EventDetails = () => {
   const [isEditVenueOpen, setIsEditVenueOpen] = useState(false);
   const [isEditTicketTypesOpen, setIsEditTicketTypesOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isSelectTicketTypeOpen, setIsSelectTicketTypeOpen] = useState(false);
+  const [isAddTicketTypeOpen, setIsAddTicketTypeOpen] = useState(false);
+  const [selectedTicketType, setSelectedTicketType] = useState(null);
 
   // ---------- REGISTRATION STATES ----------
   const [existingRegistrations, setExistingRegistrations] = useState(null);
@@ -118,7 +126,7 @@ const EventDetails = () => {
       setIsEditVenueOpen(true);
     } else if (action === "editTicketTypes") {
       setIsEditOptionsOpen(false);
-      setIsEditTicketTypesOpen(true);
+      setIsSelectTicketTypeOpen(true);
     }
   };
 
@@ -311,11 +319,46 @@ const EventDetails = () => {
         <EditVenue ... />
       </Modal> */}
 
-      {/* ---------- EDIT TICKET TYPES MODAL ---------- */}
-      {/* TODO: Add EditTicketTypes component/modal here */}
-      {/* <Modal isOpen={isEditTicketTypesOpen} onClose={() => setIsEditTicketTypesOpen(false)}>
-        <EditTicketTypes ... />
-      </Modal> */}
+
+      {/* ---------- TICKET TYPE SELECT MODAL ---------- */}
+      <SelectTicketTypeModal
+        isOpen={isSelectTicketTypeOpen}
+        onClose={() => setIsSelectTicketTypeOpen(false)}
+        ticketTypes={event?.ticketTypes || []}
+        onSelect={(type) => {
+          setSelectedTicketType(type);
+          setIsSelectTicketTypeOpen(false);
+          setIsEditTicketTypesOpen(true);
+        }}
+        onCreate={() => {
+          setIsSelectTicketTypeOpen(false);
+          setIsAddTicketTypeOpen(true);
+        }}
+      />
+
+      {/* ---------- EDIT TICKET TYPE MODAL ---------- */}
+      <Modal isOpen={isEditTicketTypesOpen} onClose={() => setIsEditTicketTypesOpen(false)}>
+        {selectedTicketType && (
+          <EditTicketType
+            eventId={eventId}
+            ticketTypeId={selectedTicketType.id}
+            ticketType={selectedTicketType}
+            token={token}
+            onUpdate={fetchEvent}
+            onClose={() => setIsEditTicketTypesOpen(false)}
+          />
+        )}
+      </Modal>
+
+      {/* ---------- ADD TICKET TYPE MODAL ---------- */}
+      <Modal isOpen={isAddTicketTypeOpen} onClose={() => setIsAddTicketTypeOpen(false)}>
+        <AddTicketType
+          eventId={eventId}
+          token={token}
+          onClose={() => setIsAddTicketTypeOpen(false)}
+          onUpdate={fetchEvent}
+        />
+      </Modal>
 
       {/* ---------- DELETE EVENT MODAL ---------- */}
       <ConfirmModal 
