@@ -2,7 +2,7 @@ import { useState } from "react";
 import { createSpeaker } from "../api/speaker.jsx";
 import { addSpeakersToSession } from "../api/session.jsx";
 
-const AddSpeaker = ({ sessionId, session, token, onClose, onUpdate }) => {
+const AddSpeaker = ({ sessionId, speakers, token, onClose, onUpdate }) => {
   const [formData, setFormData] = useState({
     name: '', 
     contact_email: '',
@@ -47,6 +47,16 @@ const AddSpeaker = ({ sessionId, session, token, onClose, onUpdate }) => {
   return (
     <div>
       <h1>Add Speaker Page</h1>
+      {speakers && speakers.length > 0 && (
+        <div>
+          <h2>Existing Speakers for this Session:</h2>
+          <ul>
+            {speakers.map((speaker) => (
+              <li key={speaker.id}>{speaker.name} - {speaker.contact_email}</li>
+            ))}
+          </ul>
+        </div>
+      )}
       <form className='AddSpeakerForm' onSubmit={handleSubmit}>
         <div className="formGroup">
           <label htmlFor="name" className="required">Name:</label>
