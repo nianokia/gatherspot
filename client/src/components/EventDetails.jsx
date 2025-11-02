@@ -4,6 +4,7 @@ import { QRCode } from 'react-qrcode-logo';
 import AuthContext from "../context/authContext";
 import { fetchEventById } from "../api/event";
 import { createRegistration, fetchRegistrationsByUser } from "../api/registration";
+import { addToWaitlist } from "../api/waitlist";
 import { BackButton, formatDate } from "../constants/constant";
 
 const EventDetails = () => {
@@ -13,6 +14,7 @@ const EventDetails = () => {
   const [existingRegistrations, setExistingRegistrations] = useState(null);
   const [registration, setRegistration] = useState(null);
   const [registrationCode, setRegistrationCode] = useState(null);
+  const [isEventFull, setIsEventFull] = useState(false);
   
   // --- reference to QR code for downloading ---
   const qrCodeRef = useRef();
@@ -41,34 +43,22 @@ const EventDetails = () => {
     }
   };
 
-  // --- fetch event details on component mount ---
-  useEffect(() => {
-    fetchEvent();
-  }, [eventId, token]);
+  // ---------- JOIN WAITLIST ----------
+  const handleJoinWaitlist = async () => {
+    // --- Double check user is logged in ---
+    if (!user) alert("Please log in to buy tickets.");
+    const waitlistData = { user_id: user.id, event_id: event.id, status: 'waiting' };
 
-  // --- fetch existing registrations if user is attendee ---
-  useEffect(() => {
-    if (user && token && user.role_id === 2) {
-      fetchExistingRegistrations();
+    try {
+      const response = await addToWaitlist(waitlistData, token);
+      if (!response) throw new Error("Failed to join waitlist");
+      console.log("addToWaitlist response:", response);
+      alert("You have been added to the waitlist!");
+    } catch (err) {
+      console.error("Error joining waitlist:", err);
+      alert("Error joining waitlist: " + (err?.response?.data?.message || err.message));
     }
-  }, [user, token]);
-
-  // --- check for existing registration when registrations or event change ---
-  useEffect(() => {
-    // --- Check if user already has a registration for this event ---
-    if (existingRegistrations && event) {
-      // --- Find the registration for this event ---
-      const registration = existingRegistrations.find(r => r.event_id === event.id);
-
-      // --- if found, set registration & registration code ---
-      if (registration) {
-        setRegistrationCode(registration.registration_code);
-        setRegistration(registration);
-      } else {
-        setRegistration(null);
-      }
-    }
-  }, [existingRegistrations, event]);
+  };
 
   // ---------- BUY TICKET ----------
   const buyTicket = async (ticketTypeId) => {
@@ -99,6 +89,43 @@ const EventDetails = () => {
   const handleDownload = () => {
     if (qrCodeRef.current) qrCodeRef.current.download();
   };
+
+  // ---------- USE EFFECTS ----------
+  // --- fetch event details on component mount ---
+  useEffect(() => {
+    fetchEvent();
+  }, [eventId, token]);
+
+  // --- fetch existing registrations if user is attendee ---
+  useEffect(() => {
+    if (user && token && user.role_id === 2) {
+      fetchExistingRegistrations();
+    }
+  }, [user, token]);
+
+  // --- check for existing registration when registrations or event change ---
+  useEffect(() => {
+    // --- Check if user already has a registration for this event ---
+    if (existingRegistrations && event) {
+      // --- Find the registration for this event ---
+      const registration = existingRegistrations.find(r => r.event_id === event.id);
+
+      // --- if found, set registration & registration code ---
+      if (registration) {
+        setRegistrationCode(registration.registration_code);
+        setRegistration(registration);
+      } else {
+        setRegistration(null);
+      }
+    }
+  }, [existingRegistrations, event]);
+
+  // --- check if event is full ---
+  useEffect(() => {
+    if (event && event.ticketTypes) {
+      setIsEventFull(event.capacity <= (event.registrations ? event.registrations.length : 0));
+    }
+  }, [event]);
 
   // ---------- CONDITIONAL RENDERING ----------
   if (loading) return <div>Loading...</div>;
@@ -162,7 +189,12 @@ const EventDetails = () => {
           </button>
         </div>
       ) : (
-        event.ticketTypes && event.ticketTypes.length > 0 ? (
+        isEventFull ? (
+          <div>
+            <p>Event is full. Would you like to join the waitlist?</p>
+            <button onClick={handleJoinWaitlist}>Join Waitlist</button>
+          </div>
+        ) : event.ticketTypes && event.ticketTypes.length > 0 ? (
           <div className="ticketTypes">
             <h3>Ticket Types:</h3>
             <ul className="ticketTypesList">
