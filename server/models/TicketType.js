@@ -29,11 +29,11 @@ export default (sequelize, DataTypes) => {
         },
         sale_start: {
             type: DataTypes.DATE,
-            validate: { isDate: true },
+            // validate: { isDate: true },
         },
         sale_end: {
             type: DataTypes.DATE,
-            validate: { isDate: true },
+            // validate: { isDate: true },
         },
     }, {
         tableName: 'ticket_types',
