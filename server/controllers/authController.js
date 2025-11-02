@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 import db from '../models/index.js';
 import 'dotenv/config';
 
-const { User, Role } = db;
+const { User, Role, Vendor } = db;
 
 // ---------- DEFINE USER REGISTRATION CONTROLLER ----------
 export const register = async (req, res) => {
@@ -36,11 +36,22 @@ export const register = async (req, res) => {
                 userId: registeredUser.id,
                 email: registeredUser.email,
                 role: registeredUser.role_id,
-                // role: registeredUser.role.name
             },
             process.env.JWT_SECRET,
             { expiresIn: '1d' }
         );
+
+        // ---------- IF USER IS A VENDOR, CREATE VENDOR PROFILE ----------
+        try {
+            if (registeredUser.role_id === 3) {
+                const newVendor = await Vendor.create({ user_id: registeredUser.id, token });
+                console.log('Vendor profile created for registered user', newVendor);
+            }
+        } catch (err) {
+            console.error('Error creating vendor profile for registered user:', err);
+            res.status(500).json({ message: 'Internal server error creating vendor profile', error: err });
+            return;
+        }
 
         // ---------- RESPOND WITH TOKEN & USER INFO ----------
         res.status(201).json({
