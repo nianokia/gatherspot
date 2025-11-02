@@ -358,6 +358,11 @@ const EventDetails = () => {
             {sessions.map((session) => (
               <li key={session.id} className="sessionListItem">
                 <h4>{session.title}</h4>
+                {session.speakers && session.speakers.length > 0 && (
+                  <p>
+                    <span>Speakers/ Performers:</span> {session.speakers.map(speaker => speaker.name).join(', ')}
+                  </p>
+                )}
                 <p>{session.description}</p>
                 <p>
                   From: {formatDate(session.start_time)} - To: {formatDate(session.end_time)}
