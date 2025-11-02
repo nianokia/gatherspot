@@ -32,8 +32,6 @@ export default (sequelize, DataTypes) => {
         capacity: {
             type: DataTypes.INTEGER,
             allowNull: true,
-            // --- only allows capacity to be set if > zero ---
-            validate: { min: 1 },
         },
     }, {
         tableName: 'venues',
