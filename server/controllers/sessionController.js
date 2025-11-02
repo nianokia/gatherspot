@@ -27,6 +27,28 @@ export const createSession = async (req, res) => {
     }
 };
 
+// ---------- ADD SPEAKERS TO SESSION ----------
+export const addSpeakersToSession = async (req, res) => {
+    const { sessionId } = req.params;
+    // --- expects an array of speaker IDs ---
+    const { speakerIds } = req.body;
+
+    try {
+        const session = await Session.findByPk(sessionId);
+        if (!session) return res.status(404).json({ message: 'Session not found' });
+
+        // --- add speakers to session ---
+        await session.addSpeakers(speakerIds);
+
+        // --- fetch & return the updated session with associated speakers ---
+        const updatedSession = await Session.findByPk(sessionId, { include: ['speakers'] });
+        res.status(200).json({ message: 'Speakers added to session successfully', session: updatedSession });
+    } catch (err) {
+        console.error('Error adding speakers to session:', err);
+        res.status(500).json({ message: 'Error adding speakers to session', error: err });
+    }
+};
+
 
 // ------------ GET OPERATIONS ------------
 // ---------- GET SESSIONS BY EVENT ID ----------

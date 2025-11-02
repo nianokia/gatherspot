@@ -12,6 +12,16 @@ export const createSession = async (sessionData, token) => {
   return res.data;
 };
 
+// -------- ADD SPEAKERS TO SESSION --------
+export const addSpeakersToSession = async (sessionId, speakerIds, token) => {
+  const res = await axios.post(
+    `${API_URL}/${sessionId}/speakers`,
+    { speakerIds },
+    { headers: { Authorization: `Bearer ${token}` } }
+  );
+  return res.data;
+};
+
 // ---------- GET OPERATIONS ----------
 // -------- GET SESSIONS FOR EVENT --------
 export const getSessionsForEvent = async (eventId, token) => {
