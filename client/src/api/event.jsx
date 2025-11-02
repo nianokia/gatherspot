@@ -45,6 +45,15 @@ export const fetchEventsByVenue = async (venueId, token) => {
   return res.data;
 };
 
+// ---------- PUT OPERATIONS ----------
+// -------- UPDATE EVENT --------
+export const updateEvent = async (eventId, updatedData, token) => {
+  const res = await axios.put(`${API_URL}/${eventId}`, updatedData, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return res.data;
+};
+
 // ---------- DELETE OPERATIONS ----------
 // -------- DELETE EVENT --------
 export const deleteEvent = async (eventId, token) => {

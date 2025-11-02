@@ -146,7 +146,27 @@ export const getEventsByVenue = async (req, res) => {
     }
 };
 
-// ----------- DELETE OPERATIONS ------------
+// ------------ PUT OPERATIONS ------------
+// ---------- UPDATE EVENT ----------
+export const updateEvent = async (req, res) => {
+    const { eventId } = req.params;
+    const updatedData = req.body;
+
+    try {
+        const event = await Event.findByPk(eventId);
+        if (!event) return res.status(404).json({ message: "Event not found" });
+
+        // --- update event with new data ---
+        await event.update(updatedData);
+        res.status(200).json({ message: "Event updated successfully", event });
+    } catch (err) {
+        console.error('Error updating Event:', err);
+        res.status(500).json({ message: 'Internal server error: Error updating Event', error: err });
+    }
+};
+
+// ------------ DELETE OPERATIONS ------------
+// ---------- DELETE EVENT ----------
 export const deleteEvent = async (req, res) => {
     const { eventId } = req.params;
     try {
