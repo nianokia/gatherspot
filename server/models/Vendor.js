@@ -31,7 +31,11 @@ export default (sequelize, DataTypes) => {
     Vendor.associate = (models) => {
         // --- A vendor belongs to one user ---
         Vendor.belongsTo(models.User, { foreignKey: 'user_id', as: 'user' });
+
+        // --- a vendor can have many event vendors and many events through event vendors ---
+        Vendor.hasMany(models.EventVendor, { foreignKey: 'vendor_id', as: 'eventVendors' });
+        Vendor.belongsToMany(models.Event, { through: models.EventVendor, foreignKey: 'vendor_id', otherKey: 'event_id', as: 'events' });
     };
 
-    return Vendor;
+            
 }

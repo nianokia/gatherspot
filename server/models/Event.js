@@ -106,6 +106,10 @@ export default (sequelize, DataTypes) => {
         Event.hasMany(models.Notification, { foreignKey: 'event_id', as: 'notifications' });
         Event.hasMany(models.Feedback, { foreignKey: 'event_id', as: 'feedbacks' });
         Event.hasMany(models.EventMetric, { foreignKey: 'event_id', as: 'metrics' });
+
+        // --- an event can have many vendors through eventVendors ---
+        Event.hasMany(models.EventVendor, { foreignKey: 'event_id', as: 'eventVendors' });
+        Event.belongsToMany(models.Vendor, { through: models.EventVendor, foreignKey: 'event_id', otherKey: 'vendor_id', as: 'vendors' });
     };
     
     return Event;
