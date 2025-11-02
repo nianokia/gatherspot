@@ -202,21 +202,22 @@ const EventDetails = () => {
           </div>
         )}
         <h1>{event.title}</h1>
-        <p>{event.description}</p>
+        <h2>{event.description}</h2>
       </header>
 
-      {/* ---------- DISPLAY VENUE DETAILS ---------- */}
-      {event.venue.name === "Virtual" ? (
-        <div className="venueDetails">
-          <h3>Venue: Virtual Event</h3>
-        </div>
-        ): (
+      <div className="moreEventDetailsBlock">
+        {/* ---------- DISPLAY VENUE DETAILS ---------- */}
+        {event.venue.name === "Virtual" ? (
+          <div className="venueDetails">
+            <h3>Venue: Virtual Event</h3>
+          </div>
+        ) : (
           <div className="venueDetails">
             <h3>Venue: {event.venue.name}</h3>
             <div className="venueLocation">
-              <span>Address:</span>
               <div className="addressBlock">
-                <p>{event.venue.address}</p>
+                <p>Address:</p>
+                <p>{event.venue.address}{", "}</p>
                 <p>{event.venue.city}, {event.venue.state}</p>
                 <p>{event.venue.country}, {event.venue.zip_code}</p>
               </div>
@@ -224,10 +225,12 @@ const EventDetails = () => {
             <p>Venue Capacity: {event.venue.capacity ? `${event.venue.capacity} people` : 'N/A'}</p>
           </div>
         )}
-      <p>From: {formatDate(event.start_date)} - {formatDate(event.end_date)}</p>
-      <p>Organizer: {event.organizer ? `${event.organizer.f_name} ${event.organizer.l_name}` : 'N/A'}</p>
-      <p>Capacity: {event.capacity}</p>
-
+        <div className="dateOrganizerCapacityBlock">
+          <p>From: {formatDate(event.start_date)} - {formatDate(event.end_date)}</p>
+          <p>Organizer: {event.organizer ? `${event.organizer.f_name} ${event.organizer.l_name}` : 'N/A'}</p>
+          <p>Capacity: {event.capacity}</p>
+        </div>
+      </div>
       <hr />
 
       {/* --- Only show registration block & QR code if registrationCode exists --- */}
