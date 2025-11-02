@@ -2,8 +2,9 @@ import { useState } from "react";
 import { createSpeaker } from "../api/speaker.jsx";
 import { addSpeakersToSession } from "../api/session.jsx";
 
-const AddSpeaker = ({ sessionId, speakers, token, onClose, onUpdate }) => {
+const AddSpeaker = ({ userId, sessionId, speakers, token, onClose, onUpdate }) => {
   const [formData, setFormData] = useState({
+    user_id: userId,
     name: '', 
     contact_email: '',
     bio: '', 
