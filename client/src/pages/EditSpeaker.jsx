@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { updateSpeaker } from "../api/speaker";
+import { removeSpeakerFromSession } from "../api/session";
 
-const EditSpeaker = ({ speakers, token, onClose, onUpdate }) => {
+const EditSpeaker = ({ speakers, sessionId, token, onClose, onUpdate }) => {
   // --- if multiple speakers, load first speaker's data or '' ---
   const [formData, setFormData] = useState({
     name: speakers && speakers.length > 0 ? speakers[0].name : '',
@@ -62,6 +63,21 @@ const EditSpeaker = ({ speakers, token, onClose, onUpdate }) => {
     }
   };
 
+  const handleRemoveSpeaker = async (sessionId, speakerId, token) => {
+    try {
+      const response = await removeSpeakerFromSession(sessionId, speakerId, token);
+      console.log("removeSpeakerFromSession response:", response);
+      alert("Speaker has been removed from session!");
+
+      // --- Refresh event details ---
+      onUpdate();
+      onClose();
+    } catch (err) {
+      console.error("Error removing speaker from session:", err);
+      alert("Error removing speaker from session: " + (err?.response?.data?.message || err.message));
+    }
+  };
+
   return (
     <div className="EditSpeaker">
       <h1>Edit Speaker Page</h1>
@@ -102,7 +118,10 @@ const EditSpeaker = ({ speakers, token, onClose, onUpdate }) => {
           <input type="text" id="photo_url" name="photo_url" placeholder="Photo URL"
             value={formData.photo_url} onChange={handleChange}/>
         </div>
-        <button type="submit">Edit Speaker</button>
+        <div className="editSpeakerBtnGroup">
+          <button type="submit">Edit Speaker</button>
+          <button type="button" onClick={() => handleRemoveSpeaker(sessionId, speakers[active].id, token)}>Remove Speaker</button>
+        </div>
       </form>
     </div>
   );

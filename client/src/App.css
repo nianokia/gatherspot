@@ -634,7 +634,7 @@ textarea {
 }
 
 .SessionDetails .sessionListItem {
-  margin: 0.5rem 0;
+  margin: 1rem 0;
   padding: 0.5rem 2rem;
   background-color: var(--secondary-color);
   color: var(--primary-darkest-color);
@@ -654,12 +654,19 @@ textarea {
   align-items: center;
 }
 
-/* SPEAKER */
+/* ---------- SPEAKER CSS ---------- */
 .EditSpeaker .buttonGroup {
   display: flex;
   justify-content: center;
   gap: 1rem;
   margin-bottom: 1rem;
+}
+
+.editSpeakerBtnGroup {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
 }
 
 /* ---------- RESPONSIVE DESIGN ---------- */

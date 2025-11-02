@@ -530,6 +530,7 @@ const EventDetails = () => {
         {selectedSession && (
           <EditSpeaker
             speakers={selectedSession.speakers}
+            sessionId={selectedSession.id}
             token={token}
             onUpdate={fetchEventSessions}
             onClose={() => setIsEditSpeakerOpen(false)}
