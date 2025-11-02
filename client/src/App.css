@@ -92,35 +92,7 @@
   justify-content: space-around;
 }
 
-.optionsGroup {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  gap: 1rem;
-  margin-top: 1rem;
-}
 
-.ticketTypeItem {
-  margin: 0.5rem 0;
-  padding: 0.5rem;
-  border: 1px solid var(--background-color);
-  border-radius: 50px;
-  background-color: var(--background-color);
-  color: var(--text-color);
-}
-
-.ticketTypeItem h3 {
-  margin: 0;
-  margin-bottom: 0.5rem;
-}
-
-.ticketTypeBtnGroup {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  gap: 2rem;
-  margin-top: 1rem;
-}
 
 /* ---------- NAVBAR STYLES ---------- */
 
@@ -550,6 +522,42 @@ textarea {
   gap: 0.25rem;
 }
 
+.optionsGroup {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.ticketTypeItem {
+  margin: 0.5rem 0;
+  padding: 0.5rem;
+  border: 1px solid var(--background-color);
+  border-radius: 50px;
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+.ticketTypeItem h3 {
+  margin: 0;
+  margin-bottom: 0.5rem;
+}
+
+.ticketTypeBtnGroup, .sessionBtnGroup {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 1rem;
+}
+
+.sessionBtns {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
 .sessionList {
   margin: 1rem auto;
   width: 80%;
@@ -626,9 +634,16 @@ textarea {
 
   /* ---------- MODAL STYLES ---------- */
   .optionsGroup {
-    display: flex;
     flex-direction: column;
     justify-content: center;
+    margin: 0 auto;
+    width: 75%;
+  }
+
+  .ticketTypeBtnGroup, .sessionBtnGroup {
+    flex-direction: column;
+    justify-content: center;
+    gap: 1rem;
     margin: 0 auto;
     width: 75%;
   }

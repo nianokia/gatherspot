@@ -11,10 +11,12 @@ import { addToWaitlist } from "../api/waitlist";
 import { getSessionsForEvent } from "../api/session.jsx";
 
 import AddSession from "../pages/AddSession.jsx";
+import AddSpeaker from "../pages/AddSpeaker.jsx";
 import EditEvent from "../pages/EditEvent.jsx";
 import AddTicketType from "../pages/AddTicketType.jsx";
 import EditTicketType from "../pages/EditTicketType.jsx";
 import SelectTicketTypeModal from "./SelectTicketTypeModal.jsx";
+import SelectSessionModal from "./customModals/SelectSessionModal.jsx";
 import EditVenue from "../pages/EditVenue.jsx";
 import { BackButton, Modal, ConfirmModal, OptionsModal, formatDate } from "../constants/constant";
 
@@ -27,14 +29,21 @@ const EventDetails = () => {
 
   // ---------- MODAL STATES ----------
   const [isAddSessionOpen, setIsAddSessionOpen] = useState(false);
+  const [isAddSpeakerOpen, setIsAddSpeakerOpen] = useState(false);
+  const [isAddTicketTypeOpen, setIsAddTicketTypeOpen] = useState(false);
+
   const [isEditOptionsOpen, setIsEditOptionsOpen] = useState(false);
   const [isEditEventOpen, setIsEditEventOpen] = useState(false);
   const [isEditVenueOpen, setIsEditVenueOpen] = useState(false);
   const [isEditTicketTypesOpen, setIsEditTicketTypesOpen] = useState(false);
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+
   const [isSelectTicketTypeOpen, setIsSelectTicketTypeOpen] = useState(false);
-  const [isAddTicketTypeOpen, setIsAddTicketTypeOpen] = useState(false);
+  const [isSelectSessionOpen, setIsSelectSessionOpen] = useState(false);
+  
   const [selectedTicketType, setSelectedTicketType] = useState(null);
+  const [selectedSession, setSelectedSession] = useState(null);
+
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   // ---------- REGISTRATION STATES ----------
   const [existingRegistrations, setExistingRegistrations] = useState(null);
@@ -184,6 +193,30 @@ const EventDetails = () => {
     }
   };
 
+  // --------- HANDLE TICKET TYPE SELECTION ----------
+  const handleTicketTypeSelect = (type) => {
+    setSelectedTicketType(type);
+    setIsSelectTicketTypeOpen(false);
+    setIsEditTicketTypesOpen(true);
+  };
+
+  const handleCreateTicketType = () => {
+    setIsSelectTicketTypeOpen(false);
+    setIsAddTicketTypeOpen(true);
+  };
+
+  // ---------- HANDLE SESSION SELECTION ----------
+  const handleSessionSelect = (session) => {
+    setSelectedSession(session);
+    setIsSelectSessionOpen(false);
+    setIsAddSpeakerOpen(true);
+  };
+
+  const handleCreateSession = () => {
+    setIsSelectSessionOpen(false);
+    setIsAddSessionOpen(true);
+  };
+
   // ---------- DELETE EVENT ----------
   const handleDelete = async (eventId) => {
     try {
@@ -313,7 +346,10 @@ const EventDetails = () => {
         <h3>Event Schedule</h3>
         {/* --- Add Session Button for admin & organizers --- */}
         {user && (user.role_id === 1 || user.role_id === 4) && (
-          <button onClick={() => setIsAddSessionOpen(true)}>Add Event Session</button>
+          <div className="sessionBtns">
+            <button onClick={() => setIsAddSessionOpen(true)}>Add Event Session</button>
+            <button onClick={() => setIsSelectSessionOpen(true)}>Add Speakers/ Performers</button>
+          </div>
         )}
         {sessions && sessions.length === 0 ? (
           <p>No sessions available for this event.</p>
@@ -340,6 +376,28 @@ const EventDetails = () => {
           onClose={() => setIsAddSessionOpen(false)}
           onUpdate={fetchEventSessions}
         />
+      </Modal>
+
+      {/* ---------- SELECT SESSION MODAL ---------- */}
+      <SelectSessionModal
+        isOpen={isSelectSessionOpen}
+        onClose={() => setIsSelectSessionOpen(false)}
+        sessions={sessions || []}
+        onSelect={handleSessionSelect}
+        onCreate={handleCreateSession}
+      />
+
+      {/* ---------- ADD SPEAKER MODAL ---------- */}
+      <Modal isOpen={isAddSpeakerOpen} onClose={() => setIsAddSpeakerOpen(false)}>
+        {selectedSession && (
+          <AddSpeaker
+            sessionId={selectedSession.id}
+            session={selectedSession}
+            token={token}
+            onClose={() => setIsAddSpeakerOpen(false)}
+            onUpdate={fetchEventSessions}
+          />
+        )}
       </Modal>
 
       {/* ---------- OPTIONS MODAL ---------- */}
@@ -379,21 +437,13 @@ const EventDetails = () => {
         />
       </Modal>
 
-
-      {/* ---------- TICKET TYPE SELECT MODAL ---------- */}
+      {/* ---------- SELECT TICKET TYPE MODAL ---------- */}
       <SelectTicketTypeModal
         isOpen={isSelectTicketTypeOpen}
         onClose={() => setIsSelectTicketTypeOpen(false)}
         ticketTypes={event?.ticketTypes || []}
-        onSelect={(type) => {
-          setSelectedTicketType(type);
-          setIsSelectTicketTypeOpen(false);
-          setIsEditTicketTypesOpen(true);
-        }}
-        onCreate={() => {
-          setIsSelectTicketTypeOpen(false);
-          setIsAddTicketTypeOpen(true);
-        }}
+        onSelect={handleTicketTypeSelect}
+        onCreate={handleCreateTicketType}
       />
 
       {/* ---------- EDIT TICKET TYPE MODAL ---------- */}
