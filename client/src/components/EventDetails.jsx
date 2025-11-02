@@ -9,6 +9,7 @@ import { fetchEventById, deleteEvent } from "../api/event";
 import { createRegistration, fetchRegistrationsByUser } from "../api/registration";
 import { addToWaitlist } from "../api/waitlist";
 
+import AddSession from "../pages/AddSession.jsx";
 import EditEvent from "../pages/EditEvent.jsx";
 import AddTicketType from "../pages/AddTicketType.jsx";
 import EditTicketType from "../pages/EditTicketType.jsx";
@@ -23,6 +24,7 @@ const EventDetails = () => {
   const [event, setEvent] = useState(null);
 
   // ---------- MODAL STATES ----------
+  const [isAddSessionOpen, setIsAddSessionOpen] = useState(false);
   const [isEditOptionsOpen, setIsEditOptionsOpen] = useState(false);
   const [isEditEventOpen, setIsEditEventOpen] = useState(false);
   const [isEditVenueOpen, setIsEditVenueOpen] = useState(false);
@@ -112,9 +114,9 @@ const EventDetails = () => {
     if (qrCodeRef.current) qrCodeRef.current.download();
   };
 
-  // --- dynamically display updated Course ---
-  const handleUpdatedCourse = (updatedCourse) => {
-    setCourse(updatedCourse);
+  // --- dynamically display updated Event ---
+  const handleUpdatedEvent = (updatedEvent) => {
+    setEvent(updatedEvent);
   };
 
   // ---------- HANDLE EDIT OPTIONS ----------
@@ -291,6 +293,24 @@ const EventDetails = () => {
         )
       )}
 
+      {/* ---------- SESSION DETAILS ---------- */}
+      <div className="SessionDetails">
+        <hr />
+        <h3>Event Schedule</h3>
+        <button onClick={() => setIsAddSessionOpen(true)}>Add Event Session</button>
+        {/* --- Display Sessions --- */}
+      </div>
+
+      {/* ---------- ADD SESSION MODAL ---------- */}
+      <Modal isOpen={isAddSessionOpen} onClose={() => setIsAddSessionOpen(false)}>
+        <AddSession
+          eventId={event.id}
+          token={token}
+          onClose={() => setIsAddSessionOpen(false)}
+          onUpdate={fetchEvent}
+        />
+      </Modal>
+
       {/* ---------- OPTIONS MODAL ---------- */}
       <OptionsModal
         isOpen={isEditOptionsOpen}
@@ -309,7 +329,7 @@ const EventDetails = () => {
         <EditEvent 
           eventId={eventId}
           setIsModalOpen={setIsEditEventOpen}
-          onEventUpdated={handleUpdatedCourse}
+          onEventUpdated={handleUpdatedEvent}
           event={event}
           token={token}
           onUpdate={fetchEvent}
