@@ -20,3 +20,12 @@ export const fetchRegistrationsByUser = async (userId, token) => {
   });
   return res.data;
 };
+
+// ---------- DELETE OPERATIONS ----------
+// -------- DELETE REGISTRATION --------
+export const deleteRegistration = async (registrationId, token) => {
+  const res = await axios.delete(`${API_URL}/${registrationId}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return res.data;
+};

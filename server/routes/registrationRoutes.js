@@ -1,5 +1,5 @@
 import express from 'express';
-import { createRegistration, getRegistrationsByUser } from '../controllers/registrationController.js';
+import { createRegistration, getRegistrationsByUser, deleteRegistration } from '../controllers/registrationController.js';
 
 const router = express.Router();
 
@@ -10,5 +10,9 @@ router.post('/register', createRegistration);
 // ------------ READ ROUTES ------------
 // --- Fetch registerations by user ID route ---
 router.get('/user/:userId', getRegistrationsByUser)
+
+// ----------- DELETE ROUTES ------------
+// --- Delete Registration route ---
+router.delete('/:registrationId', deleteRegistration);
 
 export default router;

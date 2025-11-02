@@ -47,9 +47,26 @@ export const getRegistrationsByUser = async (req, res) => {
             // --- include all associated models for detailed info ---
             include: [{ all: true, nested: true }]
         });
-        res.status(200).json({ registrations });
+        res.status(200).json({ message: 'Registrations fetched successfully', registrations });
     } catch (err) {
         console.error('Error fetching registrations:', err);
         res.status(500).json({ message: 'Internal server error: Error fetching registrations', error: err });
+    }
+};
+
+// ------------ DELETE OPERATIONS ------------
+// ---------- DELETE REGISTRATION ----------
+export const deleteRegistration = async (req, res) => {
+    const { registrationId } = req.params;
+
+    try {
+        const registration = await Registration.findByPk(registrationId);
+        if (!registration) return res.status(404).json({ message: 'Registration not found' });
+
+        await registration.destroy();
+        res.status(200).json({ message: 'Registration deleted successfully' });
+    } catch (err) {
+        console.error('Error deleting registration:', err);
+        res.status(500).json({ message: 'Internal server error: Error deleting registration', error: err });
     }
 };
