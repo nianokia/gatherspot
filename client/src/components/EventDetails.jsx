@@ -311,7 +311,10 @@ const EventDetails = () => {
       <div className="SessionDetails">
         <hr />
         <h3>Event Schedule</h3>
-        <button onClick={() => setIsAddSessionOpen(true)}>Add Event Session</button>
+        {/* --- Add Session Button for admin & organizers --- */}
+        {user && (user.role_id === 1 || user.role_id === 4) && (
+          <button onClick={() => setIsAddSessionOpen(true)}>Add Event Session</button>
+        )}
         {sessions && sessions.length === 0 ? (
           <p>No sessions available for this event.</p>
         ) : (
@@ -335,7 +338,7 @@ const EventDetails = () => {
           eventId={event.id}
           token={token}
           onClose={() => setIsAddSessionOpen(false)}
-          onUpdate={fetchEvent}
+          onUpdate={fetchEventSessions}
         />
       </Modal>
 
