@@ -17,6 +17,7 @@ import EditEvent from "../pages/EditEvent.jsx";
 import EditVenue from "../pages/EditVenue.jsx";
 import EditTicketType from "../pages/EditTicketType.jsx";
 import EditSession from "../pages/EditSession.jsx";
+import EditSpeaker from "../pages/EditSpeaker.jsx";
 
 import SelectTicketTypeModal from "./SelectTicketTypeModal.jsx";
 import SelectSessionModal from "./customModals/SelectSessionModal.jsx";
@@ -41,6 +42,7 @@ const EventDetails = () => {
   const [isEditTicketTypesOpen, setIsEditTicketTypesOpen] = useState(false);
   const [isEditSessionOptionsOpen, setIsEditSessionOptionsOpen] = useState(false);
   const [isEditSessionOpen, setIsEditSessionOpen] = useState(false);
+  const [isEditSpeakerOpen, setIsEditSpeakerOpen] = useState(false);
 
   const [isSelectTicketTypeOpen, setIsSelectTicketTypeOpen] = useState(false);
   const [isSelectSessionOpen, setIsSelectSessionOpen] = useState(false);
@@ -203,9 +205,9 @@ const EventDetails = () => {
     if (action === "editSession") {
       setIsEditSessionOptionsOpen(false);
       setIsEditSessionOpen(true);
-    } else if (action === "addSpeaker") {
+    } else if (action === "editSpeaker") {
       setIsEditSessionOptionsOpen(false);
-      setIsAddSpeakerOpen(true);
+      setIsEditSpeakerOpen(true);
     }
   };
 
@@ -508,9 +510,9 @@ const EventDetails = () => {
         onClose={() => setIsEditSessionOptionsOpen(false)}
         title="What would you like to edit?"
         action1={() => handleSessionOptions("editSession")}
-        action2={() => handleSessionOptions("addSpeaker")}
+        action2={() => handleSessionOptions("editSpeaker")}
         option1="Edit Session"
-        option2="Edit Speaker"
+        option2={"Edit Speaker"}
       />
 
       {/* ---------- EDIT SESSION MODAL ---------- */}
@@ -524,6 +526,16 @@ const EventDetails = () => {
       </Modal>
 
       {/* ---------- EDIT SPEAKER MODAL ---------- */}
+      <Modal isOpen={isEditSpeakerOpen} onClose={() => setIsEditSpeakerOpen(false)}>
+        {selectedSession && (
+          <EditSpeaker
+            speakers={selectedSession.speakers}
+            token={token}
+            onUpdate={fetchEventSessions}
+            onClose={() => setIsEditSpeakerOpen(false)}
+          />
+        )}
+      </Modal>
 
       {/* ---------- DELETE EVENT MODAL ---------- */}
       <ConfirmModal 
