@@ -3,13 +3,14 @@ import { useParams } from "react-router";
 import { QRCode } from 'react-qrcode-logo';
 import AuthContext from "../context/authContext";
 import { fetchEventById } from "../api/event";
-import { createRegistration } from "../api/registration";
+import { createRegistration, fetchRegistrationsByUser } from "../api/registration";
 import { BackButton, formatDate } from "../constants/constant";
 
 const EventDetails = () => {
   const { user, token, loading, setLoading } = useContext(AuthContext);
   const { eventId } = useParams();
   const [event, setEvent] = useState(null);
+  const [existingRegistrations, setExistingRegistrations] = useState(null);
   const [registrationCode, setRegistrationCode] = useState(null);
   // --- reference to QR code for downloading ---
   const qrCodeRef = useRef();
@@ -27,9 +28,39 @@ const EventDetails = () => {
     }
   };
 
+  // ---------- FETCH EXISTING REGISTRATIONS ----------
+  const fetchExistingRegistrations = async () => {
+    try {
+      const data = await fetchRegistrationsByUser(user.id, token);
+      setExistingRegistrations(data.registrations);
+      console.log("Fetched existing registrations:", data.registrations);
+    } catch (err) {
+      console.error("Error fetching existing registrations:", err);
+    }
+  };
+
+  // --- fetch event details on component mount ---
   useEffect(() => {
     fetchEvent();
   }, [eventId, token]);
+
+  // --- fetch existing registrations if user is attendee ---
+  useEffect(() => {
+    if (user && token && user.role_id === 2) {
+      fetchExistingRegistrations();
+    }
+  }, [user, token]);
+
+  // --- check for existing registration when registrations or event change ---
+  useEffect(() => {
+    // --- Check if user already has a registration for this event ---
+    if (existingRegistrations && event) {
+      const registration = existingRegistrations.find(reg => reg.event_id === event.id);
+      if (registration) {
+        setRegistrationCode(registration.registration_code);
+      }
+    }
+  }, [existingRegistrations, event]);
 
   // ---------- BUY TICKET ----------
   const buyTicket = async (ticketTypeId) => {
@@ -94,35 +125,13 @@ const EventDetails = () => {
       <p>Organizer: {event.organizer ? `${event.organizer.f_name} ${event.organizer.l_name}` : 'N/A'}</p>
       <p>Capacity: {event.capacity}</p>
 
-      {/* ---------- DISPLAY TICKET TYPES ---------- */}
-      {event.ticketTypes && event.ticketTypes.length > 0 ? (
-        <div className="ticketTypes">
-          <h3>Ticket Types:</h3>
-          <ul className="ticketTypesList">
-            {event.ticketTypes.map((ticket) => (
-              <li key={ticket.id} className="ticketListItem">
-                <div className="ticketInfo">
-                  <span><strong>{ticket.name}</strong></span>
-                  <span>{" - "} Price: ${ticket.price}</span>
-                  <span>{", "} Quantity: {ticket.quantity}</span>
-                </div>
-                {user && user.role_id === 2 && (
-                  <button className="buyBtn" onClick={() => buyTicket(ticket.id)}>
-                    Buy
-                  </button>
-                )}
-              </li>
-            ))}
-          </ul>
-        </div>
-      ) : (
-        <p>No ticket types available.</p>
-      )}
-
-      {/* ---------- DISPLAY QR CODE ---------- */}
-      {registrationCode && (
+      <hr />
+      {/* --- Only show registration block & QR code if registrationCode exists --- */}
+      {registrationCode ? (
+        // ---------- DISPLAY QR CODE ----------
         <div className="qrCodeContainer">
-          <h3>Your QR Code:</h3>
+          <h3>Your Registration</h3>
+          <h4>Registration Code: {registrationCode}</h4>
           <QRCode ref={qrCodeRef}
             value={registrationCode}
             logoImage="/gatherspot-logo.png" 
@@ -133,16 +142,40 @@ const EventDetails = () => {
             logoPadding={10}
             fgColor="#113B6F"
             bgColor="#f6f6f6"
-            logoPaddingStyle="square" // "square" or "circle"
+            logoPaddingStyle="square"
             logoPaddingRadius={30}
-            qrStyle="squares" // "squares", "dots", "fluid"
+            qrStyle="squares"
             eyeColor="#23B9D9"
-            eyeRadius={[20, 20, 20, 20]} // topLeft, topRight, bottomLeft, bottomRight
+            eyeRadius={[20, 20, 20, 20]}
           />
           <button type="button" className="downloadBtn" onClick={handleDownload}>
             Download QR Code
           </button>
         </div>
+      ) : (
+        event.ticketTypes && event.ticketTypes.length > 0 ? (
+          <div className="ticketTypes">
+            <h3>Ticket Types:</h3>
+            <ul className="ticketTypesList">
+              {event.ticketTypes.map((ticket) => (
+                <li key={ticket.id} className="ticketListItem">
+                  <div className="ticketInfo">
+                    <span><strong>{ticket.name}</strong></span>
+                    <span>{" - "} Price: ${ticket.price}</span>
+                    <span>{", "} Quantity: {ticket.quantity}</span>
+                  </div>
+                  {user && user.role_id === 2 && (
+                    <button className="buyBtn" onClick={() => buyTicket(ticket.id)}>
+                      Buy
+                    </button>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : (
+          <p>No ticket types available.</p>
+        )
       )}
     </div>
   );
