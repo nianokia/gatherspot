@@ -2,17 +2,19 @@ import { useState, useEffect, useContext, useRef } from "react";
 import { useParams, useNavigate } from "react-router";
 import { QRCode } from 'react-qrcode-logo';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faPenToSquare, faTrash, faStore } from '@fortawesome/free-solid-svg-icons';
 
 import AuthContext from "../context/authContext";
-import { fetchEventById, deleteEvent } from "../api/event";
+import { fetchEventById, addVendorToEvent, deleteEvent } from "../api/event";
 import { createRegistration, fetchRegistrationsByUser, deleteRegistration } from "../api/registration";
 import { addToWaitlist } from "../api/waitlist";
 import { getSessionsForEvent } from "../api/session.jsx";
+import { fetchAllVendors } from "../api/vendor.jsx";
 
 import AddTicketType from "../pages/AddTicketType.jsx";
 import AddSession from "../pages/AddSession.jsx";
 import AddSpeaker from "../pages/AddSpeaker.jsx";
+import AddVendor from "../pages/AddVendor.jsx";
 import EditEvent from "../pages/EditEvent.jsx";
 import EditVenue from "../pages/EditVenue.jsx";
 import EditTicketType from "../pages/EditTicketType.jsx";
@@ -21,6 +23,7 @@ import EditSpeaker from "../pages/EditSpeaker.jsx";
 
 import SelectTicketTypeModal from "./SelectTicketTypeModal.jsx";
 import SelectSessionModal from "./customModals/SelectSessionModal.jsx";
+import DropDownModal from "./customModals/DropDownModal.jsx";
 
 import { BackButton, Modal, ConfirmModal, OptionsModal, formatDate } from "../constants/constant";
 
@@ -30,11 +33,13 @@ const EventDetails = () => {
   const { eventId } = useParams();
   const [event, setEvent] = useState(null);
   const [sessions, setSessions] = useState([]);
+  const [vendors, setVendors] = useState([]);
 
   // ---------- MODAL STATES ----------
   const [isAddSessionOpen, setIsAddSessionOpen] = useState(false);
   const [isAddSpeakerOpen, setIsAddSpeakerOpen] = useState(false);
   const [isAddTicketTypeOpen, setIsAddTicketTypeOpen] = useState(false);
+  const [isAddVendorOpen, setIsAddVendorOpen] = useState(false);
 
   const [isEditOptionsOpen, setIsEditOptionsOpen] = useState(false);
   const [isEditEventOpen, setIsEditEventOpen] = useState(false);
@@ -46,6 +51,7 @@ const EventDetails = () => {
 
   const [isSelectTicketTypeOpen, setIsSelectTicketTypeOpen] = useState(false);
   const [isSelectSessionOpen, setIsSelectSessionOpen] = useState(false);
+  const [isCreateVendorOpen, setIsCreateVendorOpen] = useState(false);
   
   const [selectedTicketType, setSelectedTicketType] = useState(null);
   const [selectedSession, setSelectedSession] = useState(null);
@@ -186,6 +192,28 @@ const EventDetails = () => {
     setEvent(updatedEvent);
   };
 
+  const openAddVendorModal = async () => {
+    try {
+      const data = await fetchAllVendors(token);
+      setVendors(data.vendors);
+      setIsAddVendorOpen(true);
+    } catch (err) {
+      console.error("Error fetching vendors:", err);
+    }
+  };
+
+  // ---------- HANDLE VENDOR SELECTION ----------
+  const handleAddVendor = async (vendorId) => {
+    await addVendorToEvent(eventId, vendorId, token);
+    setIsAddVendorOpen(false);
+    setIsCreateVendorOpen(true)
+  };
+
+  const handleCreateVendor = () => {
+    setIsAddVendorOpen(false);
+    setIsCreateVendorOpen(true);
+  };
+
   // ---------- HANDLE EDIT OPTIONS ----------
   const handleEditOptions = (action) => {
     if (action === "editEvent") {
@@ -265,6 +293,11 @@ const EventDetails = () => {
   if (loading) return <div>Loading...</div>;
   if (!event) return <div>Event not found</div>;
 
+  if (!token) {
+    alert("You must be logged in to perform this action.");
+    return;
+  }
+
   return (
     <div className="EventDetails">
       <BackButton />
@@ -312,6 +345,9 @@ const EventDetails = () => {
           <p>Capacity: {event.capacity}</p>
         </div>
       </div>
+      <button className="vendorBtn" onClick={openAddVendorModal}>
+        <FontAwesomeIcon icon={faStore} /> Add Vendor
+      </button>
       <hr />
 
       {/* --- Only show registration block & QR code if registrationCode exists --- */}
@@ -519,6 +555,25 @@ const EventDetails = () => {
           eventId={eventId}
           token={token}
           onClose={() => setIsAddTicketTypeOpen(false)}
+          onUpdate={fetchEvent}
+        />
+      </Modal>
+
+      {/* ---------- SELECT VENDOR MODAL ---------- */}
+      <DropDownModal
+        isOpen={isAddVendorOpen}
+        onClose={() => setIsAddVendorOpen(false)}
+        vendors={vendors}
+        onSelect={handleAddVendor}
+        onCreate={handleCreateVendor}
+      />
+
+      {/* ---------- CREATE VENDOR MODAL ---------- */}
+      <Modal isOpen={isCreateVendorOpen} onClose={() => setIsCreateVendorOpen(false)}>
+        <AddVendor
+          token={token}
+          userId={user?.id}
+          onClose={() => setIsCreateVendorOpen(false)}
           onUpdate={fetchEvent}
         />
       </Modal>

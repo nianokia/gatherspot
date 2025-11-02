@@ -529,6 +529,43 @@ textarea {
   margin-top: 1rem;
 }
 
+.vendorBtn {
+  padding: 0.5rem 1rem;
+  background-color: var(--text-color);
+  color: var(--secondary-light-color);
+  border: none;
+  border-radius: 8px;
+  will-change: filter;
+  transition: filter 300ms;
+  cursor: pointer;
+}
+
+.vendorBtn:hover {
+  filter: drop-shadow(0 0 0.5rem var(--secondary-color));
+}
+
+.vendorDropdown {
+  margin: 1rem auto;
+  padding: 0.5rem;
+  border: 1px solid var(--background-color);
+  border-radius: 8px;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  width: 80%;
+  max-width: 700px;
+  text-align: start;
+  font-size: 1rem;
+} 
+
+.notYourVendorSection {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  /* margin: 0 auto; */
+  gap: 1rem;
+}
+
 /* ---------- TICKET TYPES STYLES ---------- */
 
 .ticketTypeItem {
