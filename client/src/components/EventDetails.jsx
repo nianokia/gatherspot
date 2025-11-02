@@ -394,13 +394,15 @@ const EventDetails = () => {
               <li key={session.id} className="sessionListItem">
                 <header>
                   <h4>{session.title}</h4>
-                  <FontAwesomeIcon icon={faPenToSquare}
-                    className="editIcon"
-                    onClick={() => {
-                      setSelectedSession(session);
-                      setIsEditSessionOptionsOpen(true);
-                    }}
-                  />
+                  {user && (user.role_id === 1 || user.role_id === 4) && (
+                    <FontAwesomeIcon icon={faPenToSquare}
+                      className="editIcon"
+                      onClick={() => {
+                        setSelectedSession(session);
+                        setIsEditSessionOptionsOpen(true);
+                      }}
+                    />
+                  )}
                 </header>
                 
                 {session.speakers && session.speakers.length > 0 && (
