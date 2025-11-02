@@ -1,12 +1,13 @@
 import express from 'express';
 import { 
-    createEvent, 
-    getAllEvents, 
+    createEvent,
+    addVendorToEvent,
+    getAllEvents,
     getEventById, 
     getEventsByOrganizer, 
     getEventsByVenue, 
     updateEvent,
-    deleteEvent 
+    deleteEvent
 } from '../controllers/eventController.js';
 
 const router = express.Router();
@@ -14,6 +15,9 @@ const router = express.Router();
 // ------------ CREATE ROUTES ------------
 // --- Create Event route ---
 router.post('/create-event', createEvent);
+
+// --- Add Vendor to Event route ---
+router.post('/:eventId/vendors', addVendorToEvent);
 
 
 // ------------ READ ROUTES ------------

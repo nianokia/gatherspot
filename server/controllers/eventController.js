@@ -1,6 +1,6 @@
 import db from '../models/index.js';
 
-const { User, Event, Venue, TicketType } = db;
+const { User, Event, Venue, TicketType, EventVendor } = db;
 
 // ------------ POST OPERATIONS ------------
 // ---------- CREATE EVENT ----------
@@ -63,6 +63,23 @@ export const createEvent = async (req, res) => {
     }
 };
 
+// // ---------- ADD VENDOR TO EVENT ----------
+export const addVendorToEvent = async (req, res) => {
+    const { eventId } = req.params;
+    const { vendor_id } = req.body;
+    try {
+        // --- find the event ---
+        const event = await EventVendor.create({ event_id: eventId, vendor_id });
+        if (!event) return res.status(404).json({ message: "Event not found", EventVendor });
+
+        res.status(200).json({ message: "Vendor added to event successfully", event });
+    } catch (err) {
+        console.error('Error adding Vendor to Event:', err);
+        res.status(500).json({ message: 'Internal server error: Error adding Vendor to Event', error: err });
+    }
+};
+
+
 // ------------ READ OPERATIONS ------------
 // // ---------- GET ALL EVENTS ----------
 export const getAllEvents = async (req, res) => {
@@ -75,7 +92,7 @@ export const getAllEvents = async (req, res) => {
             ]
         });
         if (!events) return res.status(404).json({ message: "No events found" });
-        res.status(200).json({ events });
+        res.status(200).json({ message: "Events fetched successfully", events });
     } catch (err) {
         console.error('Error fetching Events:', err);
         res.status(500).json({ message: 'Internal server error: Error fetching Events', error: err });
@@ -139,7 +156,7 @@ export const getEventsByVenue = async (req, res) => {
             ]
         });
         if (!events || events.length === 0) return res.status(404).json({ message: "No events found for this venue" });
-        res.status(200).json({ events });
+        res.status(200).json({ message: "Venue's Events fetched successfully", events });
     } catch (err) {
         console.error('Error fetching Events by Venue:', err);
         res.status(500).json({ message: 'Internal server error: Error fetching Events by Venue', error: err });

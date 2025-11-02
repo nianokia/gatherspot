@@ -12,6 +12,14 @@ export const createEvent = async (eventData, token) => {
   return res.data;
 };
 
+// -------- ADD VENDOR TO EVENT --------
+export const addVendorToEvent = async (eventId, vendorId, token) => {
+  const res = await axios.post(`${API_URL}/${eventId}/vendors`, { vendor_id: vendorId }, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return res.data;
+};
+
 // ---------- GET OPERATIONS ----------
 // -------- FETCH ALL EVENTS --------
 export const fetchEvents = async (token) => {
