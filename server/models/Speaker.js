@@ -7,7 +7,6 @@ export default (sequelize, DataTypes) => {
         },
         user_id: {
             type: DataTypes.UUID,
-            unique: true,
             references: { model: 'users', key: 'id' },
             onDelete: 'SET NULL',
         },
@@ -17,7 +16,7 @@ export default (sequelize, DataTypes) => {
         },
         contact_email: {
             type: DataTypes.STRING,
-            validate: { isEmail: true },
+            // validate: { isEmail: true },
         },
         bio: {
             type: DataTypes.TEXT,
