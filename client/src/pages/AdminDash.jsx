@@ -26,8 +26,8 @@ const AdminDash = () => {
           <ul>
             <li className='userEvent'>✅ GET event</li>
             <li className="userEvent">✅ UPDATE event (venue, ticket_types, waitlist)</li>
-            <li className="userEvent">GET sessions</li>
-            <li className="userEvent">CREATE session (speakers, vendors)</li>
+            <li className="userEvent">✅ GET sessions</li>
+            <li className="userEvent">✅ CREATE session (speakers, vendors)</li>
             <li className="userEvent">CREATE notifications (schedule changes, venue updates, important announcements)</li>
             <li className="userEvent">✅ DELETE event</li>
           </ul>
