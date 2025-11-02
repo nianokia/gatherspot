@@ -100,6 +100,20 @@
   margin-top: 1rem;
 }
 
+.ticketTypeItem {
+  margin: 0.5rem 0;
+  padding: 0.5rem;
+  border: 1px solid var(--background-color);
+  border-radius: 50px;
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+.ticketTypeItem h3 {
+  margin: 0;
+  margin-bottom: 0.5rem;
+}
+
 .ticketTypeBtnGroup {
   display: flex;
   flex-direction: row;
