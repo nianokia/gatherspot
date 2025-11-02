@@ -30,3 +30,33 @@ export const createVenue = async (req, res) => {
         res.status(500).json({ message: 'Internal server error: Error creating Venue', error: err });
     }
 };
+
+// ------------ UPDATE OPERATIONS ------------
+// ---------- UPDATE VENUE ----------
+export const updateVenue = async (req, res) => {
+    const venueId = req.params.id;
+    const updatedData = req.body;
+
+    try {
+        const venue = await Venue.findByPk(venueId);
+        if (!venue) {
+            return res.status(404).json({ error: "Venue not found." });
+        }
+
+        // --- convert empty string to null for capacity ---
+        if (updatedData.capacity === "") {
+            updatedData.capacity = null;
+        }
+
+        // --- validate venue capacity if provided and not null ---
+        if (updatedData.capacity !== undefined && updatedData.capacity !== null && updatedData.capacity < 1) {
+            return res.status(400).json({ error: "Capacity must be greater than zero." });
+        }
+
+        await venue.update(updatedData);
+        res.status(200).json({ message: "Venue updated successfully", venue });
+    } catch (err) {
+        console.error("Error updating Venue:", err);
+        res.status(500).json({ error: "An error occurred while updating the Venue." });
+    }
+};

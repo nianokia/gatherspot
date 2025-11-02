@@ -6,8 +6,17 @@ console.log('Venue API URL:', API_URL);
 // ---------- POST OPERATIONS ----------
 // -------- CREATE VENUE --------
 export const createVenue = async (venueData, token) => {
-  const res = await axios.post(`${API_URL}/create-venue`, venueData, {
+  const res = await axios.post(`${API_URL}/create`, venueData, {
     headers: { Authorization: `Bearer ${token}` },
   });
   return res.data;
 };
+
+// ---------- PUT OPERATIONS ----------
+// -------- UPDATE VENUE --------
+export const updateVenue = async (venueId, updatedData, token) => {
+  const res = await axios.put(`${API_URL}/update/${venueId}`, updatedData, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return res.data;
+}
