@@ -8,7 +8,7 @@ import { fetchEventById, deleteEvent } from "../api/event";
 import { createRegistration, fetchRegistrationsByUser } from "../api/registration";
 import { addToWaitlist } from "../api/waitlist";
 import EditEvent from "../pages/EditEvent.jsx";
-import { BackButton, Modal, ConfirmModal, formatDate } from "../constants/constant";
+import { BackButton, Modal, ConfirmModal, OptionsModal, formatDate } from "../constants/constant";
 
 const EventDetails = () => {
   const navigate = useNavigate();
@@ -16,9 +16,14 @@ const EventDetails = () => {
   const { eventId } = useParams();
   const [event, setEvent] = useState(null);
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  // ---------- MODAL STATES ----------
+  const [isEditOptionsOpen, setIsEditOptionsOpen] = useState(false);
+  const [isEditEventOpen, setIsEditEventOpen] = useState(false);
+  const [isEditVenueOpen, setIsEditVenueOpen] = useState(false);
+  const [isEditTicketTypesOpen, setIsEditTicketTypesOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
+  // ---------- REGISTRATION STATES ----------
   const [existingRegistrations, setExistingRegistrations] = useState(null);
   const [registration, setRegistration] = useState(null);
   const [registrationCode, setRegistrationCode] = useState(null);
@@ -80,7 +85,7 @@ const EventDetails = () => {
     };
 
     try {
-      // --------- CREATE REGISTRATION ----------
+      // ---------- CREATE REGISTRATION ----------
       const response = await createRegistration(registrationData, token);
       if (!response) throw new Error("Failed to create registration");
       console.log("createRegistration response:", response);
@@ -103,8 +108,21 @@ const EventDetails = () => {
     setCourse(updatedCourse);
   };
 
-  console.log("EventId:", eventId);
+  // ---------- HANDLE EDIT OPTIONS ----------
+  const handleEditOptions = (action) => {
+    if (action === "editEvent") {
+      setIsEditOptionsOpen(false);
+      setIsEditEventOpen(true);
+    } else if (action === "editVenue") {
+      setIsEditOptionsOpen(false);
+      setIsEditVenueOpen(true);
+    } else if (action === "editTicketTypes") {
+      setIsEditOptionsOpen(false);
+      setIsEditTicketTypesOpen(true);
+    }
+  };
 
+  // ---------- DELETE EVENT ----------
   const handleDelete = async (eventId) => {
     try {
       await deleteEvent(eventId, token);
@@ -116,12 +134,7 @@ const EventDetails = () => {
     }
   };
 
-  // --- Close modal & reset role ---
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
-
-  // ---------- USE EFFECTS ----------
+  // ---------- ALL USE EFFECTS ----------
   // --- fetch event details on component mount ---
   useEffect(() => {
     fetchEvent();
@@ -168,11 +181,11 @@ const EventDetails = () => {
       <header>
         {user && (user.role_id === 1 || user.role_id === 4) && (
           <div className="eventIconGroup">
-            <FontAwesomeIcon
-              icon={faPenToSquare}
-              className="editIcon"
-              onClick={() => setIsModalOpen(true)}
-            />
+              <FontAwesomeIcon
+                icon={faPenToSquare}
+                className="editIcon"
+                onClick={() => setIsEditOptionsOpen(true)}
+              />
             <FontAwesomeIcon icon={faTrash} 
               className="deleteEventItem"
               onClick={() => setIsDeleteModalOpen(true)}
@@ -207,6 +220,7 @@ const EventDetails = () => {
       <p>Capacity: {event.capacity}</p>
 
       <hr />
+
       {/* --- Only show registration block & QR code if registrationCode exists --- */}
       {registrationCode && registration ? (
         // ---------- DISPLAY QR CODE & TICKET TYPE ----------
@@ -265,20 +279,45 @@ const EventDetails = () => {
         )
       )}
 
-      {/* -------- EDIT EVENT MODAL -------- */}
-      <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
+      {/* ---------- OPTIONS MODAL ---------- */}
+      <OptionsModal
+        isOpen={isEditOptionsOpen}
+        onClose={() => setIsEditOptionsOpen(false)}
+        title="What would you like to edit?"
+        action1={() => handleEditOptions("editEvent")}
+        action2={() => handleEditOptions("editVenue")}
+        action3={() => handleEditOptions("editTicketTypes")}
+        option1="Edit Event Details"
+        option2="Edit Venue"
+        option3="Edit Ticket Types"
+      />
+
+      {/* ---------- EDIT EVENT MODAL ---------- */}
+      <Modal isOpen={isEditEventOpen} onClose={() => setIsEditEventOpen(false)}>
         <EditEvent 
           eventId={eventId}
-          setIsModalOpen={setIsModalOpen}
+          setIsModalOpen={setIsEditEventOpen}
           onEventUpdated={handleUpdatedCourse}
           event={event}
           token={token}
-          onUpdate={fetchEvent} // refresh event after update
-          onClose={handleCloseModal} // close modal after update
+          onUpdate={fetchEvent}
+          onClose={() => setIsEditEventOpen(false)}
         />
       </Modal>
 
-      {/* -------- DELETE EVENT MODAL -------- */}
+      {/* ---------- EDIT VENUE MODAL ---------- */}
+      {/* TODO: Add EditVenue component/modal here */}
+      {/* <Modal isOpen={isEditVenueOpen} onClose={() => setIsEditVenueOpen(false)}>
+        <EditVenue ... />
+      </Modal> */}
+
+      {/* ---------- EDIT TICKET TYPES MODAL ---------- */}
+      {/* TODO: Add EditTicketTypes component/modal here */}
+      {/* <Modal isOpen={isEditTicketTypesOpen} onClose={() => setIsEditTicketTypesOpen(false)}>
+        <EditTicketTypes ... />
+      </Modal> */}
+
+      {/* ---------- DELETE EVENT MODAL ---------- */}
       <ConfirmModal 
         isOpen={isDeleteModalOpen}
         onClose={() => setIsDeleteModalOpen(false)}
