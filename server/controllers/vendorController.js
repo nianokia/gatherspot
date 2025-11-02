@@ -52,6 +52,29 @@ export const getEventsByVendorId = async (req, res) => {
     }
 };
 
+// ----------- PUT OPERATIONS ------------
+// ---------- UPDATE VENDOR ----------
+export const updateVendor = async (req, res) => {
+    const { vendorId } = req.params;
+    const { company_name, contact_email, phone } = req.body;
+
+    try {
+        const vendor = await Vendor.findByPk(vendorId);
+        if (!vendor) return res.status(404).json({ message: "Vendor not found" });
+
+        await vendor.update({
+            company_name: company_name || vendor.company_name,
+            contact_email: contact_email || vendor.contact_email,
+            phone: phone || vendor.phone
+        });
+
+        res.status(200).json({ message: "Vendor updated successfully", vendor });
+    } catch (error) {
+        console.error("Error updating vendor: ", error);
+        res.status(500).json({ message: "Error updating vendor", error: error.message });
+    }
+};
+
 // ----------- DELETE OPERATIONS ------------
 // ---------- DELETE VENDOR ----------
 export const deleteVendor = async (req, res) => {

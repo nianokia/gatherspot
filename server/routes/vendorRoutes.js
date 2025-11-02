@@ -1,7 +1,12 @@
 import express from 'express';
-import { getEventsByVendorId, getAllVendors, createVendor, deleteVendor } from '../controllers/vendorController.js';
+import { createVendor, getEventsByVendorId, getAllVendors, updateVendor, deleteVendor } from '../controllers/vendorController.js';
 
 const router = express.Router();
+
+// ------------ CREATE ROUTES ------------
+// --- Create Vendor route ---
+router.post('/', createVendor);
+
 
 // ------------ READ ROUTES ------------
 // ---------- Fetch all vendors ----------
@@ -10,9 +15,11 @@ router.get('/', getAllVendors);
 // ---------- Fetch events by vendor ID ----------
 router.get('/:vendorId/events', getEventsByVendorId);
 
-// ------------ CREATE ROUTES ------------
-// --- Create Vendor route ---
-router.post('/', createVendor);
+
+// ----------- UPDATE ROUTES ------------
+// ---------- Update Vendor route ----------
+router.put('/:vendorId', updateVendor);
+
 
 // ----------- DELETE ROUTES ------------
 // --- Delete Vendor route ---

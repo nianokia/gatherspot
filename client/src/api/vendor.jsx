@@ -29,6 +29,15 @@ export const fetchEventsByVendorId = async (vendorId, token) => {
   return res.data;
 };
 
+// ---------- UPDATE OPERATIONS ----------
+// -------- UPDATE VENDOR --------
+export const updateVendor = async (vendorId, vendorData, token) => {
+  const res = await axios.put(`${API_URL}/${vendorId}`, vendorData, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return res.data;
+};
+
 // ---------- DELETE OPERATIONS ----------
 // -------- DELETE VENDOR --------
 export const deleteVendor = async (vendorId, token) => {
