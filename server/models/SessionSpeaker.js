@@ -17,6 +17,13 @@ export default (sequelize, DataTypes) => {
     }, {
         tableName: 'session_speakers',
         timestamps: false,
+        // --- prevent duplicate entries for the same session & speaker ---
+        indexes: [
+            {
+                unique: true,
+                fields: ['session_id', 'speaker_id'],
+            },
+        ],
     });
 
     // ---------- SESSION SPEAKER ASSOCIATIONS ----------
