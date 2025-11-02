@@ -51,3 +51,12 @@ export const deleteSession = async (sessionId, token) => {
   );
   return res.data;
 };
+
+// -------- REMOVE SPEAKER FROM SESSION --------
+export const removeSpeakerFromSession = async (sessionId, speakerId, token) => {
+  const res = await axios.delete(
+    `${API_URL}/${sessionId}/speakers/${speakerId}`,
+    { headers: { Authorization: `Bearer ${token}` } }
+  );
+  return res.data;
+};

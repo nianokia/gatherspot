@@ -1,5 +1,11 @@
 import express from 'express';
-import { createSession, getSessionsForEvent, addSpeakersToSession, updateSession, deleteSession } from '../controllers/sessionController.js';
+import { createSession, 
+    getSessionsForEvent, 
+    addSpeakersToSession, 
+    updateSession, 
+    deleteSession, 
+    removeSpeakerFromSession 
+} from '../controllers/sessionController.js';
 
 const router = express.Router();
 
@@ -26,5 +32,8 @@ router.put('/:sessionId', updateSession);
 // ---------- DELETE ROUTES ----------
 // --- Delete a session ---
 router.delete('/:sessionId', deleteSession);
+
+// --- Remove a speaker from a session ---
+router.delete('/:sessionId/speakers/:speakerId', removeSpeakerFromSession);
 
 export default router;

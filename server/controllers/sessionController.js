@@ -119,3 +119,23 @@ export const deleteSession = async (req, res) => {
         res.status(500).json({ message: 'Error deleting session', error: err });
     }
 };
+
+// ---------- REMOVE SPEAKER FROM SESSION ----------
+export const removeSpeakerFromSession = async (req, res) => {
+    const { sessionId, speakerId } = req.params;
+
+    try {
+        const session = await Session.findByPk(sessionId);
+        if (!session) return res.status(404).json({ message: 'Session not found' });
+
+        // --- remove the association between session & speaker ---
+        await session.removeSpeaker(speakerId);
+
+        // --- fetch & return the updated session with associated speakers ---
+        const updatedSession = await Session.findByPk(sessionId, { include: ['speakers'] });
+        res.status(200).json({ message: 'Speaker removed from session successfully', session: updatedSession });
+    } catch (err) {
+        console.error('Error removing speaker from session:', err);
+        res.status(500).json({ message: 'Error removing speaker from session', error: err });
+    }
+};
