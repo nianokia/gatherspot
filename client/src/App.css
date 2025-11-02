@@ -18,11 +18,11 @@
   --warning-color: #ff6464;
   --warning-dark-color: #ff4646;
   --text-color: #151515;
-
-  width: 100vw;
+  
   margin: 0 auto;
+  width: 100vw;
   background-color: var(--background-color);
-  justify-self: start;
+  justify-content: start;
 }
 
 /* ------------- APP STYLES ------------- */
@@ -93,7 +93,6 @@
 }
 
 
-
 /* ---------- NAVBAR STYLES ---------- */
 
 nav {
@@ -103,7 +102,7 @@ nav {
   gap: 2rem;
   padding: 1rem 2rem;
   /* overflow: hidden; */
-  /* position: relative; */
+  position: relative;
 }
 
 .navGroup {
