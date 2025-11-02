@@ -8,6 +8,7 @@ import AuthContext from "../context/authContext";
 import { fetchEventById, deleteEvent } from "../api/event";
 import { createRegistration, fetchRegistrationsByUser } from "../api/registration";
 import { addToWaitlist } from "../api/waitlist";
+import { getSessionsForEvent } from "../api/session.jsx";
 
 import AddSession from "../pages/AddSession.jsx";
 import EditEvent from "../pages/EditEvent.jsx";
@@ -22,6 +23,7 @@ const EventDetails = () => {
   const { user, token, loading, setLoading } = useContext(AuthContext);
   const { eventId } = useParams();
   const [event, setEvent] = useState(null);
+  const [sessions, setSessions] = useState([]);
 
   // ---------- MODAL STATES ----------
   const [isAddSessionOpen, setIsAddSessionOpen] = useState(false);
@@ -56,6 +58,23 @@ const EventDetails = () => {
     }
   };
 
+  // ---------- FETCH EVENT SESSIONS ----------
+  const fetchEventSessions = async () => {
+    try {
+      const data = await getSessionsForEvent(eventId, token);
+      console.log("Fetched event sessions:", data.sessions);
+      setSessions(data.sessions);
+    } catch (err) {
+      console.error("Error fetching event sessions:", err);
+    }
+  };
+
+  // --- fetch event details on component mount ---
+  useEffect(() => {
+    fetchEvent();
+    fetchEventSessions();
+  }, [eventId, token]);
+
   // ---------- FETCH EXISTING REGISTRATIONS ----------
   const fetchExistingRegistrations = async () => {
     try {
@@ -66,6 +85,38 @@ const EventDetails = () => {
       console.error("Error fetching existing registrations:", err);
     }
   };
+
+  // ---------- REGISTRATION RELATED USE EFFECTS ----------
+  // --- fetch existing registrations if user is attendee ---
+  useEffect(() => {
+    if (user && token && user.role_id === 2) {
+      fetchExistingRegistrations();
+    }
+  }, [user, token]);
+
+  // --- check for existing registration when registrations or event change ---
+  useEffect(() => {
+    // --- Check if user already has a registration for this event ---
+    if (existingRegistrations && event) {
+      // --- Find the registration for this event ---
+      const registration = existingRegistrations.find(r => r.event_id === event.id);
+
+      // --- if found, set registration & registration code ---
+      if (registration) {
+        setRegistrationCode(registration.registration_code);
+        setRegistration(registration);
+      } else {
+        setRegistration(null);
+      }
+    }
+  }, [existingRegistrations, event]);
+
+  // --- check if event is full ---
+  useEffect(() => {
+    if (event && event.ticketTypes) {
+      setIsEventFull(event.capacity <= (event.registrations ? event.registrations.length : 0));
+    }
+  }, [event]);
 
   // ---------- JOIN WAITLIST ----------
   const handleJoinWaitlist = async () => {
@@ -144,43 +195,6 @@ const EventDetails = () => {
       console.error('Error deleting event: ', err)
     }
   };
-
-  // ---------- ALL USE EFFECTS ----------
-  // --- fetch event details on component mount ---
-  useEffect(() => {
-    fetchEvent();
-  }, [eventId, token]);
-
-  // --- fetch existing registrations if user is attendee ---
-  useEffect(() => {
-    if (user && token && user.role_id === 2) {
-      fetchExistingRegistrations();
-    }
-  }, [user, token]);
-
-  // --- check for existing registration when registrations or event change ---
-  useEffect(() => {
-    // --- Check if user already has a registration for this event ---
-    if (existingRegistrations && event) {
-      // --- Find the registration for this event ---
-      const registration = existingRegistrations.find(r => r.event_id === event.id);
-
-      // --- if found, set registration & registration code ---
-      if (registration) {
-        setRegistrationCode(registration.registration_code);
-        setRegistration(registration);
-      } else {
-        setRegistration(null);
-      }
-    }
-  }, [existingRegistrations, event]);
-
-  // --- check if event is full ---
-  useEffect(() => {
-    if (event && event.ticketTypes) {
-      setIsEventFull(event.capacity <= (event.registrations ? event.registrations.length : 0));
-    }
-  }, [event]);
 
   // ---------- CONDITIONAL RENDERING ----------
   if (loading) return <div>Loading...</div>;
@@ -298,7 +312,21 @@ const EventDetails = () => {
         <hr />
         <h3>Event Schedule</h3>
         <button onClick={() => setIsAddSessionOpen(true)}>Add Event Session</button>
-        {/* --- Display Sessions --- */}
+        {sessions && sessions.length === 0 ? (
+          <p>No sessions available for this event.</p>
+        ) : (
+          <ul className="sessionList">
+            {sessions.map((session) => (
+              <li key={session.id} className="sessionListItem">
+                <h4>{session.title}</h4>
+                <p>{session.description}</p>
+                <p>
+                  From: {formatDate(session.start_time)} - To: {formatDate(session.end_time)}
+                </p>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
 
       {/* ---------- ADD SESSION MODAL ---------- */}

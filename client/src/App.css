@@ -550,6 +550,13 @@ textarea {
   gap: 0.25rem;
 }
 
+.sessionList {
+  margin: 1rem auto;
+  width: 80%;
+  max-width: 700px;
+  text-align: start;
+}
+
 /* ---------- TICKET TYPES STYLES ---------- */
 
 .ticketTypes {
