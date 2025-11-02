@@ -30,3 +30,24 @@ export const getSessionsForEvent = async (eventId, token) => {
   });
   return res.data;
 };
+
+// ---------- PUT OPERATIONS ----------
+// -------- UPDATE SESSION --------
+export const updateSession = async (sessionId, updatedData, token) => {
+  const res = await axios.put(
+    `${API_URL}/${sessionId}`,
+    updatedData,
+    { headers: { Authorization: `Bearer ${token}` } }
+  );
+  return res.data;
+};
+
+// ---------- DELETE OPERATIONS ----------
+// -------- DELETE SESSION --------
+export const deleteSession = async (sessionId, token) => {
+  const res = await axios.delete(
+    `${API_URL}/${sessionId}`,
+    { headers: { Authorization: `Bearer ${token}` } }
+  );
+  return res.data;
+};

@@ -2,6 +2,8 @@ import db from '../models/index.js';
 
 const { Session } = db;
 
+// - Fetch sessions with their speakers using Sequelize include.
+
 // ------------ POST OPERATIONS ------------
 // ---------- CREATE SESSION ----------
 export const createSession = async (req, res) => {
@@ -37,8 +39,19 @@ export const addSpeakersToSession = async (req, res) => {
         const session = await Session.findByPk(sessionId);
         if (!session) return res.status(404).json({ message: 'Session not found' });
 
+        // --- fetch current speakers to avoid duplicates ---
+        const currentSpeakers = await session.getSpeakers();
+        const currentSpeakerIds = currentSpeakers.map(speaker => speaker.id);
+        console.log('Current Speaker IDs:', currentSpeakerIds);
+
+        // --- filter out speakerIds that are already associated ---
+        const newSpeakerIds = speakerIds.filter(id => !currentSpeakerIds.includes(id));
+        if (newSpeakerIds.length === 0) {
+            return res.status(400).json({ message: 'All speakers already added to this session.' });
+        }
+
         // --- add speakers to session ---
-        await session.addSpeakers(speakerIds);
+        await session.addSpeakers(newSpeakerIds);
 
         // --- fetch & return the updated session with associated speakers ---
         const updatedSession = await Session.findByPk(sessionId, { include: ['speakers'] });
@@ -64,5 +77,45 @@ export const getSessionsForEvent = async (req, res) => {
     } catch (err) {
         console.error('Error fetching sessions for event:', err);
         res.status(500).json({ message: 'Error fetching sessions for event', error: err.message });
+    }
+};
+
+
+// ------------ PUT OPERATIONS ------------
+// ---------- UPDATE SESSION ----------
+export const updateSession = async (req, res) => {
+    const { sessionId } = req.params;
+    const updatedData = req.body;
+
+    try {
+        // --- fetch the session by ID ---
+        const session = await Session.findByPk(sessionId);
+        if (!session) return res.status(404).json({ message: 'Session not found' });
+
+        await session.update(updatedData);
+
+        // --- fetch & return the updated session with associated speakers ---
+        const updatedSession = await Session.findByPk(sessionId, { include: ['speakers'] });
+        res.status(200).json({ message: 'Session updated successfully', session: updatedSession });
+    } catch (err) {
+        console.error('Error updating session:', err);
+        res.status(500).json({ message: 'Error updating session', error: err });
+    }
+};
+
+// ------------ DELETE OPERATIONS ------------
+// ---------- DELETE SESSION ----------
+export const deleteSession = async (req, res) => {
+    const { sessionId } = req.params;
+
+    try {
+        const session = await Session.findByPk(sessionId);
+        if (!session) return res.status(404).json({ message: 'Session not found' });
+
+        await session.destroy();
+        res.status(200).json({ message: 'Session deleted successfully' });
+    } catch (err) {
+        console.error('Error deleting session:', err);
+        res.status(500).json({ message: 'Error deleting session', error: err });
     }
 };
