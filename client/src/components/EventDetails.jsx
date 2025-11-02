@@ -357,7 +357,14 @@ const EventDetails = () => {
           <ul className="sessionList">
             {sessions.map((session) => (
               <li key={session.id} className="sessionListItem">
-                <h4>{session.title}</h4>
+                <header>
+                  <h4>{session.title}</h4>
+                  <FontAwesomeIcon icon={faPenToSquare}
+                    className="editIcon"
+                    onClick={() => setIsEditOptionsOpen(true)}
+                  />
+                </header>
+                
                 {session.speakers && session.speakers.length > 0 && (
                   <p>
                     <span>Speakers/ Performers:</span> {session.speakers.map(speaker => speaker.name).join(', ')}
