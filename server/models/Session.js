@@ -45,7 +45,7 @@ export default (sequelize, DataTypes) => {
         validate: {
             // --- validates that end_time is after start_time ---
             endTimeAfterStartTime() {
-                if (this.start_time.isAfter(this.end_time)) {
+                if (this.start_time > this.end_time) {
                     throw new Error('End Time must be after Start Time');
                 }
             }
