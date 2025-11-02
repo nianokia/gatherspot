@@ -2,6 +2,7 @@ import db from "../models/index.js";
 
 const { TicketType } = db;
 
+// ------------ CREATE OPERATIONS ------------
 // ---------- CREATE TICKET TYPE CONTROLLER ----------
 export const createTicketType = async (req, res) => {
     // ---------- EXTRACT TICKET TYPE DETAILS FROM REQ.BODY ----------
@@ -25,3 +26,25 @@ export const createTicketType = async (req, res) => {
         res.status(500).json({ error: "An error occurred while creating the Ticket Type." });
     }
 };
+
+// ------------ UPDATE OPERATIONS ------------
+// ---------- UPDATE TICKET TYPE CONTROLLER ----------
+export const updateTicketType = async (req, res) => {
+    const ticketTypeId = req.params.id;
+    const updatedData = req.body;
+
+    try {
+        const ticketType = await TicketType.findByPk(ticketTypeId);
+        if (!ticketType) {
+            return res.status(404).json({ error: "Ticket Type not found." });
+        }
+
+        await ticketType.update(updatedData);
+        res.status(200).json({ message: "Ticket Type updated successfully", ticketType });
+    } catch (err) {
+        console.error("Error updating Ticket Type:", err);
+        res.status(500).json({ error: "An error occurred while updating the Ticket Type." });
+    }
+};
+
+// ------------ DELETE OPERATIONS ------------
