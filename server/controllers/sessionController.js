@@ -73,7 +73,7 @@ export const getSessionsForEvent = async (req, res) => {
             where: { event_id: eventId },
             include: ['speakers']
         });
-        res.status(200).json({ sessions });
+        res.status(200).json({ message: 'Event\'s Sessions fetched successfully', sessions });
     } catch (err) {
         console.error('Error fetching sessions for event:', err);
         res.status(500).json({ message: 'Error fetching sessions for event', error: err.message });
