@@ -11,3 +11,12 @@ export const createSession = async (sessionData, token) => {
   });
   return res.data;
 };
+
+// ---------- GET OPERATIONS ----------
+// -------- GET SESSIONS FOR EVENT --------
+export const getSessionsForEvent = async (eventId, token) => {
+  const res = await axios.get(`${API_URL}/event/${eventId}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return res.data;
+};
