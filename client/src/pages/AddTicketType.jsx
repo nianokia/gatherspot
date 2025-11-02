@@ -14,8 +14,8 @@ const AddTicketType = () => {
     name: '',
     price: '',
     quantity: '',
-    sale_start: '',
-    sale_end: ''
+    sale_start: '' || undefined,
+    sale_end: '' || undefined
   });
 
   // ---------- HANDLE INPUT CHANGES ----------
