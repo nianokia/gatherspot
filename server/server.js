@@ -11,6 +11,7 @@ import venueRoutes from './routes/venueRoutes.js';
 import ticketTypeRoutes from './routes/ticketTypeRoutes.js';
 import registrationRoutes from './routes/registrationRoutes.js';
 import waitlistRoutes from './routes/waitlistRoutes.js';
+import sessionRoutes from './routes/sessionRoutes.js';
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -30,6 +31,7 @@ app.use('/api/venues', verifyToken, venueRoutes);
 app.use('/api/ticket-types', verifyToken, ticketTypeRoutes);
 app.use('/api/registrations', verifyToken, registrationRoutes);
 app.use('/api/waitlist', verifyToken, waitlistRoutes);
+app.use('/api/sessions', verifyToken, sessionRoutes);
 
 // --- direct server to use the compiled build files from React ---
 app.use(express.static(path.join(__dirname, '../client/dist')));
