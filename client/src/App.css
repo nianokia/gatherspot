@@ -312,7 +312,7 @@ textarea {
   border-radius: 8px;
 }
 
-.createBtn {
+.createBtn, .updateBtn {
   background-color: var(--secondary-color);
   color: black;
   border: none;

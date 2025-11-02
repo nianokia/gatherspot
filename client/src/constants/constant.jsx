@@ -70,9 +70,9 @@ export const OptionsModal = ({ isOpen, onClose, title, action1, action2, action3
     <Modal isOpen={isOpen} onClose={onClose}>
       <h2>{title}</h2>
       <div className="optionsGroup">
-        <button className="optionBtn" onClick={action1}>{option1}</button>
-        <button className="optionBtn" onClick={action2}>{option2}</button>
-        <button className="optionBtn" onClick={action3}>{option3}</button>
+        {action1 && <button className="optionBtn" onClick={action1}>{option1}</button>}
+        {action2 && <button className="optionBtn" onClick={action2}>{option2}</button>}
+        {action3 && <button className="optionBtn" onClick={action3}>{option3}</button>}
       </div>
     </Modal>
   );

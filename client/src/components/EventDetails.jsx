@@ -10,14 +10,17 @@ import { createRegistration, fetchRegistrationsByUser } from "../api/registratio
 import { addToWaitlist } from "../api/waitlist";
 import { getSessionsForEvent } from "../api/session.jsx";
 
+import AddTicketType from "../pages/AddTicketType.jsx";
 import AddSession from "../pages/AddSession.jsx";
 import AddSpeaker from "../pages/AddSpeaker.jsx";
 import EditEvent from "../pages/EditEvent.jsx";
-import AddTicketType from "../pages/AddTicketType.jsx";
+import EditVenue from "../pages/EditVenue.jsx";
 import EditTicketType from "../pages/EditTicketType.jsx";
+import EditSession from "../pages/EditSession.jsx";
+
 import SelectTicketTypeModal from "./SelectTicketTypeModal.jsx";
 import SelectSessionModal from "./customModals/SelectSessionModal.jsx";
-import EditVenue from "../pages/EditVenue.jsx";
+
 import { BackButton, Modal, ConfirmModal, OptionsModal, formatDate } from "../constants/constant";
 
 const EventDetails = () => {
@@ -36,6 +39,8 @@ const EventDetails = () => {
   const [isEditEventOpen, setIsEditEventOpen] = useState(false);
   const [isEditVenueOpen, setIsEditVenueOpen] = useState(false);
   const [isEditTicketTypesOpen, setIsEditTicketTypesOpen] = useState(false);
+  const [isEditSessionOptionsOpen, setIsEditSessionOptionsOpen] = useState(false);
+  const [isEditSessionOpen, setIsEditSessionOpen] = useState(false);
 
   const [isSelectTicketTypeOpen, setIsSelectTicketTypeOpen] = useState(false);
   const [isSelectSessionOpen, setIsSelectSessionOpen] = useState(false);
@@ -190,6 +195,17 @@ const EventDetails = () => {
     } else if (action === "editTicketTypes") {
       setIsEditOptionsOpen(false);
       setIsSelectTicketTypeOpen(true);
+    }
+  };
+
+  // ---------- HANDLE SESSION OPTIONS ----------
+  const handleSessionOptions = (action) => {
+    if (action === "editSession") {
+      setIsEditSessionOptionsOpen(false);
+      setIsEditSessionOpen(true);
+    } else if (action === "addSpeaker") {
+      setIsEditSessionOptionsOpen(false);
+      setIsAddSpeakerOpen(true);
     }
   };
 
@@ -361,7 +377,10 @@ const EventDetails = () => {
                   <h4>{session.title}</h4>
                   <FontAwesomeIcon icon={faPenToSquare}
                     className="editIcon"
-                    onClick={() => setIsEditOptionsOpen(true)}
+                    onClick={() => {
+                      setSelectedSession(session);
+                      setIsEditSessionOptionsOpen(true);
+                    }}
                   />
                 </header>
                 
@@ -482,6 +501,29 @@ const EventDetails = () => {
           onUpdate={fetchEvent}
         />
       </Modal>
+
+      {/* ---------- EDIT SESSION OPTIONS MODAL ---------- */}
+      <OptionsModal
+        isOpen={isEditSessionOptionsOpen}
+        onClose={() => setIsEditSessionOptionsOpen(false)}
+        title="What would you like to edit?"
+        action1={() => handleSessionOptions("editSession")}
+        action2={() => handleSessionOptions("addSpeaker")}
+        option1="Edit Session"
+        option2="Edit Speaker"
+      />
+
+      {/* ---------- EDIT SESSION MODAL ---------- */}
+      <Modal isOpen={isEditSessionOpen} onClose={() => setIsEditSessionOpen(false)}>
+        <EditSession
+          session={selectedSession}
+          token={token}
+          onUpdate={fetchEventSessions}
+          onClose={() => setIsEditSessionOpen(false)}
+        />
+      </Modal>
+
+      {/* ---------- EDIT SPEAKER MODAL ---------- */}
 
       {/* ---------- DELETE EVENT MODAL ---------- */}
       <ConfirmModal 
