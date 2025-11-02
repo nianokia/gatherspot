@@ -12,6 +12,23 @@ export const createTicketType = async (ticketTypeData, token) => {
   return res.data;
 };
 
+// ---------- GET OPERATIONS ----------
+// -------- GET ALL TICKET TYPES FOR AN EVENT --------
+export const getAllEventTicketTypes = async (eventId, token) => {
+  const res = await axios.get(`${API_URL}/event/${eventId}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return res.data;
+};
+
+// ---------- GET TICKET TYPE BY ID --------
+export const getTicketTypeById = async (ticketTypeId, token) => {
+  const res = await axios.get(`${API_URL}/${ticketTypeId}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return res.data;
+};
+
 // ---------- PUT OPERATIONS ----------
 // -------- UPDATE TICKET TYPE --------
 export const updateTicketType = async (ticketTypeId, updatedData, token) => {
