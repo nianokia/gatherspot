@@ -654,6 +654,14 @@ textarea {
   align-items: center;
 }
 
+/* SPEAKER */
+.EditSpeaker .buttonGroup {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
 /* ---------- RESPONSIVE DESIGN ---------- */
 @media (max-width: 960px) {
 
