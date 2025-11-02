@@ -92,6 +92,14 @@
   justify-content: space-around;
 }
 
+.optionsGroup {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
 /* ---------- NAVBAR STYLES ---------- */
 
 nav {
@@ -534,13 +542,21 @@ textarea {
   filter: drop-shadow(0 0 0.5rem var(--secondary-color));
 }
 
-/* ---------- RESPONSIVE DESIGN ----------*/
+/* ---------- RESPONSIVE DESIGN ---------- */
 @media (max-width: 960px) {
 
 }
 
 @media (max-width: 767px) {
 
+  /* ---------- MODAL STYLES ---------- */
+  .optionsGroup {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 0 auto;
+    width: 75%;
+  }
 }
 
 @media (max-width: 575px) {
