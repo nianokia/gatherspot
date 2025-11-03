@@ -15,6 +15,7 @@ import AddEvent from './pages/AddEvent.jsx'
 import AddVenue from './pages/AddVenue.jsx'
 import AddTicketType from './pages/AddTicketType.jsx'
 import UserProfile from './pages/UserProfile.jsx'
+import AnalyticsDash from './pages/AnalyticsDash.jsx'
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
           <Route path="/add-venue" element={<AddVenue />} />
           <Route path="/add-ticket-type/:eventId" element={<AddTicketType />} />
           <Route path="/profile" element={<UserProfile />} />
+          <Route path="/analytics/:eventId" element={<AnalyticsDash />} />
         </Routes>
       </div>
     </div>
