@@ -1,5 +1,4 @@
 import { useState, useEffect, useContext } from 'react';
-import { BackButton } from '../constants/constant.jsx';
 import AuthContext from '../context/authContext.jsx';
 import { fetchAllVendors, fetchEventsByVendorId } from '../api/vendor.jsx';
 
@@ -14,7 +13,7 @@ const VendorDash = () => {
   // ---------- LOAD VENDOR EVENTS ----------
   const loadVendorEvents = async () => {
     try {
-      const data = await fetchEventsByVendorId(vendor.id, token);
+      const data = await fetchEventsByVendorId(vendorId, token);
       console.log('Vendor Events:', data.events);
 
       // --- events array is located in data.events ---
@@ -46,10 +45,8 @@ const VendorDash = () => {
 
   return (
     <div className="VendorDash">
-      <BackButton />
       <h1>Vendor Dashboard</h1>
-      <h2>All Events</h2>
-      <p>Search, sort, and filter events</p>
+      <hr />
       <h2>My Events</h2>
 
       {vendorEvents.length === 0 ? (
@@ -92,15 +89,7 @@ const VendorDash = () => {
           ))}
         </ul>
       )}
-      <ul className='userEventList'>
-        <li>Clickable Events
-          <ul>
-            <li className='userEvent'>GET event</li>
-            <li className="userEvent">GET sessions</li>
-            <li className="userEvent">GET notifications (schedule changes, venue updates, important announcements)</li>
-          </ul>
-        </li>
-      </ul>
+      <br />
       <button className='logoutBtn' onClick={logout}>Logout</button>
     </div>
   );
