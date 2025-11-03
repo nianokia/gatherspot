@@ -64,6 +64,8 @@ export default (sequelize, DataTypes) => {
         // --- A user belongs to one role ---
         User.belongsTo(models.Role, { foreignKey: 'role_id', as: 'role' });
         User.hasMany(models.Event, { foreignKey: 'organizer_id' });
+
+        User.hasMany(models.Registration, { foreignKey: 'user_id', as: 'registrations' });
     };
     
     return User;

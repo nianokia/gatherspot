@@ -1,8 +1,11 @@
+import sgMail from '@sendgrid/mail';
+
 import db from '../models/index.js';
 
-const { Session } = db;
+const { Session, User, Registration, Event, Notification } = db;
 
-// - Fetch sessions with their speakers using Sequelize include.
+// ----------- SENDGRID CONFIGURATION ------------
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 // ------------ POST OPERATIONS ------------
 // ---------- CREATE SESSION ----------
@@ -93,9 +96,128 @@ export const updateSession = async (req, res) => {
         if (!session) return res.status(404).json({ message: 'Session not found' });
 
         await session.update(updatedData);
-
+        
         // --- fetch & return the updated session with associated speakers ---
         const updatedSession = await Session.findByPk(sessionId, { include: ['speakers'] });
+
+        const event = await Event.findByPk(session.event_id, { include: ['venue'] });
+        const venue = event.venue;
+
+        // --- fetch users associated with the event via EventVendor ---
+        const targetVendors = await db.EventVendor.findAll({ where: { event_id: event.id } });
+
+        // --- fetch users with target_role = 2 (attendees) registered for this event ---
+        const targetAttendees = await User.findAll({
+            include: [{
+                model: Registration,
+                where: { event_id: event.id },
+                as: 'registrations',
+            }],
+            where: {
+                role_id: 2
+            }
+        });
+
+        // ------------  !!!!!!!!!    UNCOMMENT THIS LATER    !!!!!!!!!  ------------
+        // --- combine vendor and attendee users ---
+        // const targetUsers = [...targetVendors, ...targetAttendees];
+        const targetUsers = targetAttendees; // --- temporary for testing ---
+
+        // --- create notification ---
+        const notification = await Notification.create({
+            event_id: session.event_id,
+            title: `Updates to ${event.title}'s Event Schedules`,
+            message: `We wanted to inform you that the event schedules for "${event.title}" have been updated.`,
+            type: 'email',
+            target_role: 2,
+        });
+
+        // --- send email notifications ---
+        for (const user of targetUsers) {
+            const msg = {
+                to: user.email,
+                from: process.env.SENDGRID_VERIFIED_SENDER,
+                subject: notification.title,
+                text: `
+                    Hi ${user.f_name},
+                    ${notification.message}
+                    Event Session Details:
+                    Name: ${updatedSession.title}
+                    Description: ${updatedSession.description}
+                    Venue Location: ${updatedSession.venue_location}
+                    Start Time: ${updatedSession.start_time}
+                    End Time: ${updatedSession.end_time}
+                    Session Speakers:
+                    ${ (updatedSession.speakers && updatedSession.speakers.length > 0) ?
+                        updatedSession.speakers.map(speaker => `- ${speaker.name}`).join('\n')
+                        : 'No speakers assigned.'
+                    }
+                    ----------------------------------------
+                    Event Details:
+                    Title: ${event.title}
+                    Description: ${event.description}
+                    Start Date: ${event.start_date}
+                    End Date: ${event.end_date}
+                    Status: ${event.status}
+                    Venue Details:
+                    Name: ${venue ? venue.name : 'N/A'}
+                    Address: ${venue ? venue.address : 'N/A'}
+                    City: ${venue ? venue.city : 'N/A'}
+                    State: ${venue ? venue.state : 'N/A'}
+                    Country: ${venue ? venue.country : 'N/A'}
+                    Zip Code: ${venue ? venue.zip_code : 'N/A'}
+                    We look forward to seeing you!
+                    Best,
+                    Gatherspot Team
+                    Sent At: ${notification.sent_at}
+                `,
+                html: `
+                    <p>Hi ${user.f_name},</p>
+                    <p>${notification.message}</p>
+                    <br/>
+                    <h1>Event Session Details:</h1>
+                    <p><strong>Name:</strong> ${session.title}</p>
+                    <p><strong>Description:</strong> ${session.description}</p>
+                    <p><strong>Venue Location:</strong> ${session.venue_location}</p>
+                    <p><strong>Start Time:</strong> ${session.start_time}</p>
+                    <p><strong>End Time:</strong> ${session.end_time}</p>
+                    <hr/>
+                    <br/>
+                    <h2>Session Speakers:</h2>
+                    <ul> ${ (updatedSession.speakers && updatedSession.speakers.length > 0) ?
+                        updatedSession.speakers.map(speaker => `<li>${speaker.name}</li>`).join('\n')
+                        : '<li>No speakers assigned.</li>'
+                    }
+                    </ul>
+                    <br/>
+                    ----------------------------------------
+                    <h2>Event Details:</h2>
+                    <p><strong>Title:</strong> ${event.title}</p>
+                    <p><strong>Description:</strong> ${event.description}</p>
+                    <p><strong>Start Date:</strong> ${event.start_date}</p>
+                    <p><strong>End Date:</strong> ${event.end_date}</p>
+                    <p><strong>Status:</strong> ${event.status}</p>
+                    <h2>Venue Details:</h2>
+                    <p><strong>Name:</strong> ${venue ? venue.name : 'N/A'}</p>
+                    <p><strong>Address:</strong> ${venue ? venue.address : 'N/A'}</p>
+                    <p><strong>City:</strong> ${venue ? venue.city : 'N/A'}
+                    <p><strong>State:</strong> ${venue ? venue.state : 'N/A'}
+                    <p><strong>Country:</strong> ${venue ? venue.country : 'N/A'}
+                    <p><strong>Zip Code:</strong> ${venue ? venue.zip_code : 'N/A'}
+                    <br/>
+                    <p>We look forward to seeing you!</p>
+                    <br/>
+                    <p>Best,</p>
+                    <br/>
+                    <p>Gatherspot Team</p>
+                    <footer>Sent At: ${notification.sent_at}</footer>
+                `,
+            };
+            await sgMail.send(msg);
+            console.log(`Notification email sent to ${user.email} for event update.`);
+        }
+
+        
         res.status(200).json({ message: 'Session updated successfully', session: updatedSession });
     } catch (err) {
         console.error('Error updating session:', err);
