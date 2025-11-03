@@ -8,7 +8,7 @@ import AuthContext from "../context/authContext";
 import { fetchEventById, addVendorToEvent, deleteEvent } from "../api/event";
 import { createRegistration, fetchRegistrationsByUser, deleteRegistration } from "../api/registration";
 import { addToWaitlist } from "../api/waitlist";
-import { getSessionsForEvent } from "../api/session.jsx";
+import { getSessionsForEvent, deleteSession } from "../api/session.jsx";
 import { fetchAllVendors } from "../api/vendor.jsx";
 
 import AddTicketType from "../pages/AddTicketType.jsx";
@@ -289,6 +289,19 @@ const EventDetails = () => {
     }
   };
 
+  // ---------- DELETE SESSION ----------
+  const handleDeleteSession = async (sessionId) => {
+    try {
+      await deleteSession(sessionId, token);
+      alert(`Session has been deleted successfully!`);
+      setIsAddSpeakerOpen(false);
+      fetchEventSessions();
+    } catch (err) {
+      alert('Failed to delete session. Please try again.');
+      console.error('Error deleting session: ', err)
+    }
+  };
+
   // ---------- CONDITIONAL RENDERING ----------
   if (loading) return <div>Loading...</div>;
   if (!event) return <div>Event not found</div>;
@@ -433,13 +446,19 @@ const EventDetails = () => {
                 <header>
                   <h4>{session.title}</h4>
                   {user && (user.role_id === 1 || user.role_id === 4) && (
-                    <FontAwesomeIcon icon={faPenToSquare}
-                      className="editIcon"
-                      onClick={() => {
-                        setSelectedSession(session);
-                        setIsEditSessionOptionsOpen(true);
-                      }}
-                    />
+                    <div className="sessionIconGroup">
+                      <FontAwesomeIcon icon={faPenToSquare}
+                        className="editIcon"
+                        onClick={() => {
+                          setSelectedSession(session);
+                          setIsEditSessionOptionsOpen(true);
+                        }}
+                      />
+                      <FontAwesomeIcon icon={faTrash}
+                        className="deleteIcon"
+                        onClick={() => handleDeleteSession(session.id)}
+                      />
+                    </div>
                   )}
                 </header>
                 

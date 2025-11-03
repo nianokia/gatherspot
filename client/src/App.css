@@ -468,7 +468,7 @@ textarea {
   margin-top: 1rem;
 }
 
-.editIcon, .deleteEventItem {
+.editIcon, .deleteEventItem, .deleteIcon {
   color: var(--background-color);
   font-size: 1.25rem;
   will-change: filter;
@@ -704,6 +704,12 @@ textarea {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.sessionIconGroup {
+  display: flex;
+  justify-content: end;
+  gap: 1rem;
 }
 
 /* ---------- SPEAKER CSS ---------- */
