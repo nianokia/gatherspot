@@ -15,6 +15,7 @@ import sessionRoutes from './routes/sessionRoutes.js';
 import speakerRoutes from './routes/speakerRoutes.js';
 import vendorRoutes from './routes/vendorRoutes.js';
 import notificationRoutes from './routes/notificationRoutes.js';
+import userRoutes from './routes/userRoutes.js';
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -38,6 +39,7 @@ app.use('/api/sessions', verifyToken, sessionRoutes);
 app.use('/api/speakers', verifyToken, speakerRoutes);
 app.use('/api/vendors', verifyToken, vendorRoutes);
 app.use('/api/notifications', verifyToken, notificationRoutes);
+app.use('/api/users', verifyToken, userRoutes);
 
 // --- direct server to use the compiled build files from React ---
 app.use(express.static(path.join(__dirname, '../client/dist')));
