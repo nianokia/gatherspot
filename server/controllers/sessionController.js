@@ -140,7 +140,7 @@ export const createSession = async (req, res) => {
         // --- create notification ---
         const notification = await Notification.create({
             event_id: session.event_id,
-            title: `Event Schedule(${session.title}) added to ${event.title}`,
+            title: `Event Schedule (${session.title}) added to ${event.title}`,
             message: `We wanted to inform you that an event schedule (${session.title}) was added to ${event.title}.`,
             type: 'email',
             target_role: 2,
@@ -332,7 +332,7 @@ export const deleteSession = async (req, res) => {
         const notification = await Notification.create({
             event_id: session.event_id,
             title: `Event Schedule (${session.title}) deleted from ${event.title}`,
-            message: `We wanted to inform you that an event schedule (${session.title}) has been deleted from "${event.title}".`,
+            message: `We wanted to inform you that an event schedule (${session.title}) has been deleted from ${event.title}.`,
             type: 'email',
             target_role: 2,
         });
@@ -386,7 +386,7 @@ export const removeSpeakerFromSession = async (req, res) => {
         const notification = await Notification.create({
             event_id: session.event_id,
             title: `Speaker/ Performer (${speaker.name}) removed from ${event.title}`,
-            message: `We wanted to inform you that a speaker/ performer (${speaker.name}) was removed from "${event.title}".`,
+            message: `We wanted to inform you that a speaker/ performer (${speaker.name}) was removed from ${event.title}.`,
             type: 'email',
             target_role: 2,
         });
