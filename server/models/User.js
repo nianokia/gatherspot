@@ -52,6 +52,10 @@ export default (sequelize, DataTypes) => {
             type: DataTypes.BOOLEAN,
             defaultValue: true,
         },
+        fcm_token: {
+            type: DataTypes.TEXT,
+            allowNull: true,
+        },
     }, {
         tableName: 'users',
         timestamps: true,
