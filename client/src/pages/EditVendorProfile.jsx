@@ -1,60 +1,58 @@
 import { useState, useEffect } from "react";
 import { updateVendor, fetchAllVendors } from "../api/vendor.jsx";
 
-const EditVendorProfile = ({ userId, token }) => {
+const EditVendorProfile = ({ userId, token, loading, setLoading }) => {
   const [vendor, setVendor] = useState(null);
   const [formData, setFormData] = useState({
     company_name: "",
     contact_email: "",
     phone: ""
   });
-  const [loading, setLoading] = useState(true);
 
-  // ---------- FETCH VENDOR PROFILE ----------
   const fetchVendor = async () => {
     try {
       const data = await fetchAllVendors(token);
-      // Find vendor with matching user_id
-      const found = data.vendors.find(v => v.user_id === userId);
-      if (found) {
-        setVendor(found);
+      const foundVendor = data.vendors.find(v => v.user_id === userId);
+      // --- if vendor is found, set vendor & formData ---
+      if (foundVendor) {
+        setVendor(foundVendor);
         setFormData({
-          company_name: found.company_name || "",
-          contact_email: found.contact_email || "",
-          phone: found.phone || ""
+          company_name: foundVendor.company_name || "",
+          contact_email: foundVendor.contact_email || "",
+          phone: foundVendor.phone || ""
         });
       }
     } catch (err) {
-      setMessage("Error fetching vendor profile");
+      console.error("Error fetching vendor profile:", err);
     } finally {
-      setLoading(false);
+      setLoading && setLoading(false);
     }
   };
 
-  // --- Fetch vendor profile by userId ---
   useEffect(() => {
     fetchVendor();
   }, [userId, token]);
 
-  // ---------- HANDLE INPUT CHANGES ----------
   const handleChange = e => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  // ---------- HANDLE SUBMISSION ----------
-  const handleSubmit = async e => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!vendor) return;
     try {
       await updateVendor(vendor.id, formData, token);
-      setMessage("Profile updated successfully!");
+      alert("Profile updated successfully!")
+
+      console.log("Profile updated successfully", formData)
     } catch (err) {
-      setMessage("Error updating profile");
+      console.error("Error updating profile", err);
+      alert("Error updating profile", err.message);
     }
   };
 
-  // ---------- CONDITIONAL RENDERING ----------
+  // ----------- CONDITIONAL RENDERING -----------
   if (loading) return <div>Loading vendor profile...</div>;
   if (!vendor) return <div>No vendor profile found.</div>;
 

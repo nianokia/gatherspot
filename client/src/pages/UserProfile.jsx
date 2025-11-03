@@ -4,7 +4,7 @@ import EditVendorProfile from "./EditVendorProfile.jsx";
 import { BackButton } from "../constants/constant.jsx";
 
 const UserProfile = () => {
-  const { user, token } = useContext(AuthContext);
+  const { user, token, loading, setLoading } = useContext(AuthContext);
   const roleId = user?.role_id;
   return (
     <div className="UserProfile">
@@ -28,7 +28,7 @@ const UserProfile = () => {
         </li>
       </ul>
       {roleId === 3 && (
-        <EditVendorProfile userId={user?.id} token={token} />
+        <EditVendorProfile userId={user?.id} token={token} loading={loading} setLoading={setLoading} />
       )}
     </div>
   );
