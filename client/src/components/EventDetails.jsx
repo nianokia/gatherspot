@@ -2,7 +2,7 @@ import { useState, useEffect, useContext, useRef } from "react";
 import { useParams, useNavigate } from "react-router";
 import { QRCode } from 'react-qrcode-logo';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPenToSquare, faTrash, faStore } from '@fortawesome/free-solid-svg-icons';
+import { faPenToSquare, faTrash, faStore, faChartSimple } from '@fortawesome/free-solid-svg-icons';
 
 import AuthContext from "../context/authContext";
 import { fetchEventById, addVendorToEvent, deleteEvent } from "../api/event";
@@ -359,9 +359,14 @@ const EventDetails = () => {
         </div>
       </div>
       {user && (user.role_id === 1 || user.role_id === 4) && (
-        <button className="vendorBtn" onClick={openAddVendorModal}>
-        <FontAwesomeIcon icon={faStore} /> Add Vendor
-      </button>
+        <div className="vendorAndAnalyticsBtns">
+          <button className="vendorBtn" onClick={openAddVendorModal}>
+            <FontAwesomeIcon icon={faStore} /> Add Vendor
+          </button>
+          <button className="analyticsBtn" onClick={() => navigate(`/analytics/${event.id}`)}>
+            <FontAwesomeIcon icon={faChartSimple} /> View Analytics
+          </button>
+        </div>
       )}
       <hr />
 
