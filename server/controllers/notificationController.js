@@ -1,28 +1,28 @@
-import sgMail from '@sendgrid/mail';
-import 'dotenv/config';
+import admin from "../firebaseAdmin.js";
 import db from "../models/index.js";
 
 const { Notification } = db;
 
-// ----------- SENDGRID CONFIGURATION ------------
-// sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+// ---------- SEND PUSH NOTIFICATION ----------
+export const sendPushNotification = async (fcmToken, title, body, data = {}) => {
+    // --- construct message ---
+    // --- data = an optional place for client to include additional key-value pairs ---
+    const message = {
+        token: fcmToken,
+        notification: { title, body },
+        data
+    };
 
-// ----------- TEST EMAIL ------------
-// const msg = {
-//   to: 'test@example.com', // Change to your recipient
-//   from: 'test@example.com', // Change to your verified sender
-//   subject: 'Sending with SendGrid is Fun',
-//   text: 'and easy to do anywhere, even with Node.js',
-//   html: '<strong>and easy to do anywhere, even with Node.js</strong>',
-// }
-// sgMail
-//   .send(msg)
-//   .then(() => {
-//     console.log('Email sent')
-//   })
-//   .catch((error) => {
-//     console.error(error)
-//   })
+    try {
+        // --- send the message ---
+        const response = await admin.messaging().send(message);
+        console.log("Push notification sent successfully", response);
+        return response;
+    } catch (err) {
+        console.error("Error sending push notification:", err);
+        throw err;
+    }
+};
 
 // ----------- POST OPERATIONS ------------
 // ---------- CREATE NOTIFICATION ----------
