@@ -25,16 +25,13 @@ const EditVenue = ({ venueId, venue, token, onUpdate, onClose }) => {
 
     try {
       await updateVenue(venueId, formData, token);
+      alert('Venue has been updated!');
       // --- Refresh parent component data ---
       onUpdate();
       onClose();
     } catch (err) {
       console.error('Update Venue Error:', err);
-      // if (err.response && err.response.data && err.response.data.message) {
-      //   setError(err.response.data.message);
-      // } else {
-      //   setError('Failed to update venue. Please try again.');
-      // }
+      alert('Error updating venue: ' + (err?.response?.data?.message || err.message));
     }
   };
 
