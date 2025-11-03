@@ -34,6 +34,8 @@ export const createNotification = async (req, res) => {
             event_id,
             title,
             message,
+            type,
+            target_role: 2, // --- default to attendee id ---
             scheduled_time
         });
         if (!newNotification) return res.status(404).json({ message: "Notification not created", notification: newNotification });
