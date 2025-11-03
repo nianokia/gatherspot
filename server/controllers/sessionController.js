@@ -1,5 +1,5 @@
 import sgMail from '@sendgrid/mail';
-
+import admin from "../firebaseAdmin.js";
 import db from '../models/index.js';
 
 const { Session, User, Registration, Event, Notification, EventVendor, Speaker } = db;
@@ -146,9 +146,18 @@ export const createSession = async (req, res) => {
             target_role: 2,
         });
 
-        // ------------ SEND EMAIL NOTIFICATIONS ------------
+        // ------------ SEND EMAIL & PUSH NOTIFICATIONS ------------
         await sendEmailNotification(targetUsers, event, fullSession, venue, notification);
-
+        for (const user of targetUsers) {
+            if (user.fcm_token) {
+                await sendPushNotification(
+                    user.fcm_token,
+                    notification.title,
+                    notification.message,
+                    { eventId: notification.event_id }
+                );
+            }
+        }
         res.status(201).json({ message: 'Session created successfully and email notifications sent', session: fullSession });
     } catch (err) {
         console.error('Error creating session:', err);
@@ -212,9 +221,18 @@ export const addSpeakersToSession = async (req, res) => {
             target_role: 2,
         });
 
-        // ------------ SEND EMAIL NOTIFICATIONS ------------
+        // ------------ SEND EMAIL & PUSH NOTIFICATIONS ------------
         await sendEmailNotification(targetUsers, event, updatedSession, venue, notification);
-
+        for (const user of targetUsers) {
+            if (user.fcm_token) {
+                await sendPushNotification(
+                    user.fcm_token,
+                    notification.title,
+                    notification.message,
+                    { eventId: notification.event_id }
+                );
+            }
+        }
         res.status(200).json({ message: 'Speakers added to session successfully and email notifications sent', session: updatedSession });
     } catch (err) {
         console.error('Error adding speakers to session:', err);
@@ -286,9 +304,18 @@ export const updateSession = async (req, res) => {
             target_role: 2,
         });
 
-        // ------------ SEND EMAIL NOTIFICATIONS ------------
+        // ------------ SEND EMAIL & PUSH NOTIFICATIONS ------------
         await sendEmailNotification(targetUsers, event, updatedSession, venue, notification);
-
+        for (const user of targetUsers) {
+            if (user.fcm_token) {
+                await sendPushNotification(
+                    user.fcm_token,
+                    notification.title,
+                    notification.message,
+                    { eventId: notification.event_id }
+                );
+            }
+        }
         res.status(200).json({ message: 'Session updated successfully & notifications sent', session: updatedSession });
     } catch (err) {
         console.error('Error updating session:', err);
@@ -337,8 +364,18 @@ export const deleteSession = async (req, res) => {
             target_role: 2,
         });
 
-        // ------------ SEND EMAIL NOTIFICATIONS ------------
+        // ------------ SEND EMAIL & PUSH NOTIFICATIONS ------------
         await sendEmailNotification(targetUsers, event, session, venue, notification);
+        for (const user of targetUsers) {
+            if (user.fcm_token) {
+                await sendPushNotification(
+                    user.fcm_token,
+                    notification.title,
+                    notification.message,
+                    { eventId: notification.event_id }
+                );
+            }
+        }
         res.status(200).json({ message: 'Session deleted successfully and email notifications sent' });
     } catch (err) {
         console.error('Error deleting session:', err);
@@ -391,8 +428,18 @@ export const removeSpeakerFromSession = async (req, res) => {
             target_role: 2,
         });
 
-        // ------------ SEND EMAIL NOTIFICATIONS ------------
+        // ------------ SEND EMAIL & PUSH NOTIFICATIONS ------------
         await sendEmailNotification(targetUsers, event, updatedSession, venue, notification);
+        for (const user of targetUsers) {
+            if (user.fcm_token) {
+                await sendPushNotification(
+                    user.fcm_token,
+                    notification.title,
+                    notification.message,
+                    { eventId: notification.event_id }
+                );
+            }
+        }
         res.status(200).json({ message: 'Speaker removed from session successfully', session: updatedSession });
     } catch (err) {
         console.error('Error removing speaker from session:', err);
