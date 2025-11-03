@@ -13,8 +13,9 @@
   --background-color: #f6f6f6;
   --background-dark-color: #333333;
   --accent-color: #646cff;
+  --accent-lightest-color: #A3A3FF;
+  --accent-light-color: #8686ff;
   --accent-dark-color: #4646ff;
-  /* --accent-dark-color: #646cffaa; */
   --warning-color: #ff6464;
   --warning-dark-color: #ff4646;
   --text-color: #151515;
@@ -529,7 +530,7 @@ textarea {
   margin-top: 1rem;
 }
 
-.vendorBtn {
+.vendorBtn, .analyticsBtn {
   padding: 0.5rem 1rem;
   background-color: var(--text-color);
   color: var(--secondary-light-color);
@@ -543,6 +544,23 @@ textarea {
 .vendorBtn:hover {
   filter: drop-shadow(0 0 0.5rem var(--secondary-color));
 }
+
+.analyticsBtn {
+  color: var(--accent-lightest-color);
+}
+
+.analyticsBtn:hover {
+  filter: drop-shadow(0 0 0.5rem var(--accent-color));
+}
+
+/* .vendorAndAnalyticsBtns {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  margin: 0;
+  padding: 0;
+} */
 
 .vendorDropdown {
   margin: 1rem auto;
@@ -666,7 +684,7 @@ textarea {
 
 /* ---------- SESSION BUTTONS ---------- */
 
-.sessionBtns {
+.sessionBtns, .vendorAndAnalyticsBtns {
   display: flex;
   justify-content: center;
   gap: 1rem;
