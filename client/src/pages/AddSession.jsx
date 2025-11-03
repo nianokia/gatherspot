@@ -35,7 +35,7 @@ const AddSession = ({ eventId, token, onClose, onUpdate }) => {
       onClose();
     } catch (err) {
       console.error("Error creating session:", err);
-      alert("Error creating session: " + (err?.response?.data?.message || err.message));
+      alert("Error creating session. Make sure the End Date/ Time is after the Start Date/ Time.\n Error: " + (err?.response?.data?.message || err.message));
     }
   };
 
