@@ -345,9 +345,11 @@ const EventDetails = () => {
           <p>Capacity: {event.capacity}</p>
         </div>
       </div>
-      <button className="vendorBtn" onClick={openAddVendorModal}>
+      {user && (user.role_id === 1 || user.role_id === 4) && (
+        <button className="vendorBtn" onClick={openAddVendorModal}>
         <FontAwesomeIcon icon={faStore} /> Add Vendor
       </button>
+      )}
       <hr />
 
       {/* --- Only show registration block & QR code if registrationCode exists --- */}
