@@ -721,6 +721,19 @@ textarea {
   margin-top: 1rem;
 }
 
+/* ---------- PROFILE DETAILS ---------- */
+.profileDetails {
+  list-style: none;
+  padding: 0;
+  margin: 1rem auto;
+  width: 80%;
+  max-width: 700px;
+}
+
+.profileDetails li {
+  margin: 0.5rem 0;
+}
+
 /* ---------- RESPONSIVE DESIGN ---------- */
 @media (max-width: 960px) {
 

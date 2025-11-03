@@ -29,6 +29,7 @@ const NavBar = () => {
             {user.role_id === 1 && (
               <>
                 <Link to="/organizer">Dashboard</Link>
+                <Link to="/profile">Profile</Link>
                 <Link to="/add-event">Add Event</Link>
                 <Link to="/add-venue">Add Venue</Link>
               </>
@@ -36,16 +37,19 @@ const NavBar = () => {
             {user.role_id === 2 && (
               <>
                 <Link to="/attendee">Dashboard</Link>
+                <Link to="/profile">Profile</Link>
               </>
             )}
             {user.role_id === 3 && (
               <>
                 <Link to="/vendor">Dashboard</Link>
+                <Link to="/profile">Profile</Link>
               </>
             )}
             {user.role_id === 4 && (
               <>
                 <Link to="/admin">Dashboard</Link>
+                <Link to="/profile">Profile</Link>
                 <Link to="/add-event">Add Event</Link>
                 <Link to="/add-venue">Add Venue</Link>
               </>

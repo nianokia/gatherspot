@@ -14,6 +14,7 @@ import EventDetails from './components/EventDetails.jsx'
 import AddEvent from './pages/AddEvent.jsx'
 import AddVenue from './pages/AddVenue.jsx'
 import AddTicketType from './pages/AddTicketType.jsx'
+import UserProfile from './pages/UserProfile.jsx'
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
           <Route path="/add-event" element={<AddEvent />} />
           <Route path="/add-venue" element={<AddVenue />} />
           <Route path="/add-ticket-type/:eventId" element={<AddTicketType />} />
+          <Route path="/profile" element={<UserProfile />} />
         </Routes>
       </div>
     </div>
