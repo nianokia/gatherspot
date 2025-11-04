@@ -12,7 +12,6 @@ const AttendeeDash = () => {
         <div>Loading...</div>
       ) : (
         <>
-          
           <AttendeeEvents />
         </>
       )}
