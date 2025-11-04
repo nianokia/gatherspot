@@ -1,7 +1,6 @@
 import express from 'express';
 import {
     getEventMetrics,
-    getEventMetricsById,
     getEventTicketSales,
     getEventAttendance,
     getEventRevenue,
@@ -12,10 +11,7 @@ const router = express.Router();
 
 // --------- GET OPERATIONS ---------
 // --- Route to get all event metrics ---
-router.get('/', getEventMetrics);
-
-// --- Route to get overall event metrics ---
-router.get('/:eventId/metrics', getEventMetricsById);
+router.get('/:eventId/metrics', getEventMetrics);
 
 // --- Route to get ticket sales data for an event ---
 router.get('/:eventId/ticket-sales', getEventTicketSales);

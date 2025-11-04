@@ -1,4 +1,4 @@
-import db from "../db/index.js"
+import db from '../models/index.js';
 
 const { EventMetric } = db;
 
@@ -7,7 +7,10 @@ const { EventMetric } = db;
 export const getEventMetrics = async (req, res) => {
     try {
         const { eventId } = req.params;
-        const eventMetrics = await EventMetric.findOne({ where: { eventId } });
+        const eventMetrics = await EventMetric.findOne({ where: { event_id: eventId } });
+        if (!eventMetrics) {
+            return res.status(404).json({ message: "No metrics found for this event." });
+        }
         console.log("Fetched event metrics: ", eventMetrics);
 
         res.status(200).json({ message: "Event metrics fetched successfully", data: eventMetrics });

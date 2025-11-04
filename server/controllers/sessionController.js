@@ -146,16 +146,22 @@ export const createSession = async (req, res) => {
             target_role: 2,
         });
 
-        // ------------ SEND EMAIL & PUSH NOTIFICATIONS ------------
+        // ------------ SEND EMAIL NOTIFICATIONS ------------
         await sendEmailNotification(targetUsers, event, fullSession, venue, notification);
         for (const user of targetUsers) {
             if (user.fcm_token) {
-                await sendPushNotification(
-                    user.fcm_token,
-                    notification.title,
-                    notification.message,
-                    { eventId: notification.event_id }
-                );
+                console.log(`Attempting push notification to ${user.email} (FCM token: ${user.fcm_token})`);
+                try {
+                    const pushResult = await sendPushNotification(
+                        user.fcm_token,
+                        notification.title,
+                        notification.message,
+                        { eventId: notification.event_id }
+                    );
+                    console.log(`Push notification sent to ${user.email}:`, pushResult);
+                } catch (pushErr) {
+                    console.error(`Error sending push notification to ${user.email}:`, pushErr);
+                }
             }
         }
         res.status(201).json({ message: 'Session created successfully and email notifications sent', session: fullSession });
@@ -221,7 +227,7 @@ export const addSpeakersToSession = async (req, res) => {
             target_role: 2,
         });
 
-        // ------------ SEND EMAIL & PUSH NOTIFICATIONS ------------
+        // ------------ SEND EMAIL NOTIFICATIONS ------------
         await sendEmailNotification(targetUsers, event, updatedSession, venue, notification);
         for (const user of targetUsers) {
             if (user.fcm_token) {
@@ -304,7 +310,7 @@ export const updateSession = async (req, res) => {
             target_role: 2,
         });
 
-        // ------------ SEND EMAIL & PUSH NOTIFICATIONS ------------
+        // ------------ SEND EMAIL NOTIFICATIONS ------------
         await sendEmailNotification(targetUsers, event, updatedSession, venue, notification);
         for (const user of targetUsers) {
             if (user.fcm_token) {
@@ -364,7 +370,7 @@ export const deleteSession = async (req, res) => {
             target_role: 2,
         });
 
-        // ------------ SEND EMAIL & PUSH NOTIFICATIONS ------------
+        // ------------ SEND EMAIL NOTIFICATIONS ------------
         await sendEmailNotification(targetUsers, event, session, venue, notification);
         for (const user of targetUsers) {
             if (user.fcm_token) {
@@ -428,7 +434,7 @@ export const removeSpeakerFromSession = async (req, res) => {
             target_role: 2,
         });
 
-        // ------------ SEND EMAIL & PUSH NOTIFICATIONS ------------
+        // ------------ SEND EMAIL NOTIFICATIONS ------------
         await sendEmailNotification(targetUsers, event, updatedSession, venue, notification);
         for (const user of targetUsers) {
             if (user.fcm_token) {
