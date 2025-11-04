@@ -73,17 +73,40 @@ GatherSpot is a full-stack event management platform for organizers, vendors, an
 **ORM:** Sequelize
 
 ### Schema Overview
-The application uses these main tables:
+
+## 🔐 Authentication & Authorization
+
+
+GatherSpot uses JWT-based authentication and role-based authorization:
+
+- Passwords are securely hashed.
+- Users log in to receive a JWT token.
+- Protected API routes require a valid JWT.
+- Roles (admin, organizer, vendor, attendee) control access to features.
+- Frontend uses React Context for auth state and role checks.
+
+-----------
+
+The application uses the following tables:
 
 | Table | Description |
 |--------|--------------|
 | **users** | Stores user data (organizer, vendor, attendee) |
+| **roles** | User roles (admin, organizer, vendor, attendee) |
 | **events** | Event details, venue, organizer |
+| **event_vendors** | Links vendors to events |
+| **event_metrics** | Aggregated analytics for each event |
 | **registrations** | Attendee event registrations |
 | **ticket_types** | Ticket options for events |
-| **event_metrics** | Aggregated analytics for each event |
 | **attendance** | Tracks check-in status |
-| **waitlist** | Waitlist management |
+| **waitlists** | Waitlist management |
+| **notifications** | Event notifications (push, email, in-app) |
+| **vendors** | Vendor details |
+| **venues** | Venue details |
+| **sessions** | Event sessions/schedules |
+| **speakers** | Speaker details |
+| **session_speakers** | Links speakers to sessions |
+
 
 **Foreign Key Relationships:**
 - `registrations.user_id → users.id`
@@ -166,6 +189,7 @@ The app should now be running at `http://localhost:5173` (or as specified).
 * `OrganizerEvents.jsx` — organizer event management
 * `AnalyticsDash.jsx` — analytics dashboard (ticket sales, attendance, revenue, feedback)
 * `UserProfile.jsx` — user account details
+* `context/` — global state management for authentication, notifications, and app-wide data
 
 ## 🌐 API Routes Overview
 ### Auth Routes
@@ -181,6 +205,36 @@ The app should now be running at `http://localhost:5173` (or as specified).
 |POST |/api/events |Create new event (Organizer only) |
 |PUT |/api/events/:id |Update event |
 |DELETE |/api/events/:id |Delete event |
+### Vendor Routes
+|Method |Endpoint |Description |
+|-------|----------|--------------|
+|GET |/api/vendors |Fetch all vendors |
+|GET |/api/vendors/:id |Fetch single vendor |
+|POST |/api/vendors |Create vendor |
+|PUT |/api/vendors/:id |Update vendor |
+|DELETE |/api/vendors/:id |Delete vendor |
+### Venue Routes
+|Method |Endpoint |Description |
+|-------|----------|--------------|
+|GET |/api/venues |Fetch all venues |
+|GET |/api/venues/:id |Fetch single venue |
+|POST |/api/venues |Create venue |
+|PUT |/api/venues/:id |Update venue |
+|DELETE |/api/venues/:id |Delete venue |
+### Speaker Routes
+|Method |Endpoint |Description |
+|-------|----------|--------------|
+|GET |/api/speakers |Fetch all speakers |
+|GET |/api/speakers/:id |Fetch single speaker |
+|POST |/api/speakers |Create speaker |
+|PUT |/api/speakers/:id |Update speaker |
+|DELETE |/api/speakers/:id |Delete speaker |
+### Waitlist Routes
+|Method |Endpoint |Description |
+|-------|----------|--------------|
+|GET |/api/waitlist/:eventId |Get waitlist for event |
+|POST |/api/waitlist |Join waitlist |
+|DELETE |/api/waitlist/:id |Remove from waitlist |
 ### Registration & Ticketing
 |Method |Endpoint |Description |
 |-------|----------|--------------|
