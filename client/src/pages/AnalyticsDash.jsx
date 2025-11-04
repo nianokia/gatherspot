@@ -1,10 +1,12 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router";
+import AuthContext from "../context/authContext.jsx";
 import { getEventMetrics, getTicketSales, getAttendence, getRevenue, getNoShow } from "../api/eventMetrics.jsx";
 import { fetchEventById } from "../api/event.jsx";
 import { BackButton } from "../constants/constant";
 
 const AnalyticsDash = () => {
+  const { user, token, loading, setLoading } = useContext(AuthContext);
   const { eventId } = useParams();
   const [metrics, setMetrics] = useState({});
   const [totalTicketsSold, setTotalTicketsSold] = useState(0);
@@ -14,20 +16,23 @@ const AnalyticsDash = () => {
   const [event, setEvent] = useState(null);
 
   // ---------- FETCH EVENT DETAILS ----------
-  const fetchEventDetails = async (eventId) => {
+  const fetchEventDetails = async (eventId, token) => {
     try {
-      const eventData = await fetchEventById(eventId);
-      setEvent(eventData);
+      const eventData = await fetchEventById(eventId, token);
+      console.log("Fetched Event Data:", eventData.event);
+      setEvent(eventData.event);
     } catch (error) {
       console.error("Error fetching event details:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
-    if (eventId) {
-      fetchEventDetails(eventId);
+    if (eventId && token) {
+      fetchEventDetails(eventId, token);
     }
-  }, [eventId]);
+  }, [eventId, token]);
 
   // ---------- FETCH METRICS ----------
   const fetchMetrics = async (eventId, token) => {
@@ -54,15 +59,16 @@ const AnalyticsDash = () => {
   // For demonstration, you might call fetchMetrics with hardcoded values
   // In a real app, you would get eventId and token from context or props
   useEffect(() => {
-    const eventId = "some-event-id";
-    const token = "user-auth-token";
     fetchMetrics(eventId, token);
   }, []);
+
+  // ---------- CONDITIONAL RENDERING ----------
+  if (loading) return <div>Loading...</div>;
 
   return (
     <div>
       <BackButton />
-      <h1>Analytics & Reporting for {event?.title}</h1>
+      <h1>"{event?.title}" Analytics & Reporting</h1>
       <hr />
       <div>
         <h2>Event Metrics</h2>
