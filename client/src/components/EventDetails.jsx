@@ -176,6 +176,7 @@ const EventDetails = () => {
       alert(`Registration has been created! \n Your registration code: ${response.registration.registration_code}`);
 
       setRegistrationCode(response.registration.registration_code);
+      fetchExistingRegistrations();
     } catch (err) {
       console.error("Error creating registration:", err);
       alert("Error creating registration: " + (err?.response?.data?.message || err.message));
