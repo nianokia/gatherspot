@@ -11,6 +11,7 @@ const OrganizerEvents = () => {
   const navigate = useNavigate();
   const organizerId = user?.id;
   const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const fetchEvents = async () => {
     try {
@@ -19,6 +20,7 @@ const OrganizerEvents = () => {
 
       // --- events array is located in data.events ---
       setEvents(data.events);
+      setLoading(false);
     } catch (error) {
       console.error("Error fetching Organizer's events:", error);
     }
@@ -47,6 +49,9 @@ const OrganizerEvents = () => {
 
   if (!user) {
     return <div>Loading user information...</div>;
+  }
+  if (loading) {
+    return <div>Loading organizer's events...</div>;
   }
 
   return (

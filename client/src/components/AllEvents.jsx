@@ -10,6 +10,7 @@ const AllEvents = () => {
   const { user, token } = useContext(AuthContext);
   const navigate = useNavigate();
   const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   // ---------- LOAD ALL EVENTS ----------
   const loadEvents = async () => {
@@ -18,6 +19,7 @@ const AllEvents = () => {
 
       // --- events array is located in data.events ---
       setEvents(data.events);
+      setLoading(false);
     } catch (err) {
       console.error("Error fetching events: ", err);
       alert("Error fetching events: ", err?.response?.data?.message || err.message);
@@ -46,6 +48,9 @@ const AllEvents = () => {
 
   if (!user) {
     return <div>Loading user information...</div>;
+  }
+  if (loading) {
+    return <div>Loading events...</div>;
   }
 
   return (
