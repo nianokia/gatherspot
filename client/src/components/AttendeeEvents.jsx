@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from 'react';
-import { useNavigate } from "react-router";
+import { useNavigate, Link } from "react-router";
 import { fetchRegistrationsByUser } from '../api/registration.jsx';
 import AuthContext from "../context/authContext.jsx";
 import { formatDate } from "../constants/constant.jsx";
@@ -36,7 +36,13 @@ const AttendeeEvents = () => {
     <div className="AttendeeEvents">
       <h2>My Registered Events</h2>
       {registrations.length === 0 ? (
-        <p>No events registered.</p>
+        <>
+          <p>No events registered.</p>
+          <button>
+            <Link to="/">Browse Events</Link>
+          </button>
+        </>
+        
       ) : (
         <ul className="allEventsList">
           {/* --- ensure all keys are unique (event-UUID) --- */}
