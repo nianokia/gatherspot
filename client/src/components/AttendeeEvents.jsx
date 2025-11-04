@@ -9,6 +9,7 @@ const AttendeeEvents = () => {
   const navigate = useNavigate();
   const attendeeId = user?.id;
   const [registrations, setRegistrations] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   // ---------- FETCH REGISTRATIONS FOR ATTENDEE ----------
   const fetchUserRegistrations = async () => {
@@ -18,6 +19,7 @@ const AttendeeEvents = () => {
       
       // --- registrations array is located in data.registrations ---
       setRegistrations(data.registrations);
+      setLoading(false);
     } catch (err) {
       console.error("Error fetching registrations:", err);
     }
@@ -31,6 +33,7 @@ const AttendeeEvents = () => {
 
   // ---------- CONDITIONAL RENDERING ----------
   if (!user) return <div>Loading user information...</div>;
+  if (loading) return <div>Loading registered events...</div>;
 
   return (
     <div className="AttendeeEvents">
