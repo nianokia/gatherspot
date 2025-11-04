@@ -306,11 +306,6 @@ const EventDetails = () => {
   if (loading) return <div>Loading...</div>;
   if (!event) return <div>Event not found</div>;
 
-  if (!token) {
-    alert("You must be logged in to perform this action.");
-    return;
-  }
-
   return (
     <div className="EventDetails">
       <BackButton />
