@@ -1,0 +1,16 @@
+<!-- Define your server listening port -->
+PORT={yourServerListeningPort}
+DOMAIN='http://localhost:{yourServerListeningPort}/'
+
+<!-- To connect to database -->
+DATABASE_URI='postgresql://localhost/{yourDatabaseName}'
+
+<!-- generate a random 64-char code (run openssl rand -base64 64 in terminal) -->
+JWT_SECRET='generated_secret'
+
+SENDGRID_API_KEY='YOUR_SENDGRID_API_KEY'
+
+SENDGRID_VERIFIED_SENDER='YOUR_EMAIL'
+
+export GOOGLE_APPLICATION_CREDENTIALS="YOUR_GOOGLE_CREDENTIALS_FILE"
+FCM_SERVER_KEY='YOUR_FCM_SERVER_KEY'
